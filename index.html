@@ -71,23 +71,14 @@
 
     <!-- KONFIGURASI SUPABASE & PREVIEW -->
     <script>
-        const IS_PREVIEW = false; // Ubah menjadi false saat deploy produksi Supabase
+        const IS_PREVIEW = true; // Ubah menjadi false saat deploy produksi Supabase
         const SUPABASE_URL = "https://xrfooendtfbtfeocchjm.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_vGJWmS6WxJS0mpH7HTXpyQ_Tpn4z5AR";
         let supabaseClient = null;
-        if (!IS_PREVIEW && window.supabase && SUPABASE_URL !== "URL_SUPABASE_ANDA") {
+        if (!IS_PREVIEW && window.supabase && SUPABASE_URL !== "https://xrfooendtfbtfeocchjm.supabase.co") {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
     </script>
-
-    <!-- Banner Mode Preview -->
-    <div id="previewBanner" class="no-print bg-indigo-900 text-indigo-100 text-[11px] px-4 py-1.5 flex items-center justify-between border-b border-indigo-700">
-        <div class="flex items-center space-x-2">
-            <span class="bg-amber-400 text-slate-950 font-extrabold px-2 py-0.5 rounded text-[10px]">MODE PREVIEW AKTIF</span>
-            <span>Seluruh perubahan data otomatis tersimpan di penyimpanan lokal browser (LocalStorage) & siap disinkronkan ke Supabase.</span>
-        </div>
-        <button type="button" onclick="resetDefaultData()" class="text-indigo-200 hover:text-white underline text-[10px] cursor-pointer"><i class="fa-solid fa-rotate-left mr-1"></i>Reset Data Awal</button>
-    </div>
 
     <!-- App Container -->
     <div id="app" class="flex flex-col md:flex-row min-h-screen relative flex-1">
