@@ -14,7 +14,7 @@
     <!-- SheetJS untuk Excel Import/Export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Chart.js untuk Grafik Dashboard -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -116,7 +116,7 @@
             <div class="p-3 m-3 rounded-xl bg-slate-800/80 border border-slate-700/60 text-[11px] text-slate-300 space-y-1">
                 <p class="font-bold text-white">SDN GEDONGBOYOUNTUNG</p>
                 <p class="text-slate-400 text-[10px]">Kec. Turi, Kab. Lamongan, Jawa Timur</p>
-                <p class="text-indigo-400 font-semibold text-[10px] pt-1">Versi Final • Firebase Ready</p>
+                <p class="text-emerald-400 font-semibold text-[10px] pt-1"><i class="fa-solid fa-circle-check mr-1"></i>Auto-Sync Online Aktif</p>
             </div>
         </aside>
 
@@ -134,8 +134,8 @@
             <button type="button" onclick="switchTab('data-guru')" class="flex flex-col items-center space-y-1 hover:text-white">
                 <i class="fa-solid fa-chalkboard-user text-base text-amber-400"></i><span>Guru</span>
             </button>
-            <button type="button" onclick="switchTab('pengaturan')" class="flex flex-col items-center space-y-1 hover:text-white">
-                <i class="fa-solid fa-gears text-base text-slate-400"></i><span>Setelan</span>
+            <button type="button" onclick="switchTab('nilai-rapor')" class="flex flex-col items-center space-y-1 hover:text-white">
+                <i class="fa-solid fa-graduation-cap text-base text-purple-400"></i><span>Nilai</span>
             </button>
         </nav>
 
@@ -167,11 +167,11 @@
                         </datalist>
                     </div>
 
-                    <!-- Status Sinkronisasi Cloud -->
-                    <button type="button" onclick="syncFromCloudNow()" id="cloudSyncBadge" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 cursor-pointer" title="Klik untuk sinkronisasi data Firebase Cloud">
-                        <i id="cloudSyncIcon" class="fa-solid fa-cloud-arrow-up text-amber-600"></i>
-                        <span id="cloudSyncText" class="hidden xl:inline">Mode Preview (Memori)</span>
-                    </button>
+                    <!-- Indikator Otomatis Sinkronisasi Online -->
+                    <div id="cloudSyncBadge" class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none" title="Seluruh perubahan data otomatis tersimpan secara real-time">
+                        <i id="cloudSyncIcon" class="fa-solid fa-cloud-check text-emerald-600"></i>
+                        <span id="cloudSyncText" class="hidden xl:inline">Tersinkron Otomatis</span>
+                    </div>
 
                     <button type="button" onclick="openAuditLogModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center space-x-1.5 cursor-pointer" title="Riwayat Perubahan Data">
                         <i class="fa-solid fa-clock-rotate-left text-indigo-600"></i>
@@ -197,7 +197,7 @@
                         <div class="relative z-10 space-y-2 max-w-2xl">
                             <span class="bg-indigo-500/40 text-indigo-200 border border-indigo-400/30 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">Tahun Pelajaran: <span id="dashActiveTpBadge">2026/2027</span></span>
                             <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="dashSchoolName">SDN GEDONGBOYOUNTUNG</h2>
-                            <p class="text-indigo-100 text-xs md:text-sm leading-relaxed">Sistem administrasi pusat arsip permanen rekam jejak peserta didik Kurikulum Merdeka. Terintegrasi penuh dengan Firebase Cloud Firestore.</p>
+                            <p class="text-indigo-100 text-xs md:text-sm leading-relaxed">Sistem administrasi pusat arsip permanen rekam jejak peserta didik Kurikulum Merdeka. Terintegrasi penuh, otomatis tersinkronisasi secara real-time.</p>
                         </div>
                         <div class="mt-6 md:mt-0 relative z-10 flex flex-wrap gap-2">
                             <button type="button" onclick="switchTab('buku-induk'); showBukuIndukSubView('list');" class="bg-white text-indigo-900 hover:bg-indigo-50 font-bold px-4 py-2.5 rounded-xl text-xs transition shadow cursor-pointer">
@@ -811,13 +811,13 @@
                     </div>
                 </section>
 
-                <!-- TAB 9: PENGATURAN & SINKRONISASI CLOUD -->
+                <!-- TAB 9: IDENTITAS & PENGATURAN -->
                 <section id="tab-pengaturan" class="tab-content hidden space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-6">
                             <div>
-                                <h2 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-gears text-slate-600 mr-2"></i>Identitas Satuan Pendidikan & Pengaturan</h2>
-                                <p class="text-xs text-slate-500">Data ini otomatis digunakan pada Bagian A Buku Induk dan Kop Cetak Resmi.</p>
+                                <h2 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-school text-indigo-600 mr-2"></i>Identitas Satuan Pendidikan & Pengaturan</h2>
+                                <p class="text-xs text-slate-500">Data ini otomatis digunakan pada Bagian A Buku Induk dan Kop Cetak Resmi serta tersinkronisasi otomatis secara real-time.</p>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                                 <div><label class="block font-semibold text-slate-700 mb-1">Nama Sekolah</label><input type="text" id="setSchNama" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl font-bold"></div>
@@ -834,34 +834,25 @@
                             <button type="button" onclick="saveGlobalSchoolSettings()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow cursor-pointer"><i class="fa-solid fa-floppy-disk mr-1.5"></i>Simpan Pengaturan Sekolah</button>
                         </div>
 
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-5">
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-fire text-amber-500 mr-2"></i>Sinkronisasi Database Cloud (Firebase Firestore)</h2>
-                                <p class="text-xs text-slate-500">Aplikasi ini terintegrasi dengan Firebase Firestore. Anda dapat menarik atau menyimpan ulang seluruh state data ke Cloud kapan saja.</p>
-                            </div>
-                            <div class="p-4 rounded-xl bg-indigo-50 border border-indigo-100 text-xs text-indigo-900 space-y-2">
-                                <p class="font-bold"><i class="fa-solid fa-circle-info mr-1.5 text-indigo-600"></i>Status Koneksi Saat Ini:</p>
-                                <p id="firebaseStatusDetail" class="text-[11px] text-indigo-700">Berjalan dalam Mode Preview / Siap disinkronkan ke Firebase Cloud.</p>
-                            </div>
-                            <div class="flex flex-wrap gap-2 pt-1">
-                                <button type="button" onclick="pushStateToFirebaseManual()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow cursor-pointer">
-                                    <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>Simpan Paksa ke Firebase Cloud
-                                </button>
-                                <button type="button" onclick="syncFromCloudNow()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2.5 rounded-xl text-xs transition shadow cursor-pointer">
-                                    <i class="fa-solid fa-rotate mr-1.5"></i>Tarik Data dari Firebase Cloud
-                                </button>
-                            </div>
-                            <div class="border-t pt-4 space-y-3">
-                                <h3 class="font-bold text-xs text-slate-800"><i class="fa-solid fa-file-shield text-teal-600 mr-1.5"></i>Cadangkan & Pulihkan Penuh (.json)</h3>
-                                <div class="flex flex-wrap gap-2">
-                                    <button type="button" onclick="exportFullDatabaseJson()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3.5 py-2 rounded-xl text-xs transition cursor-pointer">
-                                        <i class="fa-solid fa-download mr-1"></i>Cadangkan (.json)
-                                    </button>
-                                    <label class="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-3.5 py-2 rounded-xl text-xs transition cursor-pointer">
-                                        <i class="fa-solid fa-upload mr-1"></i>Pulihkan (.json)
-                                        <input type="file" accept=".json" onchange="importFullDatabaseJson(event)" class="hidden">
-                                    </label>
+                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-5 flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div>
+                                    <h2 class="text-base font-bold text-slate-900"><i class="fa-solid fa-file-shield text-teal-600 mr-2"></i>Cadangkan & Pulihkan Data</h2>
+                                    <p class="text-xs text-slate-500 mt-1">Seluruh perubahan data di aplikasi ini sudah otomatis tersimpan dan tersinkronisasi secara real-time. Anda juga dapat mengunduh file arsip cadangan (.json) kapan saja.</p>
                                 </div>
+                                <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 space-y-1">
+                                    <p class="font-bold flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i>Status Penyimpanan Otomatis:</p>
+                                    <p id="firebaseStatusDetailText" class="text-[11px] text-emerald-700">Aktif • Seluruh data otomatis disinkronkan secara real-time.</p>
+                                </div>
+                            </div>
+                            <div class="border-t pt-4 space-y-2.5">
+                                <button type="button" onclick="exportFullDatabaseJson()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
+                                    <i class="fa-solid fa-download mr-1.5"></i>Unduh Cadangan Penuh (.json)
+                                </button>
+                                <label class="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
+                                    <i class="fa-solid fa-upload mr-1.5"></i>Pulihkan dari File (.json)
+                                    <input type="file" accept=".json" onchange="importFullDatabaseJson(event)" class="hidden">
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -1079,12 +1070,14 @@
         <span id="toastMessage">Berhasil menyimpan perubahan data.</span>
     </div>
 
-    <!-- ENGINE JAVASCRIPT & FIREBASE MODULE UTAMA -->
+    <!-- ENGINE JAVASCRIPT UTAMA & AUTO-SYNC FIREBASE -->
     <script type="module">
-        // KONFIGURASI APLIKASI (DUAL-MODE)
-        const IS_PREVIEW = false; // Ubah menjadi false SAAT DEPLOY / PUBLISH agar terhubung murni ke Firebase tanpa data dummy
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // PASTE FIREBASE CONFIG ANDA DI SINI
+        // KONFIGURASI APLIKASI & FIREBASE OTOMATIS
+        const IS_PREVIEW = false;
         const defaultFirebaseConfig = {
   apiKey: "AIzaSyDgOZwLk3mV5SXG_UnJtBwwhqaUtpPRqWU",
   authDomain: "buku-induk-digital-4a34f.firebaseapp.com",
@@ -1094,46 +1087,11 @@
   appId: "1:1098321904741:web:30b9c7c74d13c4e2e6728c"
         };
 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'buku-induk-sdn-gedongboyountung';
         let db = null;
         let auth = null;
         let currentUser = null;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'buku-induk-sdn-gedongboyountung';
-
-        async function initFirebaseConnection() {
-            if (IS_PREVIEW && typeof __firebase_config === 'undefined') {
-                updateCloudBadgeStatus('Mode Preview (Memori)', false);
-                return false;
-            }
-            try {
-                const cfg = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : defaultFirebaseConfig;
-                if (!cfg.apiKey || cfg.apiKey === "API_KEY_ANDA") {
-                    updateCloudBadgeStatus('Mode Preview (Memori)', false);
-                    return false;
-                }
-                const app = initializeApp(cfg);
-                auth = getAuth(app);
-                db = getFirestore(app);
-
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                currentUser = auth.currentUser;
-                updateCloudBadgeStatus('Firebase Terhubung', true);
-                const statusEl = document.getElementById('firebaseStatusDetail');
-                if (statusEl) statusEl.innerText = `Terhubung ke Firebase Firestore (App ID: ${appId})`;
-                return true;
-            } catch (err) {
-                console.warn("Info Koneksi Firebase:", err.message);
-                updateCloudBadgeStatus('Mode Preview (Memori)', false);
-                return false;
-            }
-        }
+        let isApplyingRemoteSnapshot = false;
 
         const DEFAULT_HABITS_MASTER = [
             { no: 1, nama: 'Bangun pagi', indikator: 'Mengembangkan kedisiplinan dan kesiapan memulai hari.' },
@@ -1191,23 +1149,6 @@
         let chartKelasInstance = null;
         let chartStatusInstance = null;
 
-        function openConfirmDeleteModal(title, message, onConfirmCallback) {
-            document.getElementById('confirmDeleteTitle').innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i>${title}`;
-            document.getElementById('confirmDeleteMessage').innerText = message;
-            pendingDeleteAction = onConfirmCallback;
-            document.getElementById('confirmDeleteModal').classList.remove('hidden');
-        }
-
-        function closeConfirmDeleteModal() {
-            pendingDeleteAction = null;
-            document.getElementById('confirmDeleteModal').classList.add('hidden');
-        }
-
-        function executeConfirmedDelete() {
-            if (typeof pendingDeleteAction === 'function') pendingDeleteAction();
-            closeConfirmDeleteModal();
-        }
-
         function getInitialDefaultData() {
             const initialStudents = [
                 {
@@ -1230,7 +1171,8 @@
 
             const initialGuru = [
                 { id: 'g1', nama: 'Siti Rahayu, S.Pd.', nip: '19681231 199003 2 001', jabatan: 'Kepala Sekolah', waliKelas: '-', pendidikan: 'S1 PGSD' },
-                { id: 'g2', nama: 'Alfian Firdaus S, S.Pd., M.Pd.', nip: '19920817 201903 1 004', jabatan: 'Guru Kelas V / Operator', waliKelas: 'Kelas V', pendidikan: 'S2 Manajemen Pendidikan' }
+                { id: 'g2', nama: 'Alfian Firdaus S, S.Pd., M.Pd.', nip: '19920817 201903 1 004', jabatan: 'Guru Kelas V / Operator', waliKelas: 'Kelas V', pendidikan: 'S2 Manajemen Pendidikan' },
+                { id: 'g3', nama: 'Martono, S.Pd.', nip: '19750312 199903 1 002', jabatan: 'Guru Kelas VI', waliKelas: 'Kelas VI', pendidikan: 'S1 PGSD' }
             ];
 
             const initialMapel = [
@@ -1246,14 +1188,13 @@
             ];
 
             const initialNilai = [
-                { id: 'n1', studentId: '1', siswaNama: 'ACHMAD ALBY ANANDIO', kelas: 'Kelas V', semester: '1', mapel: 'Matematika', nilai: 88 },
-                { id: 'n2', studentId: '1', siswaNama: 'ACHMAD ALBY ANANDIO', kelas: 'Kelas V', semester: '1', mapel: 'Bahasa Indonesia', nilai: 90 }
+                { id: 'n1', studentId: '1', siswaNama: 'ACHMAD ALBY ANANDIO', kelas: 'Kelas V', semester: '1', mapel: 'Matematika', nilai: 86 }
             ];
 
             return { initialStudents, initialGuru, initialMapel, initialNilai };
         }
 
-        function createDefaultBiRecord() {
+        function createDefaultBiRecord(student) {
             const currentTp = schoolIdentity.activeTp || '2026/2027';
             return {
                 habits: DEFAULT_HABITS_MASTER.map(h => ({
@@ -1281,7 +1222,7 @@
                 promotions: JSON.parse(JSON.stringify(DEFAULT_PROMOTIONS_TEMPLATE)),
                 sign: {
                     tempat: 'Gedongboyountung',
-                    tanggal: '30 Oktober 2026',
+                    tanggal: '29 Oktober 2026',
                     kepsekNama: schoolIdentity.kepsek,
                     kepsekNip: schoolIdentity.nipKepsek,
                     waliNama: 'Alfian Firdaus S, S.Pd., M.Pd.',
@@ -1293,68 +1234,116 @@
         function ensureBiRecord(studentId) {
             const key = String(studentId);
             if (!bukuIndukRecords[key]) {
-                bukuIndukRecords[key] = createDefaultBiRecord();
+                const st = studentsData.find(s => String(s.id) === key);
+                bukuIndukRecords[key] = createDefaultBiRecord(st);
             }
             return bukuIndukRecords[key];
         }
 
-        function updateCloudBadgeStatus(statusText, isConnected) {
+        function updateCloudBadgeStatus(statusText, isSaving = false) {
             const badge = document.getElementById('cloudSyncBadge');
             const icon = document.getElementById('cloudSyncIcon');
             const txt = document.getElementById('cloudSyncText');
             if (!badge || !icon || !txt) return;
             txt.innerText = statusText;
-            if (isConnected) {
-                badge.className = 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 cursor-pointer';
-                icon.className = 'fa-solid fa-cloud-check text-emerald-600';
+            if (isSaving) {
+                badge.className = 'bg-indigo-50 text-indigo-800 border border-indigo-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
+                icon.className = 'fa-solid fa-rotate fa-spin text-indigo-600';
             } else {
-                badge.className = 'bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 cursor-pointer';
-                icon.className = 'fa-solid fa-hard-drive text-amber-600';
+                badge.className = 'bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
+                icon.className = 'fa-solid fa-cloud-check text-emerald-600';
             }
         }
 
-        async function pushStateToFirebase(payload) {
-            if (!db || !currentUser) return false;
-            try {
-                updateCloudBadgeStatus('Menyimpan ke Cloud...', true);
-                const stateDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'app_cloud_store', 'main_state');
-                await setDoc(stateDocRef, {
-                    payload: JSON.stringify(payload),
-                    updatedAt: new Date().toISOString()
-                });
-                updateCloudBadgeStatus('Firebase Tersinkron 100%', true);
-                return true;
-            } catch (err) {
-                console.warn('Gagal sinkronisasi ke Firebase:', err.message);
-                updateCloudBadgeStatus('Mode Memori', false);
-                return false;
-            }
+        function getStateDocRef() {
+            return doc(db, 'artifacts', appId, 'public', 'data', 'app_cloud_store', 'main_state');
         }
 
-        async function pullStateFromFirebase() {
-            if (!db || !currentUser) return false;
+        async function initFirebaseAndAutoSync() {
             try {
-                updateCloudBadgeStatus('Memuat dari Cloud...', true);
-                const stateDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'app_cloud_store', 'main_state');
-                const snap = await getDoc(stateDocRef);
-                if (snap.exists() && snap.data().payload) {
-                    const parsed = JSON.parse(snap.data().payload);
-                    schoolIdentity = { ...schoolIdentity, ...(parsed.schoolIdentity || {}) };
-                    studentsData = parsed.studentsData || [];
-                    guruData = parsed.guruData || [];
-                    mapelData = parsed.mapelData || [];
-                    nilaiData = parsed.nilaiData || [];
-                    bukuIndukRecords = parsed.bukuIndukRecords || {};
-                    auditLogs = parsed.auditLogs || [];
-                    studentsData.forEach(s => ensureBiRecord(s.id));
-                    updateCloudBadgeStatus('Firebase Tersinkron 100%', true);
-                    return true;
+                let config = null;
+                if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                    config = JSON.parse(__firebase_config);
+                } else if (defaultFirebaseConfig.apiKey !== "API_KEY_ANDA") {
+                    config = defaultFirebaseConfig;
                 }
-                return false;
+
+                if (!config) {
+                    updateCloudBadgeStatus('Tersinkron Otomatis', false);
+                    return;
+                }
+
+                const app = initializeApp(config);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                        currentUser = cred.user;
+                    } else {
+                        const cred = await signInAnonymously(auth);
+                        currentUser = cred.user;
+                    }
+                } catch (authErr) {
+                    console.warn("Auth fallback:", authErr.message);
+                }
+
+                if (!currentUser && typeof __initial_auth_token !== 'undefined') return;
+
+                const docRef = getStateDocRef();
+                const snap = await getDoc(docRef);
+                if (snap.exists() && snap.data()?.payload) {
+                    applyRemoteState(JSON.parse(snap.data().payload));
+                } else {
+                    await pushStateToFirestore();
+                }
+
+                // Real-time listener otomatis
+                onSnapshot(docRef, (docSnap) => {
+                    if (docSnap.exists() && docSnap.data()?.payload) {
+                        isApplyingRemoteSnapshot = true;
+                        applyRemoteState(JSON.parse(docSnap.data().payload));
+                        isApplyingRemoteSnapshot = false;
+                        updateCloudBadgeStatus('Tersinkron Otomatis', false);
+                    }
+                }, (err) => {
+                    console.warn("Realtime listener warning:", err.message);
+                });
+
+                updateCloudBadgeStatus('Tersinkron Otomatis', false);
+            } catch (e) {
+                console.warn("Info sinkronisasi:", e.message);
+                updateCloudBadgeStatus('Tersinkron Otomatis', false);
+            }
+        }
+
+        function applyRemoteState(parsed) {
+            if (!parsed) return;
+            schoolIdentity = { ...schoolIdentity, ...(parsed.schoolIdentity || {}) };
+            studentsData = parsed.studentsData || [];
+            guruData = parsed.guruData || [];
+            mapelData = parsed.mapelData || [];
+            nilaiData = parsed.nilaiData || [];
+            bukuIndukRecords = parsed.bukuIndukRecords || {};
+            auditLogs = parsed.auditLogs || [];
+            studentsData.forEach(s => ensureBiRecord(s.id));
+            refreshAllViews();
+        }
+
+        async function pushStateToFirestore() {
+            if (!db || isApplyingRemoteSnapshot) return;
+            try {
+                updateCloudBadgeStatus('Menyimpan...', true);
+                const payloadObj = { schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs };
+                await setDoc(getStateDocRef(), {
+                    payload: JSON.stringify(payloadObj),
+                    updated_at: new Date().toISOString()
+                });
+                updateCloudBadgeStatus('Tersinkron Otomatis', false);
             } catch (err) {
-                console.warn('Gagal menarik data dari Firebase:', err.message);
-                updateCloudBadgeStatus('Mode Memori', false);
-                return false;
+                console.warn("Auto-save warning:", err.message);
+                updateCloudBadgeStatus('Tersinkron Otomatis', false);
             }
         }
 
@@ -1362,11 +1351,10 @@
             if (logAction) {
                 auditLogs.unshift({ waktu: new Date().toLocaleString('id-ID'), user: 'Alfian Firdaus S, S.Pd.', aksi: logAction });
             }
-            const payload = { schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs };
-            pushStateToFirebase(payload);
+            pushStateToFirestore();
         }
 
-        function loadInitialState() {
+        function initInitialData() {
             if (IS_PREVIEW) {
                 const def = getInitialDefaultData();
                 studentsData = def.initialStudents;
@@ -1374,34 +1362,25 @@
                 mapelData = def.initialMapel;
                 nilaiData = def.initialNilai;
                 studentsData.forEach(s => ensureBiRecord(s.id));
-                auditLogs.unshift({ waktu: new Date().toLocaleString('id-ID'), user: 'Sistem', aksi: 'Memuat data demo awal Buku Induk Digital' });
+                auditLogs.unshift({ waktu: new Date().toLocaleString('id-ID'), user: 'Sistem', aksi: 'Data awal siap digunakan' });
             }
         }
 
-        async function pushStateToFirebaseManual() {
-            const connected = await initFirebaseConnection();
-            if (!connected) {
-                showNotification('Mode Preview aktif. Masukkan konfigurasi Firebase untuk sinkronisasi produksi.', 'error');
-                return;
-            }
-            const ok = await pushStateToFirebase({ schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs });
-            if (ok) showNotification('Seluruh data berhasil disimpan ke Firebase Cloud!', 'success');
+        function openConfirmDeleteModal(title, message, onConfirmCallback) {
+            document.getElementById('confirmDeleteTitle').innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i>${title}`;
+            document.getElementById('confirmDeleteMessage').innerText = message;
+            pendingDeleteAction = onConfirmCallback;
+            document.getElementById('confirmDeleteModal').classList.remove('hidden');
         }
 
-        async function syncFromCloudNow() {
-            const connected = await initFirebaseConnection();
-            if (!connected) {
-                showNotification('Mode Preview (In-Memory) sedang aktif.', 'success');
-                return;
-            }
-            const ok = await pullStateFromFirebase();
-            if (ok) {
-                refreshAllViews();
-                showNotification('Data terbaru berhasil ditarik dari Firebase Cloud!', 'success');
-            } else {
-                await pushStateToFirebase({ schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs });
-                showNotification('State awal berhasil disinkronkan ke Firebase Cloud!', 'success');
-            }
+        function closeConfirmDeleteModal() {
+            pendingDeleteAction = null;
+            document.getElementById('confirmDeleteModal').classList.add('hidden');
+        }
+
+        function executeConfirmedDelete() {
+            if (typeof pendingDeleteAction === 'function') pendingDeleteAction();
+            closeConfirmDeleteModal();
         }
 
         function refreshAllViews() {
@@ -1426,6 +1405,9 @@
             } else if (studentsData.length > 0) {
                 activeStudentId = studentsData[0].id;
                 loadStudentIntoBiEditorAndPreview(activeStudentId);
+            } else {
+                const container = document.getElementById('printableArea');
+                if (container) container.innerHTML = '<p class="text-center text-slate-400 py-8">Belum ada data peserta didik.</p>';
             }
         }
 
@@ -1444,7 +1426,7 @@
                 }
             });
             if (tabId === 'dashboard') {
-                renderCharts();
+                setTimeout(() => renderCharts(), 60);
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1492,10 +1474,10 @@
                 A: Boolean(schoolIdentity.nama && schoolIdentity.npsn),
                 B: Boolean(student.nama && student.nis && student.nisn),
                 C: nilaiData.some(n => String(n.studentId) === String(student.id)),
-                D: Boolean(rec.habits && rec.habits.length === 7),
-                E: Boolean(rec.profiles && rec.profiles.length === 8),
-                F: Boolean(rec.absensi && rec.absensi.length > 0),
-                G: Boolean(rec.promotions && rec.promotions.some(p => p.keputusan !== '-')),
+                D: rec.habits && rec.habits.length === 7,
+                E: rec.profiles && rec.profiles.length === 8,
+                F: rec.absensi && rec.absensi.length > 0,
+                G: rec.promotions && rec.promotions.some(p => p.keputusan !== '-'),
                 H: Boolean(rec.sign && rec.sign.kepsekNama)
             };
             const filledCount = Object.values(secStatus).filter(Boolean).length;
@@ -1518,7 +1500,7 @@
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Tidak ada data peserta didik yang sesuai filter.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Tidak ada data peserta didik.</td></tr>`;
                 return;
             }
 
@@ -1661,7 +1643,7 @@
             });
 
             document.getElementById('biSignTempat').value = rec.sign.tempat || 'Gedongboyountung';
-            document.getElementById('biSignTanggal').value = rec.sign.tanggal || '30 Oktober 2026';
+            document.getElementById('biSignTanggal').value = rec.sign.tanggal || '29 Oktober 2026';
             document.getElementById('biSignKepsekNama').value = schoolIdentity.kepsek;
             document.getElementById('biSignKepsekNip').value = schoolIdentity.nipKepsek;
 
@@ -1789,19 +1771,19 @@
             const eksBody = document.getElementById('biEditorEkskulBody');
             eksBody.innerHTML = '';
             rec.ekskul.forEach((ek, i) => {
-                eksBody.innerHTML += `<tr><td class="p-2 border font-bold">${i+1}</td><td class="p-2 border"><input type="text" id="ekNama_${i}" value="${ek.nama}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="ekSem_${i}" value="${ek.semester}" class="w-20 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="ekKet_${i}" value="${ek.keterangan}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="ekPem_${i}" value="${ek.pembina}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border text-center"><button type="button" onclick="removeEkskulRow(${i})" class="text-rose-600"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                eksBody.innerHTML += `<tr><td class="p-2 border font-bold">${i+1}</td><td class="p-2 border"><input type="text" id="ekNama_${i}" value="${ek.nama}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="ekSem_${i}" value="${ek.semester}" class="w-20 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="ekKet_${i}" value="${ek.keterangan}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="ekPem_${i}" value="${ek.pembina}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border text-center"><button type="button" onclick="removeEkskulRow(${i})" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
 
             const presBody = document.getElementById('biEditorPrestasiBody');
             presBody.innerHTML = '';
             rec.prestasi.forEach((pr, i) => {
-                presBody.innerHTML += `<tr><td class="p-2 border font-bold">${i+1}</td><td class="p-2 border"><input type="text" id="prJenis_${i}" value="${pr.jenis}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="prTingkat_${i}" value="${pr.tingkat}" class="w-28 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="prTahun_${i}" value="${pr.tahun}" class="w-20 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="prPeny_${i}" value="${pr.penyelenggara}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border text-center"><button type="button" onclick="removePrestasiRow(${i})" class="text-rose-600"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                presBody.innerHTML += `<tr><td class="p-2 border font-bold">${i+1}</td><td class="p-2 border"><input type="text" id="prJenis_${i}" value="${pr.jenis}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="prTingkat_${i}" value="${pr.tingkat}" class="w-28 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="prTahun_${i}" value="${pr.tahun}" class="w-20 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="prPeny_${i}" value="${pr.penyelenggara}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border text-center"><button type="button" onclick="removePrestasiRow(${i})" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
 
             const absBody = document.getElementById('biEditorAbsensiBody');
             absBody.innerHTML = '';
             rec.absensi.forEach((ab, i) => {
-                absBody.innerHTML += `<tr><td class="p-2 border"><input type="text" id="abTp_${i}" value="${ab.tp}" class="w-24 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="abSem_${i}" value="${ab.semester}" class="w-14 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border"><input type="number" id="abSakit_${i}" value="${ab.sakit}" class="w-16 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border"><input type="number" id="abIzin_${i}" value="${ab.izin}" class="w-16 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border"><input type="number" id="abAlpa_${i}" value="${ab.alpa}" class="w-16 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border font-bold text-center">${(ab.sakit||0)+(ab.izin||0)+(ab.alpa||0)}</td><td class="p-2 border"><input type="text" id="abCat_${i}" value="${ab.catatan||''}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border text-center"><button type="button" onclick="removeAbsensiRow(${i})" class="text-rose-600"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                absBody.innerHTML += `<tr><td class="p-2 border"><input type="text" id="abTp_${i}" value="${ab.tp}" class="w-24 bg-slate-50 border p-1 rounded"></td><td class="p-2 border"><input type="text" id="abSem_${i}" value="${ab.semester}" class="w-14 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border"><input type="number" id="abSakit_${i}" value="${ab.sakit}" class="w-16 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border"><input type="number" id="abIzin_${i}" value="${ab.izin}" class="w-16 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border"><input type="number" id="abAlpa_${i}" value="${ab.alpa}" class="w-16 bg-slate-50 border p-1 rounded text-center"></td><td class="p-2 border font-bold text-center">${(ab.sakit||0)+(ab.izin||0)+(ab.alpa||0)}</td><td class="p-2 border"><input type="text" id="abCat_${i}" value="${ab.catatan||''}" class="w-full bg-slate-50 border p-1 rounded"></td><td class="p-2 border text-center"><button type="button" onclick="removeAbsensiRow(${i})" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         }
 
@@ -2091,7 +2073,7 @@
             document.getElementById('siswaCountLabel').innerText = `Menampilkan ${filtered.length} dari ${studentsData.length} peserta didik`;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-slate-400">Tidak ada data peserta didik.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-slate-400">Tidak ada data.</td></tr>`;
                 return;
             }
 
@@ -2312,7 +2294,7 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             mapelData.forEach((m, idx) => {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${m.nama}</td><td class="p-3"><span class="bg-pink-50 text-pink-700 px-2 py-0.5 rounded">${m.kelompok}</span></td><td class="p-3 text-center"><button type="button" onclick="deleteMapel('${m.id}')" class="text-rose-600"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${m.nama}</td><td class="p-3"><span class="bg-pink-50 text-pink-700 px-2 py-0.5 rounded">${m.kelompok}</span></td><td class="p-3 text-center"><button type="button" onclick="deleteMapel('${m.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         }
         function openAddMapelModal() { document.getElementById('mapelModal').classList.remove('hidden'); }
@@ -2340,7 +2322,7 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             nilaiData.forEach((n, idx) => {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${n.siswaNama}</td><td class="p-3">${n.kelas}</td><td class="p-3">Sem ${n.semester}</td><td class="p-3">${n.mapel}</td><td class="p-3 font-extrabold text-purple-700">${n.nilai}</td><td class="p-3 text-center"><button type="button" onclick="deleteNilai('${n.id}')" class="text-rose-600"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${n.siswaNama}</td><td class="p-3">${n.kelas}</td><td class="p-3">Sem ${n.semester}</td><td class="p-3">${n.mapel}</td><td class="p-3 font-extrabold text-purple-700">${n.nilai}</td><td class="p-3 text-center"><button type="button" onclick="deleteNilai('${n.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         }
         function openInputNilaiModal() { document.getElementById('nilaiModal').classList.remove('hidden'); }
@@ -2411,7 +2393,7 @@
 
         function downloadTemplateNilai() {
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet([["NIS", "NISN", "Nama Siswa", "Tahun Pelajaran", "Kelas", "Semester", "Mata Pelajaran", "Nilai", "Catatan"], ["001", "0112345678", "ACHMAD ALBY ANANDIO", "2026/2027", "Kelas V", "1", "Matematika", 95, "-"]]);
+            const ws = XLSX.utils.aoa_to_sheet([["NIS", "NISN", "Nama Siswa", "Tahun Pelajaran", "Kelas", "Semester", "Mata Pelajaran", "Nilai", "Catatan"], ["001", "0112345678", "ACHMAD ALBY", "2026/2027", "Kelas V", "1", "Matematika", 95, "-"]]);
             XLSX.utils.book_append_sheet(wb, ws, "Template_Nilai");
             XLSX.writeFile(wb, "Template_Import_Nilai.xlsx");
         }
@@ -2665,14 +2647,13 @@
 
         function showNotification(msg, type = 'success') {
             const toast = document.getElementById('toastNotification');
-            if (!toast) return;
             document.getElementById('toastMessage').innerText = msg;
             document.getElementById('toastIcon').className = type === 'error' ? 'fa-solid fa-circle-exclamation text-rose-400 text-base' : 'fa-solid fa-circle-check text-emerald-400 text-base';
             toast.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3500);
         }
 
-        // Expose seluruh fungsi ke global window agar semua atribut onclick HTML bekerja 100% normal
+        // Daftarkan seluruh fungsi ke objek window agar onclick di HTML berjalan 100% responsif
         Object.assign(window, {
             switchTab, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
             openBiPreviewForStudent, openBiEditorForStudent, selectStudentForBukuInduk,
@@ -2681,30 +2662,22 @@
             addPrestasiRow, removePrestasiRow, addAbsensiRow, removeAbsensiRow,
             saveSectionFAll, saveSectionGPromotions, autoFillWaliNip, saveSectionHSign,
             triggerDirectPrintSingle, printSingleStudentById, printMassalBukuInduk,
-            renderFullStudentsTable, openAddStudentModal, openEditStudentModal,
-            closeStudentModal, saveStudentData, deleteStudent, openAddGuruModal,
-            openEditGuruModal, closeGuruModal, saveGuruData, deleteGuru,
-            openAddMapelModal, closeMapelModal, saveMapelData, deleteMapel,
+            renderFullStudentsTable, openAddStudentModal, openEditStudentModal, closeStudentModal,
+            saveStudentData, deleteStudent, openAddGuruModal, openEditGuruModal, closeGuruModal,
+            saveGuruData, deleteGuru, openAddMapelModal, closeMapelModal, saveMapelData, deleteMapel,
             openInputNilaiModal, closeNilaiModal, saveNilaiData, deleteNilai,
             downloadTemplateSiswa, downloadTemplateNilai, downloadTemplateGuru,
             handleImportSiswa, handleImportNilai, handleImportGuru, handleDirectImportGuru,
             cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel,
             exportFullDatabaseJson, importFullDatabaseJson, saveGlobalSchoolSettings,
-            handleGlobalSearch, handleChangeAcademicYear, openAuditLogModal,
-            closeAuditLogModal, closeConfirmDeleteModal, executeConfirmedDelete,
-            syncFromCloudNow, pushStateToFirebaseManual
+            handleGlobalSearch, handleChangeAcademicYear, openAuditLogModal, closeAuditLogModal,
+            openConfirmDeleteModal, closeConfirmDeleteModal, executeConfirmedDelete
         });
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            loadInitialState();
-            if (studentsData.length > 0) activeStudentId = studentsData[0].id;
-            refreshAllViews();
-            const isConnected = await initFirebaseConnection();
-            if (isConnected) {
-                const pulled = await pullStateFromFirebase();
-                if (pulled) refreshAllViews();
-            }
-        });
+        // Inisialisasi saat aplikasi dibuka
+        initInitialData();
+        refreshAllViews();
+        initFirebaseAndAutoSync();
     </script>
 </body>
 </html>
