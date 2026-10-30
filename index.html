@@ -941,7 +941,7 @@
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
                 <button type="button" onclick="closeStudentModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
-                <button type="button" onclick="saveStudentData()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow hover:bg-indigo-500 cursor-pointer"><i class="fa-solid fa-floppy-disk mr-1"></i>Simpan</button>
+                <button type="button" id="btnSaveStudentModal" onclick="saveStudentData()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow hover:bg-indigo-500 cursor-pointer flex items-center space-x-1.5"><i class="fa-solid fa-floppy-disk"></i><span>Simpan</span></button>
             </div>
         </div>
     </div>
@@ -1074,6 +1074,30 @@
             </div>
             <div class="p-4 overflow-y-auto flex-1">
                 <table class="w-full text-left text-xs border-collapse">
+                    <thead><tr class="bg-slate-100 text-slate-600 font-bold border-b"><th class="p-2.5">Waktu</th><th class="p-2.5">Pengguna</th><th class="p-2.5">Aksi</th></tr></thead>
+                    <tbody id="auditLogTableBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KONFIRMASI HAPUS KUSTOM -->
+    <div id="confirmDeleteModal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col border border-slate-200">
+            <div class="bg-rose-600 text-white p-4 flex justify-between items-center">
+                <h3 id="confirmDeleteTitle" class="font-bold text-sm flex items-center"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Konfirmasi Hapus</h3>
+                <button type="button" onclick="closeConfirmDeleteModal()" class="text-rose-200 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 text-xs text-slate-700 space-y-2">
+                <p id="confirmDeleteMessage" class="font-semibold text-slate-900 text-sm leading-relaxed">Apakah Anda yakin ingin menghapus data ini?</p>
+            </div>
+            <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
+                <button type="button" onclick="closeConfirmDeleteModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
+                <button type="button" onclick="executeConfirmedDelete()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-bold text-xs shadow cursor-pointer flex items-center space-x-1.5"><i class="fa-solid fa-trash"></i><span>Ya, Hapus</span></button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL LOGIN FIREBASE AUTH -->
     <div id="loginModal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col border border-slate-200">
@@ -1310,6 +1334,38 @@
             return doc(db, 'artifacts', appId, 'public', 'data', 'app_cloud_store', 'main_state');
         }
 
+        function applyRemoteState(parsed) {
+            if (!parsed || typeof parsed !== 'object') return;
+            if (parsed.schoolIdentity) {
+                schoolIdentity = { ...schoolIdentity, ...parsed.schoolIdentity };
+            }
+            if (Array.isArray(parsed.studentsData)) {
+                studentsData = parsed.studentsData.map(s => ({
+                    ...s,
+                    id: String(s.id),
+                    nis: String(s.nis || ''),
+                    nisn: String(s.nisn || '')
+                }));
+            }
+            if (Array.isArray(parsed.guruData)) {
+                guruData = parsed.guruData;
+            }
+            if (Array.isArray(parsed.mapelData)) {
+                mapelData = parsed.mapelData;
+            }
+            if (Array.isArray(parsed.nilaiData)) {
+                nilaiData = parsed.nilaiData;
+            }
+            if (parsed.bukuIndukRecords && typeof parsed.bukuIndukRecords === 'object') {
+                bukuIndukRecords = parsed.bukuIndukRecords;
+            }
+            if (Array.isArray(parsed.auditLogs)) {
+                auditLogs = parsed.auditLogs;
+            }
+            studentsData.forEach(s => ensureBiRecord(s.id));
+            refreshAllViews();
+        }
+
         async function initFirebaseAndAutoSync() {
             setSyncStatus('loading');
             try {
@@ -1321,9 +1377,16 @@
                 }
 
                 if (!config) {
+                    const def = getInitialDefaultData();
+                    studentsData = def.initialStudents;
+                    guruData = def.initialGuru;
+                    mapelData = def.initialMapel;
+                    nilaiData = def.initialNilai;
+                    studentsData.forEach(s => ensureBiRecord(s.id));
+                    isInitialLoadDone = true;
+                    refreshAllViews();
                     hideInitialLoadingOverlay();
                     setSyncStatus('error');
-                    showNotification('Konfigurasi Firebase belum diatur.', 'error');
                     return;
                 }
 
@@ -1332,9 +1395,14 @@
                 db = getFirestore(app);
 
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
-                    currentUser = cred.user;
-                } else {
+                    try {
+                        const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                        currentUser = cred.user;
+                    } catch (tokenErr) {
+                        console.warn("Custom token auth error:", tokenErr.message);
+                    }
+                }
+                if (!auth.currentUser) {
                     try {
                         const cred = await signInAnonymously(auth);
                         currentUser = cred.user;
@@ -1357,8 +1425,8 @@
                 if (snap.exists()) {
                     const docData = snap.data();
                     const parsed = typeof docData.payload === 'string' ? JSON.parse(docData.payload) : docData;
-                    applyRemoteState(parsed);
                     isInitialLoadDone = true;
+                    applyRemoteState(parsed);
                     setSyncStatus('synced');
                 } else {
                     const def = getInitialDefaultData();
@@ -1393,9 +1461,19 @@
 
             } catch (e) {
                 console.error("Gagal memuat dari Firebase:", e);
+                if (studentsData.length === 0) {
+                    const def = getInitialDefaultData();
+                    studentsData = def.initialStudents;
+                    guruData = def.initialGuru;
+                    mapelData = def.initialMapel;
+                    nilaiData = def.initialNilai;
+                    studentsData.forEach(s => ensureBiRecord(s.id));
+                }
+                isInitialLoadDone = true;
+                refreshAllViews();
                 hideInitialLoadingOverlay();
                 setSyncStatus('error');
-                showNotification('Gagal memuat data dari Firebase: ' + (e.message || 'Koneksi terputus'), 'error');
+                showNotification('Gagal memuat dari server: ' + (e.message || 'Koneksi terputus'), 'error');
             }
         }
 
@@ -2362,6 +2440,26 @@
             document.getElementById('modalNis').value = '';
             document.getElementById('modalNisn').value = '';
             document.getElementById('modalNama').value = '';
+            document.getElementById('modalGender').value = 'Laki-laki';
+            document.getElementById('modalAgama').value = 'Islam';
+            document.getElementById('modalTempatLahir').value = 'Lamongan';
+            document.getElementById('modalTglLahir').value = '';
+            document.getElementById('modalAnakKe').value = '1';
+            document.getElementById('modalJmlSaudara').value = '2';
+            document.getElementById('modalAlamat').value = '';
+            document.getElementById('modalKontak').value = '';
+            document.getElementById('modalAyah').value = '';
+            document.getElementById('modalPekerjaanAyah').value = '';
+            document.getElementById('modalIbu').value = '';
+            document.getElementById('modalPekerjaanIbu').value = '';
+            document.getElementById('modalWali').value = '-';
+            document.getElementById('modalKontakWali').value = '-';
+            document.getElementById('modalAsalSekolah').value = 'TK Dharma Wanita';
+            document.getElementById('modalTglMasuk').value = '15 Juli 2026';
+            const currentFilterKelas = document.getElementById('filterSiswaKelas')?.value;
+            document.getElementById('modalKelas').value = (currentFilterKelas && currentFilterKelas !== 'ALL') ? currentFilterKelas : 'Kelas V';
+            document.getElementById('modalTahunMasuk').value = schoolIdentity.activeTp || '2026/2027';
+            document.getElementById('modalStatus').value = 'Aktif';
             document.getElementById('studentModal').classList.remove('hidden');
         }
 
@@ -2398,65 +2496,125 @@
         function closeStudentModal() { document.getElementById('studentModal').classList.add('hidden'); }
 
         async function saveStudentData() {
-            const id = document.getElementById('modalStudentId').value;
-            const nama = document.getElementById('modalNama').value.trim();
-            const nis = document.getElementById('modalNis').value.trim();
-            const nisn = document.getElementById('modalNisn').value.trim();
-            if (!nama || !nis || !nisn) { showNotification('Nama, NIS, dan NISN wajib diisi!', 'error'); return; }
+            const btnSave = document.getElementById('btnSaveStudentModal');
+            if (btnSave && btnSave.disabled) return;
 
-            // Validasi NISN unik
-            const dup = studentsData.find(s => s.nisn === nisn && String(s.id) !== String(id));
-            if (dup) {
-                showNotification(`NISN ${nisn} sudah terdaftar atas nama ${dup.nama}!`, 'error');
+            const id = document.getElementById('modalStudentId').value.trim();
+            const nis = String(document.getElementById('modalNis').value || '').trim();
+            const nisn = String(document.getElementById('modalNisn').value || '').trim();
+            const nama = String(document.getElementById('modalNama').value || '').trim();
+            const gender = document.getElementById('modalGender').value || 'Laki-laki';
+            const agama = String(document.getElementById('modalAgama').value || '').trim();
+            const tempatLahir = String(document.getElementById('modalTempatLahir').value || '').trim();
+            const tglLahir = String(document.getElementById('modalTglLahir').value || '').trim();
+            const alamat = String(document.getElementById('modalAlamat').value || '').trim();
+            const ayah = String(document.getElementById('modalAyah').value || '').trim();
+            const ibu = String(document.getElementById('modalIbu').value || '').trim();
+
+            // Validasi kolom wajib dengan pesan spesifik
+            const missingFields = [];
+            if (!nis) missingFields.push('NIS');
+            if (!nisn) missingFields.push('NISN');
+            if (!nama) missingFields.push('Nama Lengkap');
+            if (!tempatLahir) missingFields.push('Tempat Lahir');
+            if (!tglLahir) missingFields.push('Tanggal Lahir');
+            if (!alamat) missingFields.push('Alamat');
+
+            if (missingFields.length > 0) {
+                showNotification(`Mohon lengkapi data wajib: ${missingFields.join(', ')}!`, 'error');
+                return;
+            }
+
+            // Validasi duplikasi NIS atau NISN
+            const dupNis = studentsData.find(s => String(s.nis).toLowerCase() === nis.toLowerCase() && String(s.id) !== String(id));
+            if (dupNis) {
+                showNotification(`Peringatan: NIS "${nis}" sudah digunakan oleh siswa ${dupNis.nama}!`, 'error');
+                return;
+            }
+
+            const dupNisn = studentsData.find(s => String(s.nisn).toLowerCase() === nisn.toLowerCase() && String(s.id) !== String(id));
+            if (dupNisn) {
+                showNotification(`Peringatan: NISN "${nisn}" sudah digunakan oleh siswa ${dupNisn.nama}!`, 'error');
                 return;
             }
 
             const payload = {
-                nis, nisn, nama,
-                gender: document.getElementById('modalGender').value,
-                agama: document.getElementById('modalAgama').value,
-                tempatLahir: document.getElementById('modalTempatLahir').value,
-                tglLahir: document.getElementById('modalTglLahir').value,
+                nis: String(nis),
+                nisn: String(nisn),
+                nama,
+                gender,
+                agama: agama || 'Islam',
+                tempatLahir,
+                tglLahir,
                 anakKe: parseInt(document.getElementById('modalAnakKe').value) || 1,
                 jmlSaudara: parseInt(document.getElementById('modalJmlSaudara').value) || 1,
-                alamat: document.getElementById('modalAlamat').value,
-                kontak: document.getElementById('modalKontak').value,
-                ayah: document.getElementById('modalAyah').value,
-                pekerjaanAyah: document.getElementById('modalPekerjaanAyah').value,
-                ibu: document.getElementById('modalIbu').value,
-                pekerjaanIbu: document.getElementById('modalPekerjaanIbu').value,
-                wali: document.getElementById('modalWali').value,
-                kontakWali: document.getElementById('modalKontakWali').value,
-                asalSekolah: document.getElementById('modalAsalSekolah').value,
-                tglMasuk: document.getElementById('modalTglMasuk').value,
-                kelas: document.getElementById('modalKelas').value,
-                tahunMasuk: document.getElementById('modalTahunMasuk').value,
-                status: document.getElementById('modalStatus').value
+                alamat,
+                kontak: String(document.getElementById('modalKontak').value || '').trim() || '-',
+                ayah: ayah || '-',
+                pekerjaanAyah: String(document.getElementById('modalPekerjaanAyah').value || '').trim() || '-',
+                ibu: ibu || '-',
+                pekerjaanIbu: String(document.getElementById('modalPekerjaanIbu').value || '').trim() || '-',
+                wali: String(document.getElementById('modalWali').value || '').trim() || '-',
+                kontakWali: String(document.getElementById('modalKontakWali').value || '').trim() || '-',
+                asalSekolah: String(document.getElementById('modalAsalSekolah').value || '').trim() || '-',
+                tglMasuk: String(document.getElementById('modalTglMasuk').value || '').trim() || '-',
+                kelas: document.getElementById('modalKelas').value || 'Kelas V',
+                tahunMasuk: String(document.getElementById('modalTahunMasuk').value || '').trim() || (schoolIdentity.activeTp || '2026/2027'),
+                status: document.getElementById('modalStatus').value || 'Aktif'
             };
 
             const prevStudents = JSON.parse(JSON.stringify(studentsData));
             const prevRecords = JSON.parse(JSON.stringify(bukuIndukRecords));
+            const prevActiveId = activeStudentId;
+
+            if (btnSave) {
+                btnSave.disabled = true;
+                btnSave.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Menyimpan...</span>`;
+            }
 
             try {
                 if (id) {
                     const idx = studentsData.findIndex(item => String(item.id) === String(id));
-                    if (idx >= 0) studentsData[idx] = { ...studentsData[idx], ...payload };
-                    await saveToStorage(`Edit data siswa: ${nama}`);
-                    showNotification('Data peserta didik berhasil diperbarui di Firebase!', 'success');
+                    if (idx >= 0) {
+                        studentsData[idx] = { ...studentsData[idx], ...payload, id: String(id) };
+                        nilaiData.forEach(n => {
+                            if (String(n.studentId) === String(id)) n.siswaNama = nama;
+                        });
+                    }
+                    activeStudentId = String(id);
+                    await saveToStorage(`Edit data peserta didik: ${nama} (NISN: ${nisn})`);
                 } else {
-                    const newId = 'st_' + Date.now();
-                    studentsData.unshift({ id: newId, ...payload });
+                    const newId = 'st_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+                    const newStudent = { id: newId, ...payload };
+                    studentsData.unshift(newStudent);
                     ensureBiRecord(newId);
                     activeStudentId = newId;
-                    await saveToStorage(`Tambah siswa baru: ${nama}`);
-                    showNotification('Peserta didik baru berhasil disimpan ke Firebase!', 'success');
+                    await saveToStorage(`Tambah peserta didik baru: ${nama} (NISN: ${nisn})`);
                 }
-                closeStudentModal();
+
+                // Pastikan filter kelas/status menyesuaikan jika sedang terfilter agar siswa baru langsung terlihat
+                const fKelasEl = document.getElementById('filterSiswaKelas');
+                if (fKelasEl && fKelasEl.value !== 'ALL' && fKelasEl.value !== payload.kelas) {
+                    fKelasEl.value = 'ALL';
+                }
+                const biFilterKelasEl = document.getElementById('biFilterKelas');
+                if (biFilterKelasEl && biFilterKelasEl.value !== 'ALL' && biFilterKelasEl.value !== payload.kelas) {
+                    biFilterKelasEl.value = payload.kelas;
+                }
+
                 refreshAllViews();
+                closeStudentModal();
+                showNotification(id ? `Data peserta didik "${nama}" berhasil diperbarui!` : `Peserta didik baru "${nama}" berhasil disimpan!`, 'success');
             } catch (err) {
                 studentsData = prevStudents;
                 bukuIndukRecords = prevRecords;
-                showNotification('Gagal menyimpan data peserta didik ke Firebase!', 'error');
+                activeStudentId = prevActiveId;
+                showNotification('Gagal menyimpan data peserta didik: ' + (err.message || 'Gangguan koneksi penyimpanan'), 'error');
+            } finally {
+                if (btnSave) {
+                    btnSave.disabled = false;
+                    btnSave.innerHTML = `<i class="fa-solid fa-floppy-disk"></i><span>Simpan</span>`;
+                }
             }
         }
 
