@@ -168,9 +168,9 @@
                     </div>
 
                     <!-- Indikator Otomatis Sinkronisasi Online -->
-                    <div id="cloudSyncBadge" class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none" title="Seluruh perubahan data otomatis tersimpan secara real-time">
-                        <i id="cloudSyncIcon" class="fa-solid fa-cloud-check text-emerald-600"></i>
-                        <span id="cloudSyncText" class="hidden xl:inline">Tersinkron Otomatis</span>
+                    <div id="cloudSyncBadge" class="bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none" title="Status sinkronisasi real-time dengan database Firebase Cloud Firestore">
+                        <i id="cloudSyncIcon" class="fa-solid fa-spinner fa-spin text-blue-600"></i>
+                        <span id="cloudSyncText" class="hidden xl:inline">Memuat data...</span>
                     </div>
 
                     <button type="button" onclick="openAuditLogModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center space-x-1.5 cursor-pointer" title="Riwayat Perubahan Data">
@@ -813,51 +813,42 @@
 
                 <!-- TAB 9: IDENTITAS & PENGATURAN -->
                 <section id="tab-pengaturan" class="tab-content hidden space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-6">
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-school text-indigo-600 mr-2"></i>Identitas Satuan Pendidikan & Pengaturan</h2>
-                                <p class="text-xs text-slate-500">Data ini otomatis digunakan pada Bagian A Buku Induk dan Kop Cetak Resmi serta tersinkronisasi otomatis secara real-time.</p>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Sekolah</label><input type="text" id="setSchNama" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl font-bold"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">NPSN</label><input type="text" id="setSchNpsn" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Alamat Sekolah</label><input type="text" id="setSchAlamat" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Desa / Kelurahan</label><input type="text" id="setSchDesa" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Kecamatan</label><input type="text" id="setSchKec" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Kabupaten / Kota</label><input type="text" id="setSchKab" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Provinsi</label><input type="text" id="setSchProv" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Tahun Berdiri</label><input type="text" id="setSchTahun" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Sekolah</label><input type="text" id="setSchKepsek" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl font-bold"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">NIP Kepala Sekolah</label><input type="text" id="setSchNipKepsek" class="w-full bg-slate-100 border border-slate-200 p-2.5 rounded-xl"></div>
-                            </div>
-                            <button type="button" onclick="saveGlobalSchoolSettings()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow cursor-pointer"><i class="fa-solid fa-floppy-disk mr-1.5"></i>Simpan Pengaturan Sekolah</button>
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xs border border-slate-200 space-y-6 w-full">
+                        <div class="border-b border-slate-100 pb-4">
+                            <h2 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-school text-indigo-600 mr-2"></i>Identitas Satuan Pendidikan & Pengaturan</h2>
+                            <p class="text-xs text-slate-500 mt-1">Data ini otomatis digunakan pada Bagian A Buku Induk dan Kop Cetak Resmi serta tersimpan permanen di Firebase Cloud Firestore.</p>
                         </div>
-
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-5 flex flex-col justify-between">
-                            <div class="space-y-4">
-                                <div>
-                                    <h2 class="text-base font-bold text-slate-900"><i class="fa-solid fa-file-shield text-teal-600 mr-2"></i>Cadangkan & Pulihkan Data</h2>
-                                    <p class="text-xs text-slate-500 mt-1">Seluruh perubahan data di aplikasi ini sudah otomatis tersimpan dan tersinkronisasi secara real-time. Anda juga dapat mengunduh file arsip cadangan (.json) kapan saja.</p>
-                                </div>
-                                <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 space-y-1">
-                                    <p class="font-bold flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i>Status Penyimpanan Otomatis:</p>
-                                    <p id="firebaseStatusDetailText" class="text-[11px] text-emerald-700">Aktif • Seluruh data otomatis disinkronkan secara real-time.</p>
-                                </div>
-                            </div>
-                            <div class="border-t pt-4 space-y-2.5">
-                                <button type="button" onclick="exportFullDatabaseJson()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
-                                    <i class="fa-solid fa-download mr-1.5"></i>Unduh Cadangan Penuh (.json)
-                                </button>
-                                <label class="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
-                                    <i class="fa-solid fa-upload mr-1.5"></i>Pulihkan dari File (.json)
-                                    <input type="file" accept=".json" onchange="importFullDatabaseJson(event)" class="hidden">
-                                </label>
-                            </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-xs">
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Nama Sekolah</label><input type="text" id="setSchNama" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">NPSN</label><input type="text" id="setSchNpsn" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Tahun Berdiri</label><input type="text" id="setSchTahun" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div class="sm:col-span-2 lg:col-span-3"><label class="block font-semibold text-slate-700 mb-1.5">Alamat Sekolah</label><input type="text" id="setSchAlamat" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Desa / Kelurahan</label><input type="text" id="setSchDesa" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Kecamatan</label><input type="text" id="setSchKec" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Kabupaten / Kota</label><input type="text" id="setSchKab" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Provinsi</label><input type="text" id="setSchProv" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Nama Kepala Sekolah</label><input type="text" id="setSchKepsek" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">NIP Kepala Sekolah</label><input type="text" id="setSchNipKepsek" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex justify-end">
+                            <button type="button" onclick="saveGlobalSchoolSettings()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition shadow cursor-pointer flex items-center space-x-2">
+                                <i class="fa-solid fa-floppy-disk"></i><span>Simpan Pengaturan Sekolah</span>
+                            </button>
                         </div>
                     </div>
                 </section>
             </main>
+        </div>
+    </div>
+
+    <!-- LOADING OVERLAY SAAT MEMUAT DATA FIREBASE -->
+    <div id="initialLoadingOverlay" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl px-6 py-5 flex items-center space-x-4 border border-slate-200">
+            <i class="fa-solid fa-circle-notch fa-spin text-indigo-600 text-2xl"></i>
+            <div>
+                <p class="text-sm font-bold text-slate-900">Memuat Data Buku Induk...</p>
+                <p class="text-[11px] text-slate-500">Menghubungkan ke server Firebase Cloud Firestore</p>
+            </div>
         </div>
     </div>
 
@@ -1073,11 +1064,10 @@
     <!-- ENGINE JAVASCRIPT UTAMA & AUTO-SYNC FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // KONFIGURASI APLIKASI & FIREBASE OTOMATIS
-        const IS_PREVIEW = false;
         const defaultFirebaseConfig = {
   apiKey: "AIzaSyDgOZwLk3mV5SXG_UnJtBwwhqaUtpPRqWU",
   authDomain: "buku-induk-digital-4a34f.firebaseapp.com",
@@ -1092,6 +1082,9 @@
         let auth = null;
         let currentUser = null;
         let isApplyingRemoteSnapshot = false;
+        let isInitialLoadDone = false;
+        let isSavingInProgress = false;
+        let unsubscribeSnapshot = null;
 
         const DEFAULT_HABITS_MASTER = [
             { no: 1, nama: 'Bangun pagi', indikator: 'Mengembangkan kedisiplinan dan kesiapan memulai hari.' },
@@ -1240,36 +1233,55 @@
             return bukuIndukRecords[key];
         }
 
-        function updateCloudBadgeStatus(statusText, isSaving = false) {
+        // Indikator status sinkronisasi yang akurat: 'loading' | 'saving' | 'synced' | 'error'
+        function setSyncStatus(state) {
             const badge = document.getElementById('cloudSyncBadge');
             const icon = document.getElementById('cloudSyncIcon');
             const txt = document.getElementById('cloudSyncText');
             if (!badge || !icon || !txt) return;
-            txt.innerText = statusText;
-            if (isSaving) {
+
+            if (state === 'loading') {
+                txt.innerText = 'Memuat data...';
+                badge.className = 'bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
+                icon.className = 'fa-solid fa-spinner fa-spin text-blue-600';
+            } else if (state === 'saving') {
+                txt.innerText = 'Menyimpan...';
                 badge.className = 'bg-indigo-50 text-indigo-800 border border-indigo-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
                 icon.className = 'fa-solid fa-rotate fa-spin text-indigo-600';
-            } else {
+            } else if (state === 'synced') {
+                txt.innerText = 'Tersinkron';
                 badge.className = 'bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
                 icon.className = 'fa-solid fa-cloud-check text-emerald-600';
+            } else if (state === 'error') {
+                txt.innerText = 'Gagal menyimpan';
+                badge.className = 'bg-rose-50 text-rose-800 border border-rose-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
+                icon.className = 'fa-solid fa-triangle-exclamation text-rose-600';
             }
         }
 
-        function getStateDocRef() {
+        function hideInitialLoadingOverlay() {
+            const overlay = document.getElementById('initialLoadingOverlay');
+            if (overlay) overlay.classList.add('hidden');
+        }
+
+        function getMainDatabaseDocRef() {
             return doc(db, 'artifacts', appId, 'public', 'data', 'app_cloud_store', 'main_state');
         }
 
         async function initFirebaseAndAutoSync() {
+            setSyncStatus('loading');
             try {
                 let config = null;
                 if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-                    config = JSON.parse(__firebase_config);
-                } else if (defaultFirebaseConfig.apiKey !== "API_KEY_ANDA") {
+                    config = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
+                } else if (defaultFirebaseConfig.apiKey && defaultFirebaseConfig.apiKey !== "API_KEY_ANDA") {
                     config = defaultFirebaseConfig;
                 }
 
                 if (!config) {
-                    updateCloudBadgeStatus('Tersinkron Otomatis', false);
+                    hideInitialLoadingOverlay();
+                    setSyncStatus('error');
+                    showNotification('Konfigurasi Firebase belum diatur. Data belum dapat dimuat dari server.', 'error');
                     return;
                 }
 
@@ -1277,93 +1289,139 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        const cred = await signInWithCustomToken(auth, __initial_auth_token);
-                        currentUser = cred.user;
-                    } else {
-                        const cred = await signInAnonymously(auth);
-                        currentUser = cred.user;
-                    }
-                } catch (authErr) {
-                    console.warn("Auth fallback:", authErr.message);
+                // Autentikasi wajib diselesaikan sebelum membaca/menulis ke Firestore
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
                 }
 
-                if (!currentUser && typeof __initial_auth_token !== 'undefined') return;
+                onAuthStateChanged(auth, (u) => {
+                    currentUser = u;
+                });
 
-                const docRef = getStateDocRef();
+                const docRef = getMainDatabaseDocRef();
                 const snap = await getDoc(docRef);
-                if (snap.exists() && snap.data()?.payload) {
-                    applyRemoteState(JSON.parse(snap.data().payload));
+
+                if (snap.exists()) {
+                    const docData = snap.data();
+                    const parsed = typeof docData.payload === 'string' ? JSON.parse(docData.payload) : docData;
+                    applyRemoteState(parsed);
+                    isInitialLoadDone = true;
+                    setSyncStatus('synced');
                 } else {
+                    // Hanya inisialisasi data default jika dokumen benar-benar belum pernah ada di server Firebase
+                    const def = getInitialDefaultData();
+                    studentsData = def.initialStudents;
+                    guruData = def.initialGuru;
+                    mapelData = def.initialMapel;
+                    nilaiData = def.initialNilai;
+                    studentsData.forEach(s => ensureBiRecord(s.id));
+                    auditLogs = [{ waktu: new Date().toLocaleString('id-ID'), user: 'Sistem', aksi: 'Inisialisasi database awal di Firebase Cloud Firestore' }];
+                    isInitialLoadDone = true;
+                    refreshAllViews();
                     await pushStateToFirestore();
                 }
 
-                // Real-time listener otomatis
-                onSnapshot(docRef, (docSnap) => {
-                    if (docSnap.exists() && docSnap.data()?.payload) {
+                hideInitialLoadingOverlay();
+
+                // Real-time listener lintas perangkat
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
+                unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                    if (isSavingInProgress) return;
+                    if (docSnap.exists()) {
+                        const docData = docSnap.data();
+                        const parsed = typeof docData.payload === 'string' ? JSON.parse(docData.payload) : docData;
                         isApplyingRemoteSnapshot = true;
-                        applyRemoteState(JSON.parse(docSnap.data().payload));
+                        applyRemoteState(parsed);
                         isApplyingRemoteSnapshot = false;
-                        updateCloudBadgeStatus('Tersinkron Otomatis', false);
+                        setSyncStatus('synced');
                     }
                 }, (err) => {
-                    console.warn("Realtime listener warning:", err.message);
+                    console.error("Realtime listener error:", err);
+                    setSyncStatus('error');
                 });
 
-                updateCloudBadgeStatus('Tersinkron Otomatis', false);
             } catch (e) {
-                console.warn("Info sinkronisasi:", e.message);
-                updateCloudBadgeStatus('Tersinkron Otomatis', false);
+                console.error("Gagal memuat dari Firebase:", e);
+                hideInitialLoadingOverlay();
+                setSyncStatus('error');
+                showNotification('Gagal memuat data dari Firebase: ' + (e.message || 'Periksa koneksi internet Anda'), 'error');
             }
         }
 
         function applyRemoteState(parsed) {
             if (!parsed) return;
-            schoolIdentity = { ...schoolIdentity, ...(parsed.schoolIdentity || {}) };
-            studentsData = parsed.studentsData || [];
-            guruData = parsed.guruData || [];
-            mapelData = parsed.mapelData || [];
-            nilaiData = parsed.nilaiData || [];
-            bukuIndukRecords = parsed.bukuIndukRecords || {};
-            auditLogs = parsed.auditLogs || [];
+            if (parsed.schoolIdentity) {
+                schoolIdentity = { ...schoolIdentity, ...parsed.schoolIdentity };
+            }
+            if (Array.isArray(parsed.studentsData)) studentsData = parsed.studentsData;
+            if (Array.isArray(parsed.guruData)) guruData = parsed.guruData;
+            if (Array.isArray(parsed.mapelData)) mapelData = parsed.mapelData;
+            if (Array.isArray(parsed.nilaiData)) nilaiData = parsed.nilaiData;
+            if (parsed.bukuIndukRecords && typeof parsed.bukuIndukRecords === 'object') {
+                bukuIndukRecords = parsed.bukuIndukRecords;
+            }
+            if (Array.isArray(parsed.auditLogs)) auditLogs = parsed.auditLogs;
+
             studentsData.forEach(s => ensureBiRecord(s.id));
             refreshAllViews();
         }
 
         async function pushStateToFirestore() {
-            if (!db || isApplyingRemoteSnapshot) return;
+            if (!db || !isInitialLoadDone) {
+                setSyncStatus('error');
+                throw new Error('Database Firebase belum terhubung atau belum selesai dimuat.');
+            }
+            if (isApplyingRemoteSnapshot) return true;
+
+            isSavingInProgress = true;
+            setSyncStatus('saving');
             try {
-                updateCloudBadgeStatus('Menyimpan...', true);
-                const payloadObj = { schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs };
-                await setDoc(getStateDocRef(), {
+                if (!auth.currentUser) {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                }
+                const payloadObj = {
+                    schoolIdentity,
+                    studentsData,
+                    guruData,
+                    mapelData,
+                    nilaiData,
+                    bukuIndukRecords,
+                    auditLogs
+                };
+                await setDoc(getMainDatabaseDocRef(), {
                     payload: JSON.stringify(payloadObj),
-                    updated_at: new Date().toISOString()
+                    updated_at: new Date().toISOString(),
+                    updated_by: auth.currentUser ? auth.currentUser.uid : 'operator'
                 });
-                updateCloudBadgeStatus('Tersinkron Otomatis', false);
+                setSyncStatus('synced');
+                isSavingInProgress = false;
+                return true;
             } catch (err) {
-                console.warn("Auto-save warning:", err.message);
-                updateCloudBadgeStatus('Tersinkron Otomatis', false);
+                isSavingInProgress = false;
+                setSyncStatus('error');
+                console.error("Firebase save error:", err);
+                throw err;
             }
         }
 
-        function saveToStorage(logAction = null) {
+        async function saveToStorage(logAction = null) {
             if (logAction) {
-                auditLogs.unshift({ waktu: new Date().toLocaleString('id-ID'), user: 'Alfian Firdaus S, S.Pd.', aksi: logAction });
+                auditLogs.unshift({
+                    waktu: new Date().toLocaleString('id-ID'),
+                    user: 'Alfian Firdaus S, S.Pd.',
+                    aksi: logAction
+                });
+                if (auditLogs.length > 250) auditLogs.length = 250;
             }
-            pushStateToFirestore();
-        }
-
-        function initInitialData() {
-            if (IS_PREVIEW) {
-                const def = getInitialDefaultData();
-                studentsData = def.initialStudents;
-                guruData = def.initialGuru;
-                mapelData = def.initialMapel;
-                nilaiData = def.initialNilai;
-                studentsData.forEach(s => ensureBiRecord(s.id));
-                auditLogs.unshift({ waktu: new Date().toLocaleString('id-ID'), user: 'Sistem', aksi: 'Data awal siap digunakan' });
-            }
+            return await pushStateToFirestore();
         }
 
         function openConfirmDeleteModal(title, message, onConfirmCallback) {
@@ -1378,9 +1436,12 @@
             document.getElementById('confirmDeleteModal').classList.add('hidden');
         }
 
-        function executeConfirmedDelete() {
-            if (typeof pendingDeleteAction === 'function') pendingDeleteAction();
+        async function executeConfirmedDelete() {
+            const action = pendingDeleteAction;
             closeConfirmDeleteModal();
+            if (typeof action === 'function') {
+                await action();
+            }
         }
 
         function refreshAllViews() {
@@ -1677,7 +1738,7 @@
             });
         }
 
-        function saveMatrixGradesFromBI() {
+        async function saveMatrixGradesFromBI() {
             const s = studentsData.find(item => String(item.id) === String(activeStudentId));
             if (!s) return;
             document.querySelectorAll('.bi-matrix-input').forEach(inp => {
@@ -1689,17 +1750,21 @@
                 if (rawVal !== '') {
                     const num = parseFloat(rawVal);
                     if (existingIdx >= 0) nilaiData[existingIdx].nilai = num;
-                    else nilaiData.push({ id: 'n_' + Date.now() + Math.random(), studentId: s.id, siswaNama: s.nama, kelas, semester: sem, mapel, nilai: num });
+                    else nilaiData.push({ id: 'n_' + Date.now() + Math.random().toString(36).substring(2, 6), studentId: s.id, siswaNama: s.nama, kelas, semester: sem, mapel, nilai: num });
                 } else if (existingIdx >= 0) {
                     nilaiData.splice(existingIdx, 1);
                 }
             });
-            saveToStorage(`Simpan matriks nilai Buku Induk siswa: ${s.nama}`);
-            refreshAllViews();
-            showNotification('Matriks nilai berhasil disimpan!', 'success');
+            try {
+                await saveToStorage(`Simpan matriks nilai Buku Induk siswa: ${s.nama}`);
+                refreshAllViews();
+                showNotification('Matriks nilai berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan matriks nilai ke Firebase!', 'error');
+            }
         }
 
-        function saveSchoolIdentityFromBI() {
+        async function saveSchoolIdentityFromBI() {
             schoolIdentity.nama = document.getElementById('biInputSchNama').value;
             schoolIdentity.npsn = document.getElementById('biInputSchNpsn').value;
             schoolIdentity.tahunBerdiri = document.getElementById('biInputSchTahun').value;
@@ -1709,12 +1774,16 @@
             schoolIdentity.kabupaten = document.getElementById('biInputSchKab').value;
             schoolIdentity.provinsi = document.getElementById('biInputSchProv').value;
             schoolIdentity.kepsek = document.getElementById('biInputSchKepsek').value;
-            saveToStorage('Simpan Identitas Sekolah Bagian A');
-            refreshAllViews();
-            showNotification('Identitas Sekolah berhasil disimpan!', 'success');
+            try {
+                await saveToStorage('Simpan Identitas Sekolah Bagian A');
+                refreshAllViews();
+                showNotification('Identitas Sekolah berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan Identitas Sekolah ke Firebase!', 'error');
+            }
         }
 
-        function saveSectionBStudentIdentity() {
+        async function saveSectionBStudentIdentity() {
             const s = studentsData.find(item => String(item.id) === String(activeStudentId));
             if (!s) return;
             s.nama = document.getElementById('biEditNama').value;
@@ -1736,24 +1805,32 @@
             s.kontakWali = document.getElementById('biEditKontakWali').value;
             s.asalSekolah = document.getElementById('biEditAsalSekolah').value;
 
-            saveToStorage(`Simpan Identitas Siswa Bagian B: ${s.nama}`);
-            refreshAllViews();
-            showNotification('Identitas Siswa berhasil disimpan!', 'success');
+            try {
+                await saveToStorage(`Simpan Identitas Siswa Bagian B: ${s.nama}`);
+                refreshAllViews();
+                showNotification('Identitas Siswa berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan Identitas Siswa ke Firebase!', 'error');
+            }
         }
 
-        function saveSectionDHabits() {
+        async function saveSectionDHabits() {
             const rec = ensureBiRecord(activeStudentId);
             rec.habits.forEach((h, i) => {
                 h.catatan = document.getElementById('habitCat_' + i).value;
                 h.tindakLanjut = document.getElementById('habitTindak_' + i).value;
                 h.periode = document.getElementById('habitPer_' + i).value;
             });
-            saveToStorage('Simpan 7 Kebiasaan Bagian D');
-            loadStudentIntoBiEditorAndPreview(activeStudentId);
-            showNotification('7 Kebiasaan berhasil disimpan!', 'success');
+            try {
+                await saveToStorage('Simpan 7 Kebiasaan Bagian D');
+                loadStudentIntoBiEditorAndPreview(activeStudentId);
+                showNotification('7 Kebiasaan berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan 7 Kebiasaan ke Firebase!', 'error');
+            }
         }
 
-        function saveSectionEProfiles() {
+        async function saveSectionEProfiles() {
             const rec = ensureBiRecord(activeStudentId);
             rec.profiles.forEach((p, i) => {
                 p.catatan = document.getElementById('profCat_' + i).value;
@@ -1761,9 +1838,13 @@
                 p.tindakLanjut = document.getElementById('profTindak_' + i).value;
                 p.periode = document.getElementById('profPer_' + i).value;
             });
-            saveToStorage('Simpan Profil Lulusan Bagian E');
-            loadStudentIntoBiEditorAndPreview(activeStudentId);
-            showNotification('Profil Lulusan berhasil disimpan!', 'success');
+            try {
+                await saveToStorage('Simpan Profil Lulusan Bagian E');
+                loadStudentIntoBiEditorAndPreview(activeStudentId);
+                showNotification('Profil Lulusan berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan Profil Lulusan ke Firebase!', 'error');
+            }
         }
 
         function renderSectionFLists(studentId) {
@@ -1824,23 +1905,31 @@
         function addAbsensiRow() { syncSectionFInputs(); ensureBiRecord(activeStudentId).absensi.push({ tp: schoolIdentity.activeTp, semester: '2', sakit: 0, izin: 0, alpa: 0, catatan: 'Baik' }); renderSectionFLists(activeStudentId); }
         function removeAbsensiRow(i) { syncSectionFInputs(); ensureBiRecord(activeStudentId).absensi.splice(i, 1); renderSectionFLists(activeStudentId); }
 
-        function saveSectionFAll() {
+        async function saveSectionFAll() {
             syncSectionFInputs();
-            saveToStorage('Simpan Bagian F');
-            loadStudentIntoBiEditorAndPreview(activeStudentId);
-            showNotification('Data Bagian F berhasil disimpan!', 'success');
+            try {
+                await saveToStorage('Simpan Bagian F');
+                loadStudentIntoBiEditorAndPreview(activeStudentId);
+                showNotification('Data Bagian F berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan Bagian F ke Firebase!', 'error');
+            }
         }
 
-        function saveSectionGPromotions() {
+        async function saveSectionGPromotions() {
             const rec = ensureBiRecord(activeStudentId);
             rec.promotions.forEach((pr, i) => {
                 pr.keputusan = document.getElementById('promKep_' + i).value;
                 pr.tanggal = document.getElementById('promTgl_' + i).value;
                 pr.keterangan = document.getElementById('promKet_' + i).value;
             });
-            saveToStorage('Simpan Bagian G');
-            refreshAllViews();
-            showNotification('Keputusan kenaikan kelas / kelulusan disimpan!', 'success');
+            try {
+                await saveToStorage('Simpan Bagian G');
+                refreshAllViews();
+                showNotification('Keputusan kenaikan kelas / kelulusan disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan Bagian G ke Firebase!', 'error');
+            }
         }
 
         function autoFillWaliNip(nama) {
@@ -1848,7 +1937,7 @@
             if (g) document.getElementById('biSignWaliNip').value = g.nip;
         }
 
-        function saveSectionHSign() {
+        async function saveSectionHSign() {
             const rec = ensureBiRecord(activeStudentId);
             rec.sign = {
                 tempat: document.getElementById('biSignTempat').value,
@@ -1858,9 +1947,13 @@
                 waliNama: document.getElementById('biSignWaliSelect').value,
                 waliNip: document.getElementById('biSignWaliNip').value
             };
-            saveToStorage('Simpan Bagian H Pengesahan');
-            loadStudentIntoBiEditorAndPreview(activeStudentId);
-            showNotification('Pengesahan berhasil disimpan!', 'success');
+            try {
+                await saveToStorage('Simpan Bagian H Pengesahan');
+                loadStudentIntoBiEditorAndPreview(activeStudentId);
+                showNotification('Pengesahan berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan Pengesahan ke Firebase!', 'error');
+            }
         }
 
         function buildStudentBukuIndukHtml(s) {
@@ -2141,7 +2234,7 @@
 
         function closeStudentModal() { document.getElementById('studentModal').classList.add('hidden'); }
 
-        function saveStudentData() {
+        async function saveStudentData() {
             const id = document.getElementById('modalStudentId').value;
             const nama = document.getElementById('modalNama').value.trim();
             const nis = document.getElementById('modalNis').value.trim();
@@ -2171,34 +2264,56 @@
                 status: document.getElementById('modalStatus').value
             };
 
-            if (id) {
-                const idx = studentsData.findIndex(item => String(item.id) === String(id));
-                if (idx >= 0) studentsData[idx] = { ...studentsData[idx], ...payload };
-                saveToStorage(`Edit data siswa: ${nama}`);
-                showNotification('Data peserta didik berhasil diperbarui!', 'success');
-            } else {
-                const newId = 'st_' + Date.now();
-                studentsData.unshift({ id: newId, ...payload });
-                ensureBiRecord(newId);
-                activeStudentId = newId;
-                saveToStorage(`Tambah siswa baru: ${nama}`);
-                showNotification('Peserta didik baru berhasil ditambahkan!', 'success');
+            const prevStudents = JSON.parse(JSON.stringify(studentsData));
+            const prevRecords = JSON.parse(JSON.stringify(bukuIndukRecords));
+
+            try {
+                if (id) {
+                    const idx = studentsData.findIndex(item => String(item.id) === String(id));
+                    if (idx >= 0) studentsData[idx] = { ...studentsData[idx], ...payload };
+                    await saveToStorage(`Edit data siswa: ${nama}`);
+                    showNotification('Data peserta didik berhasil diperbarui di Firebase!', 'success');
+                } else {
+                    const newId = 'st_' + Date.now();
+                    studentsData.unshift({ id: newId, ...payload });
+                    ensureBiRecord(newId);
+                    activeStudentId = newId;
+                    await saveToStorage(`Tambah siswa baru: ${nama}`);
+                    showNotification('Peserta didik baru berhasil disimpan ke Firebase!', 'success');
+                }
+                closeStudentModal();
+                refreshAllViews();
+            } catch (err) {
+                studentsData = prevStudents;
+                bukuIndukRecords = prevRecords;
+                showNotification('Gagal menyimpan data peserta didik ke Firebase!', 'error');
             }
-            closeStudentModal();
-            refreshAllViews();
         }
 
         function deleteStudent(id) {
             const s = studentsData.find(item => String(item.id) === String(id));
             if (!s) return;
-            openConfirmDeleteModal('Hapus Peserta Didik', `Apakah Anda yakin ingin menghapus "${s.nama}"?`, () => {
+            openConfirmDeleteModal('Hapus Peserta Didik', `Apakah Anda yakin ingin menghapus "${s.nama}" secara permanen dari Firebase?`, async () => {
+                const prevStudents = JSON.parse(JSON.stringify(studentsData));
+                const prevNilai = JSON.parse(JSON.stringify(nilaiData));
+                const prevRecords = JSON.parse(JSON.stringify(bukuIndukRecords));
+
                 studentsData = studentsData.filter(item => String(item.id) !== String(id));
                 nilaiData = nilaiData.filter(n => String(n.studentId) !== String(id));
                 delete bukuIndukRecords[String(id)];
                 if (String(activeStudentId) === String(id)) activeStudentId = studentsData[0]?.id || null;
-                saveToStorage(`Hapus siswa: ${s.nama}`);
-                refreshAllViews();
-                showNotification('Peserta didik berhasil dihapus.', 'success');
+
+                try {
+                    await saveToStorage(`Hapus siswa: ${s.nama}`);
+                    refreshAllViews();
+                    showNotification('Peserta didik berhasil dihapus dari Firebase.', 'success');
+                } catch (err) {
+                    studentsData = prevStudents;
+                    nilaiData = prevNilai;
+                    bukuIndukRecords = prevRecords;
+                    refreshAllViews();
+                    showNotification('Gagal menghapus peserta didik di Firebase!', 'error');
+                }
             });
         }
 
@@ -2251,7 +2366,7 @@
 
         function closeGuruModal() { document.getElementById('guruModal').classList.add('hidden'); }
 
-        function saveGuruData() {
+        async function saveGuruData() {
             const id = document.getElementById('modalGuruId').value;
             const nama = document.getElementById('inputGuruNama').value.trim();
             if (!nama) { showNotification('Nama guru wajib diisi!', 'error'); return; }
@@ -2264,28 +2379,41 @@
                 pendidikan: document.getElementById('inputGuruPendidikan').value.trim() || 'S1'
             };
 
-            if (id) {
-                const idx = guruData.findIndex(item => String(item.id) === String(id));
-                if (idx >= 0) guruData[idx] = { ...guruData[idx], ...payload };
-                saveToStorage(`Edit guru: ${nama}`);
-                showNotification('Data guru diperbarui!', 'success');
-            } else {
-                guruData.push({ id: 'g_' + Date.now(), ...payload });
-                saveToStorage(`Tambah guru: ${nama}`);
-                showNotification('Data guru ditambahkan!', 'success');
+            const prevGuru = JSON.parse(JSON.stringify(guruData));
+            try {
+                if (id) {
+                    const idx = guruData.findIndex(item => String(item.id) === String(id));
+                    if (idx >= 0) guruData[idx] = { ...guruData[idx], ...payload };
+                    await saveToStorage(`Edit guru: ${nama}`);
+                    showNotification('Data guru berhasil diperbarui di Firebase!', 'success');
+                } else {
+                    guruData.push({ id: 'g_' + Date.now(), ...payload });
+                    await saveToStorage(`Tambah guru: ${nama}`);
+                    showNotification('Data guru berhasil disimpan ke Firebase!', 'success');
+                }
+                closeGuruModal();
+                refreshAllViews();
+            } catch (err) {
+                guruData = prevGuru;
+                showNotification('Gagal menyimpan data guru ke Firebase!', 'error');
             }
-            closeGuruModal();
-            refreshAllViews();
         }
 
         function deleteGuru(id) {
             const g = guruData.find(item => String(item.id) === String(id));
             if (!g) return;
-            openConfirmDeleteModal('Hapus Guru', `Apakah Anda yakin ingin menghapus guru "${g.nama}"?`, () => {
+            openConfirmDeleteModal('Hapus Guru', `Apakah Anda yakin ingin menghapus guru "${g.nama}" dari Firebase?`, async () => {
+                const prevGuru = JSON.parse(JSON.stringify(guruData));
                 guruData = guruData.filter(item => String(item.id) !== String(id));
-                saveToStorage(`Hapus guru: ${g.nama}`);
-                refreshAllViews();
-                showNotification('Guru berhasil dihapus.', 'success');
+                try {
+                    await saveToStorage(`Hapus guru: ${g.nama}`);
+                    refreshAllViews();
+                    showNotification('Guru berhasil dihapus dari Firebase.', 'success');
+                } catch (err) {
+                    guruData = prevGuru;
+                    refreshAllViews();
+                    showNotification('Gagal menghapus guru di Firebase!', 'error');
+                }
             });
         }
 
@@ -2297,23 +2425,39 @@
                 tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${m.nama}</td><td class="p-3"><span class="bg-pink-50 text-pink-700 px-2 py-0.5 rounded">${m.kelompok}</span></td><td class="p-3 text-center"><button type="button" onclick="deleteMapel('${m.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         }
-        function openAddMapelModal() { document.getElementById('mapelModal').classList.remove('hidden'); }
+        function openAddMapelModal() {
+            document.getElementById('inputMapelNama').value = '';
+            document.getElementById('mapelModal').classList.remove('hidden');
+        }
         function closeMapelModal() { document.getElementById('mapelModal').classList.add('hidden'); }
-        function saveMapelData() {
+        async function saveMapelData() {
             const nama = document.getElementById('inputMapelNama').value.trim();
             if (!nama) { showNotification('Nama mapel wajib diisi!', 'error'); return; }
+            const prevMapel = JSON.parse(JSON.stringify(mapelData));
             mapelData.push({ id: 'm_' + Date.now(), nama, kelompok: document.getElementById('inputMapelKelompok').value });
-            saveToStorage(`Tambah mapel: ${nama}`);
-            closeMapelModal();
-            refreshAllViews();
-            showNotification('Mata pelajaran berhasil ditambahkan!', 'success');
+            try {
+                await saveToStorage(`Tambah mapel: ${nama}`);
+                closeMapelModal();
+                refreshAllViews();
+                showNotification('Mata pelajaran berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                mapelData = prevMapel;
+                showNotification('Gagal menyimpan mata pelajaran ke Firebase!', 'error');
+            }
         }
         function deleteMapel(id) {
-            openConfirmDeleteModal('Hapus Mapel', 'Apakah Anda yakin ingin menghapus mapel ini?', () => {
+            openConfirmDeleteModal('Hapus Mapel', 'Apakah Anda yakin ingin menghapus mata pelajaran ini dari Firebase?', async () => {
+                const prevMapel = JSON.parse(JSON.stringify(mapelData));
                 mapelData = mapelData.filter(item => String(item.id) !== String(id));
-                saveToStorage('Hapus mapel');
-                refreshAllViews();
-                showNotification('Mata pelajaran dihapus.', 'success');
+                try {
+                    await saveToStorage('Hapus mapel');
+                    refreshAllViews();
+                    showNotification('Mata pelajaran dihapus dari Firebase.', 'success');
+                } catch (err) {
+                    mapelData = prevMapel;
+                    refreshAllViews();
+                    showNotification('Gagal menghapus mata pelajaran di Firebase!', 'error');
+                }
             });
         }
 
@@ -2327,7 +2471,7 @@
         }
         function openInputNilaiModal() { document.getElementById('nilaiModal').classList.remove('hidden'); }
         function closeNilaiModal() { document.getElementById('nilaiModal').classList.add('hidden'); }
-        function saveNilaiData() {
+        async function saveNilaiData() {
             const studentId = document.getElementById('inputNilaiSiswa').value;
             const s = studentsData.find(item => String(item.id) === String(studentId));
             if (!s) return;
@@ -2336,20 +2480,34 @@
             const mapel = document.getElementById('inputNilaiMapel').value;
             const nilai = parseFloat(document.getElementById('inputNilaiAngka').value) || 0;
 
+            const prevNilai = JSON.parse(JSON.stringify(nilaiData));
             const idx = nilaiData.findIndex(n => String(n.studentId) === String(studentId) && n.kelas === kelas && n.semester === semester && n.mapel === mapel);
             if (idx >= 0) nilaiData[idx].nilai = nilai;
             else nilaiData.push({ id: 'n_' + Date.now(), studentId: s.id, siswaNama: s.nama, kelas, semester, mapel, nilai });
-            saveToStorage(`Input nilai ${mapel} untuk ${s.nama}`);
-            closeNilaiModal();
-            refreshAllViews();
-            showNotification('Nilai berhasil disimpan!', 'success');
+
+            try {
+                await saveToStorage(`Input nilai ${mapel} untuk ${s.nama}`);
+                closeNilaiModal();
+                refreshAllViews();
+                showNotification('Nilai berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                nilaiData = prevNilai;
+                showNotification('Gagal menyimpan nilai ke Firebase!', 'error');
+            }
         }
         function deleteNilai(id) {
-            openConfirmDeleteModal('Hapus Nilai', 'Apakah Anda yakin ingin menghapus nilai ini?', () => {
+            openConfirmDeleteModal('Hapus Nilai', 'Apakah Anda yakin ingin menghapus nilai ini dari Firebase?', async () => {
+                const prevNilai = JSON.parse(JSON.stringify(nilaiData));
                 nilaiData = nilaiData.filter(item => String(item.id) !== String(id));
-                saveToStorage('Hapus nilai');
-                refreshAllViews();
-                showNotification('Nilai berhasil dihapus.', 'success');
+                try {
+                    await saveToStorage('Hapus nilai');
+                    refreshAllViews();
+                    showNotification('Nilai berhasil dihapus dari Firebase.', 'success');
+                } catch (err) {
+                    nilaiData = prevNilai;
+                    refreshAllViews();
+                    showNotification('Gagal menghapus nilai di Firebase!', 'error');
+                }
             });
         }
 
@@ -2418,7 +2576,7 @@
                     const nama = String(r['Nama Lengkap'] || '').trim();
                     if (nis && nama) {
                         valid.push({
-                            id: 'st_' + Date.now() + Math.random(),
+                            id: 'st_' + Date.now() + Math.random().toString(36).substring(2, 6),
                             nis, nisn: String(r['NISN'] || '-'), nama,
                             gender: r['Jenis Kelamin'] || 'Laki-laki',
                             tempatLahir: r['Tempat Lahir'] || 'Lamongan',
@@ -2441,7 +2599,7 @@
                 pendingImportBuffer = { type: 'SISWA', items: valid };
                 document.getElementById('importPreviewBox').classList.remove('hidden');
                 document.getElementById('importPreviewTitle').innerText = 'Validasi Impor Peserta Didik';
-                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} siswa valid</b> siap diimpor.`;
+                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} siswa valid</b> siap disimpan ke Firebase.`;
             };
             reader.readAsArrayBuffer(file);
         }
@@ -2459,7 +2617,7 @@
                     const st = studentsData.find(s => s.nis === nis);
                     if (st) {
                         valid.push({
-                            id: 'n_' + Date.now() + Math.random(),
+                            id: 'n_' + Date.now() + Math.random().toString(36).substring(2, 6),
                             studentId: st.id, siswaNama: st.nama,
                             kelas: r['Kelas'] || st.kelas,
                             semester: String(r['Semester'] || '1'),
@@ -2471,7 +2629,7 @@
                 pendingImportBuffer = { type: 'NILAI', items: valid };
                 document.getElementById('importPreviewBox').classList.remove('hidden');
                 document.getElementById('importPreviewTitle').innerText = 'Validasi Impor Nilai Rapor';
-                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} baris nilai valid</b>.`;
+                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} baris nilai valid</b> siap disimpan ke Firebase.`;
             };
             reader.readAsArrayBuffer(file);
         }
@@ -2488,7 +2646,7 @@
                     const nama = String(r['Nama Lengkap'] || '').trim();
                     if (nama) {
                         valid.push({
-                            id: 'g_' + Date.now() + Math.random(),
+                            id: 'g_' + Date.now() + Math.random().toString(36).substring(2, 6),
                             nama, nip: String(r['NIP'] || '-'),
                             jabatan: String(r['Jabatan'] || 'Guru Kelas'),
                             waliKelas: String(r['Wali Kelas'] || '-'),
@@ -2499,7 +2657,7 @@
                 pendingImportBuffer = { type: 'GURU', items: valid };
                 document.getElementById('importPreviewBox').classList.remove('hidden');
                 document.getElementById('importPreviewTitle').innerText = 'Validasi Impor Guru & Pegawai';
-                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} data guru valid</b>.`;
+                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} data guru valid</b> siap disimpan ke Firebase.`;
             };
             reader.readAsArrayBuffer(file);
         }
@@ -2508,20 +2666,26 @@
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
                 const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
                 let count = 0;
+                const prevGuru = JSON.parse(JSON.stringify(guruData));
                 rows.forEach(r => {
                     const nama = String(r['Nama Lengkap'] || '').trim();
                     if (nama && !guruData.some(g => g.nama.toLowerCase() === nama.toLowerCase())) {
-                        guruData.push({ id: 'g_' + Date.now() + Math.random(), nama, nip: String(r['NIP'] || '-'), jabatan: String(r['Jabatan'] || 'Guru'), waliKelas: String(r['Wali Kelas'] || '-'), pendidikan: String(r['Pendidikan Terakhir'] || 'S1') });
+                        guruData.push({ id: 'g_' + Date.now() + Math.random().toString(36).substring(2, 6), nama, nip: String(r['NIP'] || '-'), jabatan: String(r['Jabatan'] || 'Guru'), waliKelas: String(r['Wali Kelas'] || '-'), pendidikan: String(r['Pendidikan Terakhir'] || 'S1') });
                         count++;
                     }
                 });
-                saveToStorage('Impor langsung guru Excel');
-                refreshAllViews();
-                showNotification(`${count} guru berhasil diimpor!`, 'success');
+                try {
+                    await saveToStorage('Impor langsung guru Excel');
+                    refreshAllViews();
+                    showNotification(`${count} guru berhasil diimpor dan disimpan ke Firebase!`, 'success');
+                } catch (err) {
+                    guruData = prevGuru;
+                    showNotification('Gagal menyimpan impor guru ke Firebase!', 'error');
+                }
                 event.target.value = '';
             };
             reader.readAsArrayBuffer(file);
@@ -2529,23 +2693,27 @@
 
         function cancelImportPreview() { pendingImportBuffer = null; document.getElementById('importPreviewBox').classList.add('hidden'); }
 
-        function confirmCommitImport() {
+        async function confirmCommitImport() {
             if (!pendingImportBuffer) return;
-            if (pendingImportBuffer.type === 'SISWA') {
-                pendingImportBuffer.items.forEach(st => { studentsData.push(st); ensureBiRecord(st.id); });
-                saveToStorage('Impor Excel Siswa');
-                showNotification('Siswa berhasil diimpor!', 'success');
-            } else if (pendingImportBuffer.type === 'NILAI') {
-                pendingImportBuffer.items.forEach(it => nilaiData.push(it));
-                saveToStorage('Impor Excel Nilai');
-                showNotification('Nilai berhasil diimpor!', 'success');
-            } else if (pendingImportBuffer.type === 'GURU') {
-                pendingImportBuffer.items.forEach(g => guruData.push(g));
-                saveToStorage('Impor Excel Guru');
-                showNotification('Guru berhasil diimpor!', 'success');
+            try {
+                if (pendingImportBuffer.type === 'SISWA') {
+                    pendingImportBuffer.items.forEach(st => { studentsData.push(st); ensureBiRecord(st.id); });
+                    await saveToStorage('Impor Excel Siswa');
+                    showNotification('Siswa berhasil diimpor ke Firebase!', 'success');
+                } else if (pendingImportBuffer.type === 'NILAI') {
+                    pendingImportBuffer.items.forEach(it => nilaiData.push(it));
+                    await saveToStorage('Impor Excel Nilai');
+                    showNotification('Nilai berhasil diimpor ke Firebase!', 'success');
+                } else if (pendingImportBuffer.type === 'GURU') {
+                    pendingImportBuffer.items.forEach(g => guruData.push(g));
+                    await saveToStorage('Impor Excel Guru');
+                    showNotification('Guru berhasil diimpor ke Firebase!', 'success');
+                }
+                cancelImportPreview();
+                refreshAllViews();
+            } catch (err) {
+                showNotification('Gagal menyimpan data impor ke Firebase!', 'error');
             }
-            cancelImportPreview();
-            refreshAllViews();
         }
 
         function exportFullBukuIndukExcel() {
@@ -2570,40 +2738,7 @@
             document.getElementById('setSchNipKepsek').value = schoolIdentity.nipKepsek;
         }
 
-        function exportFullDatabaseJson() {
-            const blob = new Blob([JSON.stringify({ schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs }, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'Backup_Buku_Induk.json'; a.click();
-            URL.revokeObjectURL(url);
-            showNotification('Backup JSON berhasil diunduh!', 'success');
-        }
-
-        function importFullDatabaseJson(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const p = JSON.parse(e.target.result);
-                    if (p.studentsData) {
-                        schoolIdentity = { ...schoolIdentity, ...(p.schoolIdentity || {}) };
-                        studentsData = p.studentsData || [];
-                        guruData = p.guruData || [];
-                        mapelData = p.mapelData || [];
-                        nilaiData = p.nilaiData || [];
-                        bukuIndukRecords = p.bukuIndukRecords || {};
-                        auditLogs = p.auditLogs || [];
-                        saveToStorage('Pulihkan database dari file JSON');
-                        refreshAllViews();
-                        showNotification('Database berhasil dipulihkan!', 'success');
-                    }
-                } catch (err) { showNotification('File JSON rusak!', 'error'); }
-                event.target.value = '';
-            };
-            reader.readAsText(file);
-        }
-
-        function saveGlobalSchoolSettings() {
+        async function saveGlobalSchoolSettings() {
             schoolIdentity.nama = document.getElementById('setSchNama').value;
             schoolIdentity.npsn = document.getElementById('setSchNpsn').value;
             schoolIdentity.alamat = document.getElementById('setSchAlamat').value;
@@ -2614,9 +2749,13 @@
             schoolIdentity.tahunBerdiri = document.getElementById('setSchTahun').value;
             schoolIdentity.kepsek = document.getElementById('setSchKepsek').value;
             schoolIdentity.nipKepsek = document.getElementById('setSchNipKepsek').value;
-            saveToStorage('Simpan Pengaturan Sekolah');
-            refreshAllViews();
-            showNotification('Pengaturan sekolah berhasil disimpan!', 'success');
+            try {
+                await saveToStorage('Simpan Pengaturan Sekolah');
+                refreshAllViews();
+                showNotification('Pengaturan sekolah berhasil disimpan ke Firebase!', 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan pengaturan sekolah ke Firebase!', 'error');
+            }
         }
 
         function handleGlobalSearch(val) {
@@ -2627,11 +2766,15 @@
             renderBukuIndukMasterTable();
         }
 
-        function handleChangeAcademicYear(tp) {
+        async function handleChangeAcademicYear(tp) {
             schoolIdentity.activeTp = tp.trim() || '2026/2027';
             document.getElementById('dashActiveTpBadge').innerText = schoolIdentity.activeTp;
-            saveToStorage(`Ubah T.P aktif: ${schoolIdentity.activeTp}`);
-            showNotification(`T.P berhasil disimpan: ${schoolIdentity.activeTp}`, 'success');
+            try {
+                await saveToStorage(`Ubah T.P aktif: ${schoolIdentity.activeTp}`);
+                showNotification(`T.P berhasil disimpan ke Firebase: ${schoolIdentity.activeTp}`, 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan perubahan T.P ke Firebase!', 'error');
+            }
         }
 
         function openAuditLogModal() {
@@ -2669,14 +2812,12 @@
             downloadTemplateSiswa, downloadTemplateNilai, downloadTemplateGuru,
             handleImportSiswa, handleImportNilai, handleImportGuru, handleDirectImportGuru,
             cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel,
-            exportFullDatabaseJson, importFullDatabaseJson, saveGlobalSchoolSettings,
+            saveGlobalSchoolSettings,
             handleGlobalSearch, handleChangeAcademicYear, openAuditLogModal, closeAuditLogModal,
             openConfirmDeleteModal, closeConfirmDeleteModal, executeConfirmedDelete
         });
 
-        // Inisialisasi saat aplikasi dibuka
-        initInitialData();
-        refreshAllViews();
+        // Inisialisasi saat aplikasi dibuka: langsung muat dari Firebase sebagai Single Source of Truth
         initFirebaseAndAutoSync();
     </script>
 </body>
