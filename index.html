@@ -1862,16 +1862,16 @@
 
             mapelData.forEach((m, mIdx) => {
                 let cellsHtml = '';
-                kelasList.forEach((kls) => {
+                kelasList.forEach((kls, kIdx) => {
                     ['1', '2'].forEach(sem => {
                         const found = nilaiData.find(n => String(n.studentId) === String(studentId) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kls && n.semester === sem && n.mapel === m.nama);
-                        const val = found ? found.nilai : '';
-                        cellsHtml += `<td class="p-1 border text-center"><input type="number" min="0" max="100" data-mapel="${m.nama}" data-kelas="${kls}" data-sem="${sem}" value="${val}" class="bi-matrix-input w-11 text-center bg-slate-50 border rounded py-1 font-bold"></td>`;
+                        const val = found && found.nilai !== undefined && found.nilai !== null && found.nilai !== '' ? found.nilai : '';
+                        cellsHtml += `<td class="p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel="${m.nama}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 focus:bg-white border border-slate-300 rounded py-1 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500"></td>`;
                     });
                 });
                 tbody.innerHTML += `
                     <tr>
-                        <td class="p-2 border">
+                        <td class="p-2 border border-slate-300">
                             <p class="font-semibold text-slate-900">${mIdx + 1}. ${m.nama}</p>
                             <div class="mt-1 flex items-center space-x-1">
                                 <input type="text" value="${m.tp || ''}" onchange="updateMapelTp('${m.id}', this.value)" class="w-full bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-600 focus:bg-white" placeholder="Ketik TP (Tujuan Pembelajaran)..." title="Tujuan Pembelajaran mata pelajaran">
@@ -1880,6 +1880,63 @@
                         ${cellsHtml}
                     </tr>
                 `;
+            });
+
+            // Baris 1 Rekapitulasi: JUMLAH NILAI
+            let sumCellsHtml = '';
+            // Baris 2 Rekapitulasi: RATA-RATA NILAI
+            let avgCellsHtml = '';
+
+            kelasList.forEach((kls, kIdx) => {
+                ['1', '2'].forEach(sem => {
+                    sumCellsHtml += `<td id="biMatrixSum_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950 bg-indigo-50/70">-</td>`;
+                    avgCellsHtml += `<td id="biMatrixAvg_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950 bg-emerald-50/70">-</td>`;
+                });
+            });
+
+            tbody.innerHTML += `
+                <tr class="bg-indigo-50/70 border-t-2 border-slate-400">
+                    <td class="p-2 border border-slate-300 font-extrabold text-indigo-950 uppercase tracking-wide">JUMLAH NILAI</td>
+                    ${sumCellsHtml}
+                </tr>
+                <tr class="bg-emerald-50/70">
+                    <td class="p-2 border border-slate-300 font-extrabold text-emerald-950 uppercase tracking-wide">RATA-RATA NILAI</td>
+                    ${avgCellsHtml}
+                </tr>
+            `;
+
+            recalculateBiMatrixSummary();
+        }
+
+        function recalculateBiMatrixSummary() {
+            const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
+            kelasList.forEach((kls, kIdx) => {
+                ['1', '2'].forEach(sem => {
+                    const inputs = document.querySelectorAll(`.bi-matrix-input[data-kidx="${kIdx}"][data-sem="${sem}"]`);
+                    let sum = 0;
+                    let validCount = 0;
+
+                    inputs.forEach(inp => {
+                        const raw = inp.value.trim();
+                        if (raw !== '') {
+                            const num = Number(raw);
+                            if (!isNaN(num) && isFinite(num)) {
+                                sum += num;
+                                validCount++;
+                            }
+                        }
+                    });
+
+                    const sumCell = document.getElementById(`biMatrixSum_${kIdx}_${sem}`);
+                    const avgCell = document.getElementById(`biMatrixAvg_${kIdx}_${sem}`);
+
+                    if (sumCell) {
+                        sumCell.innerText = validCount > 0 ? (Number.isInteger(sum) ? sum : sum.toFixed(2)) : '-';
+                    }
+                    if (avgCell) {
+                        avgCell.innerText = validCount > 0 ? (sum / validCount).toFixed(2) : '-';
+                    }
+                });
             });
         }
 
@@ -2164,13 +2221,30 @@
             const kelasCols = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
             const activeTp = schoolIdentity.activeTp || '2026/2027';
 
+            const colTotals = {};
+            kelasCols.forEach(kls => {
+                colTotals[kls] = {
+                    '1': { sum: 0, count: 0 },
+                    '2': { sum: 0, count: 0 }
+                };
+            });
+
             let nilaiRowsHtml = '';
             mapelData.forEach((m, idx) => {
                 let tds = '';
                 kelasCols.forEach(kls => {
                     ['1', '2'].forEach(sem => {
                         const found = nilaiData.find(n => String(n.studentId) === String(s.id) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kls && n.semester === sem && n.mapel === m.nama);
-                        tds += `<td class="border border-slate-800 p-1 text-center font-semibold">${found ? found.nilai : '-'}</td>`;
+                        let displayVal = '-';
+                        if (found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '') {
+                            const num = Number(found.nilai);
+                            if (!isNaN(num) && isFinite(num)) {
+                                displayVal = num;
+                                colTotals[kls][sem].sum += num;
+                                colTotals[kls][sem].count += 1;
+                            }
+                        }
+                        tds += `<td class="border border-slate-800 p-1 text-center font-semibold">${displayVal}</td>`;
                     });
                 });
                 nilaiRowsHtml += `
@@ -2183,6 +2257,29 @@
                     </tr>
                 `;
             });
+
+            let sumPrintTds = '';
+            let avgPrintTds = '';
+            kelasCols.forEach(kls => {
+                ['1', '2'].forEach(sem => {
+                    const st = colTotals[kls][sem];
+                    const sumText = st.count > 0 ? (Number.isInteger(st.sum) ? st.sum : st.sum.toFixed(2)) : '-';
+                    const avgText = st.count > 0 ? (st.sum / st.count).toFixed(2) : '-';
+                    sumPrintTds += `<td class="border border-slate-800 p-1 text-center font-bold print-header-bg bg-slate-100">${sumText}</td>`;
+                    avgPrintTds += `<td class="border border-slate-800 p-1 text-center font-bold print-header-bg bg-slate-100">${avgText}</td>`;
+                });
+            });
+
+            nilaiRowsHtml += `
+                <tr class="print-header-bg bg-slate-100 font-bold">
+                    <td class="border border-slate-800 p-1.5 text-left font-bold uppercase">JUMLAH NILAI</td>
+                    ${sumPrintTds}
+                </tr>
+                <tr class="print-header-bg bg-slate-100 font-bold">
+                    <td class="border border-slate-800 p-1.5 text-left font-bold uppercase">RATA-RATA NILAI</td>
+                    ${avgPrintTds}
+                </tr>
+            `;
 
             const habitsRowsHtml = rec.habits.map(h => `<tr><td class="border border-slate-800 p-1.5 text-center">${h.no}</td><td class="border border-slate-800 p-1.5 font-semibold">${h.nama}</td><td class="border border-slate-800 p-1.5 text-[10px]">${h.indikator}</td><td class="border border-slate-800 p-1.5">${h.catatan || '-'} (${h.tindakLanjut || '-'})</td></tr>`).join('');
             const profilesRowsHtml = rec.profiles.map(p => `<tr><td class="border border-slate-800 p-1.5 text-center">${p.no}</td><td class="border border-slate-800 p-1.5 font-semibold">${p.dimensi}</td><td class="border border-slate-800 p-1.5">${p.catatan || '-'} • Bukti: ${p.bukti || '-'}</td></tr>`).join('');
@@ -3174,7 +3271,7 @@
         Object.assign(window, {
             switchTab, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
             openBiPreviewForStudent, openBiEditorForStudent, selectStudentForBukuInduk,
-            updateMapelTp, saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity,
+            recalculateBiMatrixSummary, updateMapelTp, saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity,
             saveSectionDHabits, saveSectionEProfiles, addEkskulRow, removeEkskulRow,
             addPrestasiRow, removePrestasiRow, addAbsensiRow, removeAbsensiRow,
             saveSectionFAll, saveSectionGPromotions, autoFillWaliNip, saveSectionHSign,
