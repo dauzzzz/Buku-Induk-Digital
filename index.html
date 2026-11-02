@@ -230,31 +230,31 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Total Siswa</span>
-                            <span class="text-2xl font-extrabold text-indigo-600 mt-2" id="statTotalSiswa">0</span>
+                            <span class="text-2xl font-extrabold text-indigo-600 mt-2" id="statTotalSiswa">...</span>
                         </div>
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Laki-laki</span>
-                            <span class="text-2xl font-extrabold text-blue-600 mt-2" id="statLaki">0</span>
+                            <span class="text-2xl font-extrabold text-blue-600 mt-2" id="statLaki">...</span>
                         </div>
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Perempuan</span>
-                            <span class="text-2xl font-extrabold text-pink-600 mt-2" id="statPerempuan">0</span>
+                            <span class="text-2xl font-extrabold text-pink-600 mt-2" id="statPerempuan">...</span>
                         </div>
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Siswa Aktif</span>
-                            <span class="text-2xl font-extrabold text-emerald-600 mt-2" id="statAktif">0</span>
+                            <span class="text-2xl font-extrabold text-emerald-600 mt-2" id="statAktif">...</span>
                         </div>
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Lulus</span>
-                            <span class="text-2xl font-extrabold text-purple-600 mt-2" id="statLulus">0</span>
+                            <span class="text-2xl font-extrabold text-purple-600 mt-2" id="statLulus">...</span>
                         </div>
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Pindah Keluar</span>
-                            <span class="text-2xl font-extrabold text-amber-600 mt-2" id="statPindahKeluar">0</span>
+                            <span class="text-2xl font-extrabold text-amber-600 mt-2" id="statPindahKeluar">...</span>
                         </div>
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Guru & Pegawai</span>
-                            <span class="text-2xl font-extrabold text-teal-600 mt-2" id="statGuruCount">0</span>
+                            <span class="text-2xl font-extrabold text-teal-600 mt-2" id="statGuruCount">...</span>
                         </div>
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Rombel / Kelas</span>
@@ -920,11 +920,19 @@
 
     <!-- LOADING OVERLAY SAAT MEMUAT DATA FIREBASE -->
     <div id="initialLoadingOverlay" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl px-6 py-5 flex items-center space-x-4 border border-slate-200">
-            <i class="fa-solid fa-circle-notch fa-spin text-indigo-600 text-2xl"></i>
-            <div>
-                <p class="text-sm font-bold text-slate-900">Memuat Data Buku Induk...</p>
-                <p class="text-[11px] text-slate-500">Menghubungkan ke server Firebase Cloud Firestore</p>
+        <div class="bg-white rounded-2xl shadow-2xl px-6 py-5 flex flex-col items-center space-y-4 border border-slate-200 max-w-md w-full text-center">
+            <div id="loadingSpinnerBox" class="flex items-center space-x-4 text-left w-full">
+                <i id="loadingOverlayIcon" class="fa-solid fa-circle-notch fa-spin text-indigo-600 text-2xl shrink-0"></i>
+                <div>
+                    <p id="loadingOverlayTitle" class="text-sm font-bold text-slate-900">Memuat Data Buku Induk...</p>
+                    <p id="loadingOverlaySubtitle" class="text-[11px] text-slate-500">Menghubungkan ke server Firebase Cloud Firestore</p>
+                </div>
+            </div>
+            <div id="loadingErrorActions" class="hidden w-full pt-2 border-t border-slate-100 flex justify-end space-x-2">
+                <button type="button" onclick="useOfflineBackupAndCloseLoading()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Buka Data Tersimpan</button>
+                <button type="button" onclick="retryLoadFirebaseData()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow cursor-pointer flex items-center space-x-1.5">
+                    <i class="fa-solid fa-rotate"></i><span>Muat Ulang Data</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1410,6 +1418,68 @@
             if (overlay) overlay.classList.add('hidden');
         }
 
+        function showLoadingOverlayError(title, detailMessage) {
+            const overlay = document.getElementById('initialLoadingOverlay');
+            const icon = document.getElementById('loadingOverlayIcon');
+            const titleEl = document.getElementById('loadingOverlayTitle');
+            const subEl = document.getElementById('loadingOverlaySubtitle');
+            const actionsEl = document.getElementById('loadingErrorActions');
+            if (overlay) overlay.classList.remove('hidden');
+            if (icon) icon.className = 'fa-solid fa-circle-exclamation text-rose-600 text-2xl shrink-0';
+            if (titleEl) titleEl.innerText = title || 'Gagal Memuat Data';
+            if (subEl) subEl.innerText = detailMessage || 'Terjadi kendala saat menghubungi server Firebase Cloud Firestore.';
+            if (actionsEl) actionsEl.classList.remove('hidden');
+        }
+
+        function withTimeout(promise, ms = 8000, timeoutMsg = 'Waktu pemuatan habis (Connection Timeout)') {
+            return new Promise((resolve, reject) => {
+                const timer = setTimeout(() => reject(new Error(timeoutMsg)), ms);
+                promise.then(
+                    (res) => { clearTimeout(timer); resolve(res); },
+                    (err) => { clearTimeout(timer); reject(err); }
+                );
+            });
+        }
+
+        function ensureFallbackDataLoaded() {
+            const localSaved = loadFromLocalBackup();
+            if (localSaved && Array.isArray(localSaved.studentsData) && localSaved.studentsData.length > 0) {
+                isInitialLoadDone = true;
+                applyRemoteState(localSaved);
+            } else if (studentsData.length === 0) {
+                const def = getInitialDefaultData();
+                studentsData = def.initialStudents;
+                guruData = def.initialGuru;
+                mapelData = def.initialMapel;
+                nilaiData = def.initialNilai;
+                studentsData.forEach(s => ensureBiRecord(s.id));
+                isInitialLoadDone = true;
+                saveToLocalBackup();
+                refreshAllViews();
+            } else {
+                isInitialLoadDone = true;
+                refreshAllViews();
+            }
+        }
+
+        function useOfflineBackupAndCloseLoading() {
+            ensureFallbackDataLoaded();
+            hideInitialLoadingOverlay();
+            setSyncStatus('synced');
+        }
+
+        async function retryLoadFirebaseData() {
+            const icon = document.getElementById('loadingOverlayIcon');
+            const titleEl = document.getElementById('loadingOverlayTitle');
+            const subEl = document.getElementById('loadingOverlaySubtitle');
+            const actionsEl = document.getElementById('loadingErrorActions');
+            if (icon) icon.className = 'fa-solid fa-circle-notch fa-spin text-indigo-600 text-2xl shrink-0';
+            if (titleEl) titleEl.innerText = 'Memuat Ulang Data Buku Induk...';
+            if (subEl) subEl.innerText = 'Menghubungkan kembali ke server Firebase Cloud Firestore';
+            if (actionsEl) actionsEl.classList.add('hidden');
+            await initFirebaseAndAutoSync();
+        }
+
         function getMainDatabaseDocRef() {
             return doc(db, 'artifacts', appId, 'public', 'data', 'app_cloud_store', 'main_state');
         }
@@ -1458,21 +1528,7 @@
                 }
 
                 if (!config) {
-                    const localSaved = loadFromLocalBackup();
-                    if (localSaved && Array.isArray(localSaved.studentsData) && localSaved.studentsData.length > 0) {
-                        isInitialLoadDone = true;
-                        applyRemoteState(localSaved);
-                    } else {
-                        const def = getInitialDefaultData();
-                        studentsData = def.initialStudents;
-                        guruData = def.initialGuru;
-                        mapelData = def.initialMapel;
-                        nilaiData = def.initialNilai;
-                        studentsData.forEach(s => ensureBiRecord(s.id));
-                        isInitialLoadDone = true;
-                        saveToLocalBackup();
-                        refreshAllViews();
-                    }
+                    ensureFallbackDataLoaded();
                     hideInitialLoadingOverlay();
                     setSyncStatus('synced');
                     return;
@@ -1484,7 +1540,7 @@
 
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     try {
-                        const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                        const cred = await withTimeout(signInWithCustomToken(auth, __initial_auth_token), 5000);
                         currentUser = cred.user;
                     } catch (tokenErr) {
                         console.warn("Custom token auth error:", tokenErr.message);
@@ -1492,7 +1548,7 @@
                 }
                 if (!auth.currentUser) {
                     try {
-                        const cred = await signInAnonymously(auth);
+                        const cred = await withTimeout(signInAnonymously(auth), 5000);
                         currentUser = cred.user;
                     } catch (anonErr) {
                         console.warn("Anonymous auth restricted:", anonErr.message);
@@ -1508,7 +1564,7 @@
                 });
 
                 const docRef = getMainDatabaseDocRef();
-                const snap = await getDoc(docRef);
+                const snap = await withTimeout(getDoc(docRef), 8000, 'Waktu koneksi ke Firebase Cloud Firestore habis.');
 
                 if (snap.exists()) {
                     const docData = snap.data();
@@ -1517,22 +1573,7 @@
                     applyRemoteState(parsed);
                     setSyncStatus('synced');
                 } else {
-                    const localSaved = loadFromLocalBackup();
-                    if (localSaved && Array.isArray(localSaved.studentsData) && localSaved.studentsData.length > 0) {
-                        isInitialLoadDone = true;
-                        applyRemoteState(localSaved);
-                    } else {
-                        const def = getInitialDefaultData();
-                        studentsData = def.initialStudents;
-                        guruData = def.initialGuru;
-                        mapelData = def.initialMapel;
-                        nilaiData = def.initialNilai;
-                        studentsData.forEach(s => ensureBiRecord(s.id));
-                        auditLogs = [{ waktu: new Date().toLocaleString('id-ID'), user: 'Sistem', aksi: 'Inisialisasi database awal di Firebase Cloud Firestore' }];
-                        isInitialLoadDone = true;
-                        saveToLocalBackup();
-                        refreshAllViews();
-                    }
+                    ensureFallbackDataLoaded();
                     await pushStateToFirestore();
                 }
 
@@ -1550,28 +1591,27 @@
                         setSyncStatus('synced');
                     }
                 }, (err) => {
-                    console.warn("Realtime listener fallback:", err.message);
+                    console.error("Realtime listener error:", err);
                     setSyncStatus('synced');
                 });
 
             } catch (e) {
-                console.warn("Fallback penyimpanan lokal aktif:", e.message);
-                const localSaved = loadFromLocalBackup();
-                if (localSaved && Array.isArray(localSaved.studentsData)) {
-                    applyRemoteState(localSaved);
-                } else if (studentsData.length === 0) {
-                    const def = getInitialDefaultData();
-                    studentsData = def.initialStudents;
-                    guruData = def.initialGuru;
-                    mapelData = def.initialMapel;
-                    nilaiData = def.initialNilai;
-                    studentsData.forEach(s => ensureBiRecord(s.id));
-                    saveToLocalBackup();
-                }
-                isInitialLoadDone = true;
-                refreshAllViews();
+                console.error("Kesalahan saat memuat data dari Firebase Cloud Firestore:", e);
+                ensureFallbackDataLoaded();
                 hideInitialLoadingOverlay();
                 setSyncStatus('synced');
+                let errMsg = 'Koneksi ke server terganggu. Menampilkan data tersimpan.';
+                if (e && e.code === 'permission-denied') {
+                    errMsg = 'Akses database ditolak (Permission Denied). Menampilkan data tersimpan.';
+                } else if (e && e.message && e.message.includes('habis')) {
+                    errMsg = 'Waktu pemuatan server habis. Menampilkan data tersimpan.';
+                }
+                showNotification(errMsg, 'error');
+            } finally {
+                if (!isInitialLoadDone) {
+                    ensureFallbackDataLoaded();
+                }
+                hideInitialLoadingOverlay();
             }
         }
 
@@ -1920,6 +1960,64 @@
                         <td class="p-2 font-bold text-slate-800 border">${h.nama}</td>
                         <td class="p-2 text-slate-500 text-[11px] border">${h.indikator}</td>
                         <td class="p-2 border"><input type="text" id="habitCat_${i}" value="${h.catatan}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                        <td class="p-2 border"><input type="text" id="habitTindak_${i}" value="${h.tindakLanjut}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                        <td class="p-2 border"><input type="text" id="habitPer_${i}" value="${h.periode}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                    </tr>
+                `;
+            });
+
+            const profBody = document.getElementById('biEditorProfilesBody');
+            profBody.innerHTML = '';
+            rec.profiles.forEach((p, i) => {
+                profBody.innerHTML += `
+                    <tr>
+                        <td class="p-2 font-bold text-center border">${p.no}</td>
+                        <td class="p-2 font-bold text-slate-800 border">${p.dimensi}</td>
+                        <td class="p-2 border"><input type="text" id="profCat_${i}" value="${p.catatan}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                        <td class="p-2 border"><input type="text" id="profBukti_${i}" value="${p.bukti}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                        <td class="p-2 border"><input type="text" id="profTindak_${i}" value="${p.tindakLanjut}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                        <td class="p-2 border"><input type="text" id="profPer_${i}" value="${p.periode}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                    </tr>
+                `;
+            });
+
+            renderSectionFLists(s.id);
+
+            const promBody = document.getElementById('biEditorPromotionsBody');
+            promBody.innerHTML = '';
+            rec.promotions.forEach((pr, i) => {
+                const isLulusRow = pr.jenjang.includes('VI');
+                promBody.innerHTML += `
+                    <tr>
+                        <td class="p-2.5 font-bold text-indigo-900 border">${pr.jenjang}</td>
+                        <td class="p-2.5 border">
+                            <select id="promKep_${i}" class="w-full bg-slate-50 border p-1.5 rounded-lg font-semibold">
+                                <option value="-" ${pr.keputusan==='-'?'selected':''}>- Belum -</option>
+                                ${isLulusRow ? `<option value="Lulus" ${pr.keputusan==='Lulus'?'selected':''}>Lulus</option>` : `<option value="Naik" ${pr.keputusan==='Naik'?'selected':''}>Naik</option>`}
+                            </select>
+                        </td>
+                        <td class="p-2.5 border"><input type="text" id="promTgl_${i}" value="${pr.tanggal}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                        <td class="p-2.5 border"><input type="text" id="promKet_${i}" value="${pr.keterangan}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('biSignTempat').value = rec.sign.tempat || 'Gedongboyountung';
+            document.getElementById('biSignTanggal').value = rec.sign.tanggal || '29 Oktober 2026';
+            document.getElementById('biSignKepsekNama').value = schoolIdentity.kepsek;
+            document.getElementById('biSignKepsekNip').value = schoolIdentity.nipKepsek;
+
+            const waliSelect = document.getElementById('biSignWaliSelect');
+            waliSelect.innerHTML = '';
+            guruData.forEach(g => {
+                const selected = g.nama === rec.sign.waliNama ? 'selected' : '';
+                waliSelect.innerHTML += `<option value="${g.nama}" ${selected}>${g.nama}</option>`;
+            });
+            document.getElementById('biSignWaliNip').value = rec.sign.waliNip || '';
+
+            renderPrintableBukuInduk([s]);
+        }
+
         function findStudentGradeRecord(studentId, kelas, sem, mapelNama) {
             const matches = nilaiData.filter(n =>
                 String(n.studentId) === String(studentId) &&
@@ -3472,7 +3570,8 @@
             cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel,
             saveGlobalSchoolSettings, handleGlobalSearch, handleChangeAcademicYear,
             openAuditLogModal, closeAuditLogModal, openConfirmDeleteModal, closeConfirmDeleteModal,
-            executeConfirmedDelete, openLoginModal, closeLoginModal, executeFirebaseLogin
+            executeConfirmedDelete, openLoginModal, closeLoginModal, executeFirebaseLogin,
+            retryLoadFirebaseData, useOfflineBackupAndCloseLoading
         });
 
         initFirebaseAndAutoSync();
