@@ -448,7 +448,7 @@
                                 </div>
                                 <p class="text-slate-500 text-[11px]">Anda dapat mengisi nilai (0-100) serta Tujuan Pembelajaran (TP) untuk setiap mata pelajaran di setiap tingkat kelas dan semester.</p>
                                 <div class="overflow-x-auto">
-                                    <table class="w-full border-collapse border border-slate-300 text-[11px]">
+                                    <table class="w-full border-collapse border border-slate-300 text-[11px]" id="biGradesMatrixTable">
                                         <thead>
                                             <tr class="bg-slate-100 font-bold text-center">
                                                 <th rowspan="2" class="border border-slate-300 p-2 text-left">Mata Pelajaran & TP</th>
@@ -469,6 +469,38 @@
                                             </tr>
                                         </thead>
                                         <tbody id="biEditorGradesMatrixBody"></tbody>
+                                        <tfoot id="biEditorGradesMatrixFoot" class="font-extrabold">
+                                            <tr class="bg-indigo-50 border-t-2 border-slate-400">
+                                                <td class="p-2 border border-slate-300 font-extrabold text-indigo-950 uppercase">JUMLAH NILAI</td>
+                                                <td id="biMatrixSum_0_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_0_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_1_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_1_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_2_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_2_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_3_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_3_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_4_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_4_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_5_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                                <td id="biMatrixSum_5_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950">-</td>
+                                            </tr>
+                                            <tr class="bg-emerald-50">
+                                                <td class="p-2 border border-slate-300 font-extrabold text-emerald-950 uppercase">RATA-RATA NILAI</td>
+                                                <td id="biMatrixAvg_0_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_0_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_1_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_1_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_2_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_2_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_3_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_3_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_4_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_4_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_5_1" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                                <td id="biMatrixAvg_5_2" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950">-</td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -1154,12 +1186,12 @@
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const defaultFirebaseConfig = {
-  apiKey: "AIzaSyC4ZqHyxmc90BSg9fPCEoWAtThJnol-LWg",
-  authDomain: "induk-5853c.firebaseapp.com",
-  projectId: "induk-5853c",
-  storageBucket: "induk-5853c.firebasestorage.app",
-  messagingSenderId: "856741474795",
-  appId: "1:856741474795:web:bdbe3533df04ab1dbaa9ae"
+            apiKey: "API_KEY_ANDA",
+            authDomain: "PROJECT_ID.firebaseapp.com",
+            projectId: "PROJECT_ID",
+            storageBucket: "PROJECT_ID.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
         };
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'buku-induk-sdn-gedongboyountung';
@@ -1758,11 +1790,10 @@
 
         function calculateStudentCompleteness(student) {
             const rec = ensureBiRecord(student.id);
-            const activeTp = schoolIdentity.activeTp || '2026/2027';
             const secStatus = {
                 A: Boolean(schoolIdentity.nama && schoolIdentity.npsn),
                 B: Boolean(student.nama && student.nis && student.nisn),
-                C: nilaiData.some(n => String(n.studentId) === String(student.id) && String(n.tp || activeTp) === String(activeTp)),
+                C: nilaiData.some(n => String(n.studentId) === String(student.id)),
                 D: rec.habits && rec.habits.length === 7,
                 E: rec.profiles && rec.profiles.length === 8,
                 F: rec.absensi && rec.absensi.length > 0,
@@ -1889,88 +1920,50 @@
                         <td class="p-2 font-bold text-slate-800 border">${h.nama}</td>
                         <td class="p-2 text-slate-500 text-[11px] border">${h.indikator}</td>
                         <td class="p-2 border"><input type="text" id="habitCat_${i}" value="${h.catatan}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                        <td class="p-2 border"><input type="text" id="habitTindak_${i}" value="${h.tindakLanjut}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                        <td class="p-2 border"><input type="text" id="habitPer_${i}" value="${h.periode}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                    </tr>
-                `;
-            });
+        function findStudentGradeRecord(studentId, kelas, sem, mapelNama) {
+            const matches = nilaiData.filter(n =>
+                String(n.studentId) === String(studentId) &&
+                String(n.kelas).trim() === String(kelas).trim() &&
+                String(n.semester).trim() === String(sem).trim() &&
+                String(n.mapel).trim().toLowerCase() === String(mapelNama).trim().toLowerCase()
+            );
+            if (matches.length === 0) return null;
+            const activeTp = schoolIdentity.activeTp || '2026/2027';
+            const exactTp = matches.find(n => String(n.tp || '') === String(activeTp));
+            return exactTp || matches[matches.length - 1];
+        }
 
-            const profBody = document.getElementById('biEditorProfilesBody');
-            profBody.innerHTML = '';
-            rec.profiles.forEach((p, i) => {
-                profBody.innerHTML += `
-                    <tr>
-                        <td class="p-2 font-bold text-center border">${p.no}</td>
-                        <td class="p-2 font-bold text-slate-800 border">${p.dimensi}</td>
-                        <td class="p-2 border"><input type="text" id="profCat_${i}" value="${p.catatan}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                        <td class="p-2 border"><input type="text" id="profBukti_${i}" value="${p.bukti}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                        <td class="p-2 border"><input type="text" id="profTindak_${i}" value="${p.tindakLanjut}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                        <td class="p-2 border"><input type="text" id="profPer_${i}" value="${p.periode}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                    </tr>
-                `;
-            });
-
-            renderSectionFLists(s.id);
-
-            const promBody = document.getElementById('biEditorPromotionsBody');
-            promBody.innerHTML = '';
-            rec.promotions.forEach((pr, i) => {
-                const isLulusRow = pr.jenjang.includes('VI');
-                promBody.innerHTML += `
-                    <tr>
-                        <td class="p-2.5 font-bold text-indigo-900 border">${pr.jenjang}</td>
-                        <td class="p-2.5 border">
-                            <select id="promKep_${i}" class="w-full bg-slate-50 border p-1.5 rounded-lg font-semibold">
-                                <option value="-" ${pr.keputusan==='-'?'selected':''}>- Belum -</option>
-                                ${isLulusRow ? `<option value="Lulus" ${pr.keputusan==='Lulus'?'selected':''}>Lulus</option>` : `<option value="Naik" ${pr.keputusan==='Naik'?'selected':''}>Naik</option>`}
-                            </select>
-                        </td>
-                        <td class="p-2.5 border"><input type="text" id="promTgl_${i}" value="${pr.tanggal}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                        <td class="p-2.5 border"><input type="text" id="promKet_${i}" value="${pr.keterangan}" class="w-full bg-slate-50 border p-1.5 rounded-lg"></td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById('biSignTempat').value = rec.sign.tempat || 'Gedongboyountung';
-            document.getElementById('biSignTanggal').value = rec.sign.tanggal || '29 Oktober 2026';
-            document.getElementById('biSignKepsekNama').value = schoolIdentity.kepsek;
-            document.getElementById('biSignKepsekNip').value = schoolIdentity.nipKepsek;
-
-            const waliSelect = document.getElementById('biSignWaliSelect');
-            waliSelect.innerHTML = '';
-            guruData.forEach(g => {
-                const selected = g.nama === rec.sign.waliNama ? 'selected' : '';
-                waliSelect.innerHTML += `<option value="${g.nama}" ${selected}>${g.nama}</option>`;
-            });
-            document.getElementById('biSignWaliNip').value = rec.sign.waliNip || '';
-
-            renderPrintableBukuInduk([s]);
+        function formatIndonesianDecimal(val, isAverage = false) {
+            if (val === null || val === undefined || isNaN(val)) return '-';
+            if (!isAverage && Number.isInteger(val)) return String(val);
+            return val.toFixed(2).replace('.', ',');
         }
 
         function renderBiGradesMatrixEditor(studentId) {
             const tbody = document.getElementById('biEditorGradesMatrixBody');
             if (!tbody) return;
-            tbody.innerHTML = '';
             const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
-            const activeTp = schoolIdentity.activeTp || '2026/2027';
 
+            let rowsHtml = '';
             // Merender seluruh mata pelajaran aktif secara dinamis dari mapelData
             mapelData.forEach((m, mIdx) => {
                 let cellsHtml = '';
+                const safeMapelAttr = String(m.nama || '').replace(/"/g, '&quot;');
+                const safeTpVal = String(m.tp || '').replace(/"/g, '&quot;');
                 kelasList.forEach((kls, kIdx) => {
                     ['1', '2'].forEach(sem => {
-                        const found = nilaiData.find(n => String(n.studentId) === String(studentId) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kls && n.semester === sem && n.mapel === m.nama);
+                        const found = findStudentGradeRecord(studentId, kls, sem, m.nama);
                         const hasVal = found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '';
                         const val = hasVal ? found.nilai : '';
-                        cellsHtml += `<td class="p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel-id="${m.id}" data-mapel="${m.nama}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 focus:bg-white border border-slate-300 rounded py-1 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500"></td>`;
+                        cellsHtml += `<td class="p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel-id="${m.id}" data-mapel="${safeMapelAttr}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" onchange="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 focus:bg-white border border-slate-300 rounded py-1 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500"></td>`;
                     });
                 });
-                tbody.innerHTML += `
+                rowsHtml += `
                     <tr>
                         <td class="p-2 border border-slate-300">
                             <p class="font-semibold text-slate-900">${mIdx + 1}. ${m.nama}</p>
                             <div class="mt-1 flex items-center space-x-1">
-                                <input type="text" value="${m.tp || ''}" onchange="updateMapelTp('${m.id}', this.value)" class="w-full bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-600 focus:bg-white" placeholder="Ketik TP (Tujuan Pembelajaran)..." title="Tujuan Pembelajaran mata pelajaran">
+                                <input type="text" value="${safeTpVal}" onchange="updateMapelTp('${m.id}', this.value)" class="w-full bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-600 focus:bg-white" placeholder="Ketik TP (Tujuan Pembelajaran)..." title="Tujuan Pembelajaran mata pelajaran">
                             </div>
                         </td>
                         ${cellsHtml}
@@ -1978,35 +1971,41 @@
                 `;
             });
 
-            // Baris 1 Rekapitulasi: JUMLAH NILAI (Tepat di bawah mata pelajaran terakhir)
-            let sumCellsHtml = '';
-            // Baris 2 Rekapitulasi: RATA-RATA NILAI (Tepat di bawah JUMLAH NILAI)
-            let avgCellsHtml = '';
+            tbody.innerHTML = rowsHtml;
 
-            kelasList.forEach((kls, kIdx) => {
-                ['1', '2'].forEach(sem => {
-                    sumCellsHtml += `<td id="biMatrixSum_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950 bg-indigo-50/80">-</td>`;
-                    avgCellsHtml += `<td id="biMatrixAvg_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950 bg-emerald-50/80">-</td>`;
+            // Pastikan elemen tfoot tersedia di dalam tabel utama tepat setelah tbody
+            const tableEl = tbody.closest('table');
+            if (tableEl && !tableEl.querySelector('#biEditorGradesMatrixFoot')) {
+                let sumCellsHtml = '';
+                let avgCellsHtml = '';
+                kelasList.forEach((kls, kIdx) => {
+                    ['1', '2'].forEach(sem => {
+                        sumCellsHtml += `<td id="biMatrixSum_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950 bg-indigo-50">-</td>`;
+                        avgCellsHtml += `<td id="biMatrixAvg_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950 bg-emerald-50">-</td>`;
+                    });
                 });
-            });
-
-            tbody.innerHTML += `
-                <tr class="bg-indigo-50/80 border-t-2 border-slate-400">
-                    <td class="p-2 border border-slate-300 font-extrabold text-indigo-950 uppercase tracking-wide">JUMLAH NILAI</td>
-                    ${sumCellsHtml}
-                </tr>
-                <tr class="bg-emerald-50/80">
-                    <td class="p-2 border border-slate-300 font-extrabold text-emerald-950 uppercase tracking-wide">RATA-RATA NILAI</td>
-                    ${avgCellsHtml}
-                </tr>
-            `;
+                const tfoot = document.createElement('tfoot');
+                tfoot.id = 'biEditorGradesMatrixFoot';
+                tfoot.className = 'font-extrabold';
+                tfoot.innerHTML = `
+                    <tr class="bg-indigo-50 border-t-2 border-slate-400">
+                        <td class="p-2 border border-slate-300 font-extrabold text-indigo-950 uppercase tracking-wide">JUMLAH NILAI</td>
+                        ${sumCellsHtml}
+                    </tr>
+                    <tr class="bg-emerald-50">
+                        <td class="p-2 border border-slate-300 font-extrabold text-emerald-950 uppercase tracking-wide">RATA-RATA NILAI</td>
+                        ${avgCellsHtml}
+                    </tr>
+                `;
+                tableEl.appendChild(tfoot);
+            }
 
             recalculateBiMatrixSummary();
         }
 
         function recalculateBiMatrixSummary() {
             const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
-            const activeMapelNames = new Set(mapelData.map(m => m.nama));
+            const activeMapelIds = new Set(mapelData.map(m => String(m.id)));
 
             kelasList.forEach((kls, kIdx) => {
                 ['1', '2'].forEach(sem => {
@@ -2015,14 +2014,13 @@
                     let validCount = 0;
 
                     inputs.forEach(inp => {
-                        const mapelName = inp.getAttribute('data-mapel');
-                        // Hanya hitung mata pelajaran yang masih aktif terdaftar di aplikasi
-                        if (!activeMapelNames.has(mapelName)) return;
+                        const mapelId = String(inp.getAttribute('data-mapel-id') || '');
+                        if (mapelId && !activeMapelIds.has(mapelId)) return;
 
-                        const raw = String(inp.value ?? '').trim();
+                        const raw = String(inp.value ?? '').trim().replace(',', '.');
                         if (raw !== '') {
                             const num = Number(raw);
-                            // Nilai 0 tetap dihitung valid, rentang wajib 0-100
+                            // Nilai 0 tetap dihitung sebagai nilai valid, rentang wajib 0-100
                             if (!isNaN(num) && isFinite(num) && num >= 0 && num <= 100) {
                                 sum += num;
                                 validCount++;
@@ -2034,10 +2032,10 @@
                     const avgCell = document.getElementById(`biMatrixAvg_${kIdx}_${sem}`);
 
                     if (sumCell) {
-                        sumCell.innerText = validCount > 0 ? (Number.isInteger(sum) ? String(sum) : sum.toFixed(2)) : '-';
+                        sumCell.innerText = validCount > 0 ? formatIndonesianDecimal(sum, false) : '-';
                     }
                     if (avgCell) {
-                        avgCell.innerText = validCount > 0 ? (sum / validCount).toFixed(2) : '-';
+                        avgCell.innerText = validCount > 0 ? formatIndonesianDecimal(sum / validCount, true) : '-';
                     }
                 });
             });
@@ -2049,6 +2047,10 @@
                 m.tp = newTp.trim();
                 try {
                     await saveToStorage(`Perbarui Tujuan Pembelajaran (TP) mapel: ${m.nama}`);
+                    if (activeStudentId) {
+                        const s = studentsData.find(item => String(item.id) === String(activeStudentId));
+                        if (s) renderPrintableBukuInduk([s]);
+                    }
                     showNotification('Tujuan Pembelajaran (TP) berhasil diperbarui!', 'success');
                 } catch (err) {
                     showNotification('Gagal memperbarui TP ke Firebase!', 'error');
@@ -2066,18 +2068,47 @@
                 const mapel = inp.dataset.mapel;
                 const kelas = inp.dataset.kelas;
                 const sem = inp.dataset.sem;
-                const rawVal = String(inp.value ?? '').trim();
-                const existingIdx = nilaiData.findIndex(n => String(n.studentId) === String(s.id) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kelas && n.semester === sem && n.mapel === mapel);
+                const rawVal = String(inp.value ?? '').trim().replace(',', '.');
+
+                // Cari semua entri nilai untuk siswa, kelas, semester, dan mapel ini (lintas TP)
+                const matchingIndices = [];
+                nilaiData.forEach((n, idx) => {
+                    if (
+                        String(n.studentId) === String(s.id) &&
+                        String(n.kelas).trim() === String(kelas).trim() &&
+                        String(n.semester).trim() === String(sem).trim() &&
+                        String(n.mapel).trim().toLowerCase() === String(mapel).trim().toLowerCase()
+                    ) {
+                        matchingIndices.push(idx);
+                    }
+                });
+
                 if (rawVal !== '') {
                     const num = Number(rawVal);
                     if (isNaN(num) || !isFinite(num) || num < 0 || num > 100) {
                         hasInvalidGrade = true;
                         return;
                     }
-                    if (existingIdx >= 0) nilaiData[existingIdx].nilai = num;
-                    else nilaiData.push({ id: 'n_' + Date.now() + Math.random().toString(36).substring(2, 6), studentId: s.id, siswaNama: s.nama, tp: activeTp, kelas, semester: sem, mapel, nilai: num });
-                } else if (existingIdx >= 0) {
-                    nilaiData.splice(existingIdx, 1);
+                    if (matchingIndices.length > 0) {
+                        const targetIdx = matchingIndices[matchingIndices.length - 1];
+                        nilaiData[targetIdx].nilai = num;
+                        nilaiData[targetIdx].mapel = mapel;
+                    } else {
+                        nilaiData.push({
+                            id: 'n_' + Date.now() + Math.random().toString(36).substring(2, 6),
+                            studentId: s.id,
+                            siswaNama: s.nama,
+                            tp: activeTp,
+                            kelas,
+                            semester: sem,
+                            mapel,
+                            nilai: num
+                        });
+                    }
+                } else if (matchingIndices.length > 0) {
+                    for (let i = matchingIndices.length - 1; i >= 0; i--) {
+                        nilaiData.splice(matchingIndices[i], 1);
+                    }
                 }
             });
 
@@ -2345,17 +2376,17 @@
             });
 
             let nilaiRowsHtml = '';
-            // Mengikuti seluruh mata pelajaran yang aktif di mapelData (dinamis, tidak dibatasi 8 mapel)
+            // Mengikuti seluruh mata pelajaran yang aktif di mapelData secara dinamis
             mapelData.forEach((m, idx) => {
                 let tds = '';
                 kelasCols.forEach(kls => {
                     ['1', '2'].forEach(sem => {
-                        const found = nilaiData.find(n => String(n.studentId) === String(s.id) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kls && n.semester === sem && n.mapel === m.nama);
+                        const found = findStudentGradeRecord(s.id, kls, sem, m.nama);
                         let displayVal = '-';
                         if (found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '') {
-                            const num = Number(found.nilai);
+                            const num = Number(String(found.nilai).replace(',', '.'));
                             if (!isNaN(num) && isFinite(num) && num >= 0 && num <= 100) {
-                                displayVal = num;
+                                displayVal = formatIndonesianDecimal(num, false);
                                 colTotals[kls][sem].sum += num;
                                 colTotals[kls][sem].count += 1;
                             }
@@ -2379,22 +2410,24 @@
             kelasCols.forEach(kls => {
                 ['1', '2'].forEach(sem => {
                     const st = colTotals[kls][sem];
-                    const sumText = st.count > 0 ? (Number.isInteger(st.sum) ? String(st.sum) : st.sum.toFixed(2)) : '-';
-                    const avgText = st.count > 0 ? (st.sum / st.count).toFixed(2) : '-';
-                    sumPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-indigo-50/70">${sumText}</td>`;
-                    avgPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-emerald-50/70">${avgText}</td>`;
+                    const sumText = st.count > 0 ? formatIndonesianDecimal(st.sum, false) : '-';
+                    const avgText = st.count > 0 ? formatIndonesianDecimal(st.sum / st.count, true) : '-';
+                    sumPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-indigo-50">${sumText}</td>`;
+                    avgPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-emerald-50">${avgText}</td>`;
                 });
             });
 
-            nilaiRowsHtml += `
-                <tr class="print-header-bg bg-indigo-50/70 font-extrabold">
-                    <td class="border border-slate-800 p-1.5 text-left font-extrabold uppercase">JUMLAH NILAI</td>
-                    ${sumPrintTds}
-                </tr>
-                <tr class="print-header-bg bg-emerald-50/70 font-extrabold">
-                    <td class="border border-slate-800 p-1.5 text-left font-extrabold uppercase">RATA-RATA NILAI</td>
-                    ${avgPrintTds}
-                </tr>
+            const nilaiFootHtml = `
+                <tfoot>
+                    <tr class="print-header-bg bg-indigo-50 font-extrabold">
+                        <td class="border border-slate-800 p-1.5 text-left font-extrabold uppercase">JUMLAH NILAI</td>
+                        ${sumPrintTds}
+                    </tr>
+                    <tr class="print-header-bg bg-emerald-50 font-extrabold">
+                        <td class="border border-slate-800 p-1.5 text-left font-extrabold uppercase">RATA-RATA NILAI</td>
+                        ${avgPrintTds}
+                    </tr>
+                </tfoot>
             `;
 
             const habitsRowsHtml = rec.habits.map(h => `<tr><td class="border border-slate-800 p-1.5 text-center">${h.no}</td><td class="border border-slate-800 p-1.5 font-semibold">${h.nama}</td><td class="border border-slate-800 p-1.5 text-[10px]">${h.indikator}</td><td class="border border-slate-800 p-1.5">${h.catatan || '-'} (${h.tindakLanjut || '-'})</td></tr>`).join('');
@@ -2446,6 +2479,7 @@
                                 </tr>
                             </thead>
                             <tbody>${nilaiRowsHtml}</tbody>
+                            ${nilaiFootHtml}
                         </table>
                     </div>
 
@@ -3059,7 +3093,7 @@
             const kelas = document.getElementById('inputNilaiKelas').value;
             const semester = document.getElementById('inputNilaiSemester').value;
             const mapel = document.getElementById('inputNilaiMapel').value;
-            const rawNilai = String(document.getElementById('inputNilaiAngka').value ?? '').trim();
+            const rawNilai = String(document.getElementById('inputNilaiAngka').value ?? '').trim().replace(',', '.');
             if (rawNilai === '') {
                 showNotification('Nilai tidak boleh kosong!', 'error');
                 return;
@@ -3072,9 +3106,18 @@
             const activeTp = schoolIdentity.activeTp || '2026/2027';
 
             const prevNilai = JSON.parse(JSON.stringify(nilaiData));
-            const idx = nilaiData.findIndex(n => String(n.studentId) === String(studentId) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kelas && n.semester === semester && n.mapel === mapel);
-            if (idx >= 0) nilaiData[idx].nilai = nilai;
-            else nilaiData.push({ id: 'n_' + Date.now(), studentId: s.id, siswaNama: s.nama, tp: activeTp, kelas, semester, mapel, nilai });
+            const idx = nilaiData.findIndex(n =>
+                String(n.studentId) === String(studentId) &&
+                String(n.kelas).trim() === String(kelas).trim() &&
+                String(n.semester).trim() === String(semester).trim() &&
+                String(n.mapel).trim().toLowerCase() === String(mapel).trim().toLowerCase()
+            );
+            if (idx >= 0) {
+                nilaiData[idx].nilai = nilai;
+                nilaiData[idx].tp = activeTp;
+            } else {
+                nilaiData.push({ id: 'n_' + Date.now(), studentId: s.id, siswaNama: s.nama, tp: activeTp, kelas, semester, mapel, nilai });
+            }
 
             try {
                 await saveToStorage(`Input nilai ${mapel} untuk ${s.nama}`);
