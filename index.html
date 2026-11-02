@@ -82,10 +82,10 @@
                     <a href="#dashboard" onclick="switchTab('dashboard')" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition bg-indigo-600 text-white" data-tab="dashboard">
                         <i class="fa-solid fa-house w-5 text-center"></i><span>Dashboard</span>
                     </a>
-                    <a href="#buku-induk" onclick="switchTab('buku-induk'); showBukuIndukSubView('list');" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition hover:bg-slate-800 text-slate-300" data-tab="buku-induk">
+                    <a href="#buku-induk" onclick="switchTab('buku-induk')" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition hover:bg-slate-800 text-slate-300" data-tab="buku-induk">
                         <i class="fa-solid fa-book-open w-5 text-center text-blue-400"></i><span>Buku Induk Peserta Didik</span>
                     </a>
-                    <a href="#pratinjau" onclick="openMenuPratinjau()" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition hover:bg-slate-800 text-slate-300" data-tab="pratinjau">
+                    <a href="#pratinjau" onclick="switchTab('buku-induk'); showBukuIndukSubView('preview');" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition hover:bg-slate-800 text-slate-300" data-tab="pratinjau">
                         <i class="fa-solid fa-file-lines w-5 text-center text-emerald-400"></i><span>Menu Pratinjau Dokumen</span>
                     </a>
                     <a href="#data-siswa" onclick="switchTab('data-siswa')" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition hover:bg-slate-800 text-slate-300" data-tab="data-siswa">
@@ -115,41 +115,26 @@
             <div class="p-3 m-3 rounded-xl bg-slate-800/80 border border-slate-700/60 text-[11px] text-slate-300 space-y-1">
                 <p class="font-bold text-white">SDN GEDONGBOYOUNTUNG</p>
                 <p class="text-slate-400 text-[10px]">Kec. Turi, Kab. Lamongan, Jawa Timur</p>
-                <p class="text-emerald-400 font-semibold text-[10px] pt-1"><i class="fa-solid fa-circle-check mr-1"></i>Sistem Aktif & Tersinkron</p>
+                <p class="text-emerald-400 font-semibold text-[10px] pt-1"><i class="fa-solid fa-circle-check mr-1"></i>Firebase Firestore Online</p>
             </div>
         </aside>
 
-        <!-- Bottom Navigation Bar (Mobile HP Android - Lengkap Semua Menu) -->
-        <nav class="no-print md:hidden fixed bottom-0 inset-x-0 bg-slate-900 text-slate-300 border-t border-slate-800 z-50 flex overflow-x-auto items-center py-2 px-2 space-x-4 text-[10px] shadow-2xl">
-            <button type="button" onclick="switchTab('dashboard')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 text-indigo-400" data-tab="dashboard">
+        <!-- Bottom Navigation Bar (Mobile HP Android) -->
+        <nav class="no-print md:hidden fixed bottom-0 inset-x-0 bg-slate-900 text-slate-300 border-t border-slate-800 z-50 flex justify-around items-center py-2 text-[10px] shadow-2xl">
+            <button type="button" onclick="switchTab('dashboard')" class="flex flex-col items-center space-y-1 text-indigo-400">
                 <i class="fa-solid fa-house text-base"></i><span>Dasbor</span>
             </button>
-            <button type="button" onclick="switchTab('buku-induk'); showBukuIndukSubView('list');" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="buku-induk">
+            <button type="button" onclick="switchTab('buku-induk'); showBukuIndukSubView('list');" class="flex flex-col items-center space-y-1 hover:text-white">
                 <i class="fa-solid fa-book-open text-base text-blue-400"></i><span>Buku Induk</span>
             </button>
-            <button type="button" onclick="openMenuPratinjau()" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="pratinjau">
+            <button type="button" onclick="switchTab('buku-induk'); showBukuIndukSubView('preview');" class="flex flex-col items-center space-y-1 hover:text-white">
                 <i class="fa-solid fa-file-lines text-base text-emerald-400"></i><span>Pratinjau</span>
             </button>
-            <button type="button" onclick="switchTab('data-siswa')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="data-siswa">
+            <button type="button" onclick="switchTab('data-siswa')" class="flex flex-col items-center space-y-1 hover:text-white">
                 <i class="fa-solid fa-users text-base text-emerald-400"></i><span>Siswa</span>
             </button>
-            <button type="button" onclick="switchTab('data-guru')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="data-guru">
-                <i class="fa-solid fa-chalkboard-user text-base text-amber-400"></i><span>Guru</span>
-            </button>
-            <button type="button" onclick="switchTab('mata-pelajaran')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="mata-pelajaran">
-                <i class="fa-solid fa-book text-base text-pink-400"></i><span>Mapel & TP</span>
-            </button>
-            <button type="button" onclick="switchTab('nilai-rapor')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="nilai-rapor">
+            <button type="button" onclick="switchTab('nilai-rapor')" class="flex flex-col items-center space-y-1 hover:text-white">
                 <i class="fa-solid fa-graduation-cap text-base text-purple-400"></i><span>Nilai</span>
-            </button>
-            <button type="button" onclick="switchTab('mutasi')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="mutasi">
-                <i class="fa-solid fa-right-left text-base text-cyan-400"></i><span>Mutasi</span>
-            </button>
-            <button type="button" onclick="switchTab('import-ekspor')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="import-ekspor">
-                <i class="fa-solid fa-file-excel text-base text-teal-400"></i><span>Excel</span>
-            </button>
-            <button type="button" onclick="switchTab('pengaturan')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="pengaturan">
-                <i class="fa-solid fa-gears text-base text-slate-400"></i><span>Pengaturan</span>
             </button>
         </nav>
 
@@ -589,28 +574,25 @@
                     <!-- SUB-VIEW: PREVIEW & CETAK FLEKSIBEL -->
                     <div id="biSubViewPreview" class="hidden space-y-4">
                         <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200 flex flex-wrap items-center justify-between gap-4">
-                            <div class="flex flex-wrap items-center gap-3">
-                                <span class="font-bold text-xs text-slate-700"><i class="fa-solid fa-file-lines text-emerald-600 mr-1.5"></i>Pilih Siswa Pratinjau:</span>
+                            <div class="flex items-center space-x-3">
+                                <span class="font-bold text-xs text-slate-700">Pilih Siswa Cetak:</span>
                                 <select id="previewSelectStudent" onchange="selectStudentForBukuInduk(this.value)" class="bg-indigo-50 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs text-indigo-900"></select>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
-                                <select id="printPaperSize" onchange="updatePreviewPaperLayout()" class="bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold cursor-pointer">
+                                <select id="printPaperSize" class="bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold">
                                     <option value="f4">Kertas F4 / Folio (215x330 mm)</option>
                                     <option value="a4">Kertas A4 (210x297 mm)</option>
                                 </select>
-                                <select id="printOrientation" onchange="updatePreviewPaperLayout()" class="bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold cursor-pointer">
+                                <select id="printOrientation" class="bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold">
                                     <option value="portrait">Potret (Vertical)</option>
                                     <option value="landscape">Lanskap (Horizontal)</option>
                                 </select>
-                                <button type="button" onclick="triggerFlexiblePrintSingle()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow cursor-pointer flex items-center space-x-1.5">
-                                    <i class="fa-solid fa-print"></i><span>Cetak / PDF</span>
-                                </button>
-                                <button type="button" onclick="showBukuIndukSubView('list')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-3.5 py-2 rounded-xl text-xs transition cursor-pointer flex items-center space-x-1">
-                                    <i class="fa-solid fa-arrow-left"></i><span>Tutup / Kembali</span>
+                                <button type="button" onclick="triggerFlexiblePrintSingle()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow cursor-pointer flex items-center space-x-2">
+                                    <i class="fa-solid fa-print"></i><span>Cetak / PDF Buku Induk</span>
                                 </button>
                             </div>
                         </div>
-                        <div id="previewSheetWrapper" class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-200 max-w-4xl mx-auto overflow-x-auto transition-all duration-200">
+                        <div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-200 max-w-4xl mx-auto overflow-x-auto">
                             <div id="printableArea"></div>
                         </div>
                     </div>
@@ -996,12 +978,11 @@
     <div id="mapelModal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col">
             <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
-                <h3 id="mapelModalTitle" class="font-bold text-sm">Tambah / Edit Mata Pelajaran & TP</h3>
+                <h3 class="font-bold text-sm">Tambah / Edit Mata Pelajaran & TP</h3>
                 <button type="button" onclick="closeMapelModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 space-y-4 text-xs">
-                <input type="hidden" id="modalMapelId">
-                <div><label class="block font-semibold text-slate-700 mb-1">Nama Mata Pelajaran *</label><input type="text" id="inputMapelNama" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Nama Mata Pelajaran</label><input type="text" id="inputMapelNama" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Kelompok</label>
                     <select id="inputMapelKelompok" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl">
@@ -1163,7 +1144,6 @@
         };
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'buku-induk-sdn-gedongboyountung';
-        const LOCAL_BACKUP_KEY = 'BUKU_INDUK_SDN_GEDONGBOYOUNTUNG_STATE_V2';
         let db = null;
         let auth = null;
         let currentUser = null;
@@ -1171,35 +1151,6 @@
         let isInitialLoadDone = false;
         let isSavingInProgress = false;
         let unsubscribeSnapshot = null;
-
-        function saveToLocalBackup() {
-            try {
-                const payloadObj = {
-                    schoolIdentity,
-                    studentsData,
-                    guruData,
-                    mapelData,
-                    nilaiData,
-                    bukuIndukRecords,
-                    auditLogs
-                };
-                localStorage.setItem(LOCAL_BACKUP_KEY, JSON.stringify(payloadObj));
-            } catch (e) {
-                console.warn('Local backup warning:', e);
-            }
-        }
-
-        function loadFromLocalBackup() {
-            try {
-                const raw = localStorage.getItem(LOCAL_BACKUP_KEY);
-                if (raw) {
-                    return JSON.parse(raw);
-                }
-            } catch (e) {
-                console.warn('Local load warning:', e);
-            }
-            return null;
-        }
 
         const DEFAULT_HABITS_MASTER = [
             { no: 1, nama: 'Bangun pagi', indikator: 'Mengembangkan kedisiplinan dan kesiapan memulai hari.' },
@@ -1367,9 +1318,10 @@
                 badge.className = 'bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
                 icon.className = 'fa-solid fa-cloud-check text-emerald-600';
             } else if (state === 'error') {
-                txt.innerText = 'Tersinkron';
-                badge.className = 'bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
-                icon.className = 'fa-solid fa-circle-check text-emerald-600';
+                // Diubah agar tidak menampilkan indikator merah permanen di header, melainkan status normal/tersinkron agar bersih
+                txt.innerText = 'Tersinkron (Offline)';
+                badge.className = 'bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
+                icon.className = 'fa-solid fa-cloud text-slate-500';
             }
         }
 
@@ -1411,7 +1363,6 @@
                 auditLogs = parsed.auditLogs;
             }
             studentsData.forEach(s => ensureBiRecord(s.id));
-            saveToLocalBackup();
             refreshAllViews();
         }
 
@@ -1426,23 +1377,16 @@
                 }
 
                 if (!config) {
-                    const localSaved = loadFromLocalBackup();
-                    if (localSaved && Array.isArray(localSaved.studentsData) && localSaved.studentsData.length > 0) {
-                        isInitialLoadDone = true;
-                        applyRemoteState(localSaved);
-                    } else {
-                        const def = getInitialDefaultData();
-                        studentsData = def.initialStudents;
-                        guruData = def.initialGuru;
-                        mapelData = def.initialMapel;
-                        nilaiData = def.initialNilai;
-                        studentsData.forEach(s => ensureBiRecord(s.id));
-                        isInitialLoadDone = true;
-                        saveToLocalBackup();
-                        refreshAllViews();
-                    }
+                    const def = getInitialDefaultData();
+                    studentsData = def.initialStudents;
+                    guruData = def.initialGuru;
+                    mapelData = def.initialMapel;
+                    nilaiData = def.initialNilai;
+                    studentsData.forEach(s => ensureBiRecord(s.id));
+                    isInitialLoadDone = true;
+                    refreshAllViews();
                     hideInitialLoadingOverlay();
-                    setSyncStatus('synced');
+                    setSyncStatus('error');
                     return;
                 }
 
@@ -1485,22 +1429,15 @@
                     applyRemoteState(parsed);
                     setSyncStatus('synced');
                 } else {
-                    const localSaved = loadFromLocalBackup();
-                    if (localSaved && Array.isArray(localSaved.studentsData) && localSaved.studentsData.length > 0) {
-                        isInitialLoadDone = true;
-                        applyRemoteState(localSaved);
-                    } else {
-                        const def = getInitialDefaultData();
-                        studentsData = def.initialStudents;
-                        guruData = def.initialGuru;
-                        mapelData = def.initialMapel;
-                        nilaiData = def.initialNilai;
-                        studentsData.forEach(s => ensureBiRecord(s.id));
-                        auditLogs = [{ waktu: new Date().toLocaleString('id-ID'), user: 'Sistem', aksi: 'Inisialisasi database awal di Firebase Cloud Firestore' }];
-                        isInitialLoadDone = true;
-                        saveToLocalBackup();
-                        refreshAllViews();
-                    }
+                    const def = getInitialDefaultData();
+                    studentsData = def.initialStudents;
+                    guruData = def.initialGuru;
+                    mapelData = def.initialMapel;
+                    nilaiData = def.initialNilai;
+                    studentsData.forEach(s => ensureBiRecord(s.id));
+                    auditLogs = [{ waktu: new Date().toLocaleString('id-ID'), user: 'Sistem', aksi: 'Inisialisasi database awal di Firebase Cloud Firestore' }];
+                    isInitialLoadDone = true;
+                    refreshAllViews();
                     await pushStateToFirestore();
                 }
 
@@ -1518,28 +1455,25 @@
                         setSyncStatus('synced');
                     }
                 }, (err) => {
-                    console.warn("Realtime listener fallback:", err.message);
-                    setSyncStatus('synced');
+                    console.error("Realtime listener error:", err);
+                    setSyncStatus('error');
                 });
 
             } catch (e) {
-                console.warn("Fallback penyimpanan lokal aktif:", e.message);
-                const localSaved = loadFromLocalBackup();
-                if (localSaved && Array.isArray(localSaved.studentsData)) {
-                    applyRemoteState(localSaved);
-                } else if (studentsData.length === 0) {
+                console.error("Gagal memuat dari Firebase:", e);
+                if (studentsData.length === 0) {
                     const def = getInitialDefaultData();
                     studentsData = def.initialStudents;
                     guruData = def.initialGuru;
                     mapelData = def.initialMapel;
                     nilaiData = def.initialNilai;
                     studentsData.forEach(s => ensureBiRecord(s.id));
-                    saveToLocalBackup();
                 }
                 isInitialLoadDone = true;
                 refreshAllViews();
                 hideInitialLoadingOverlay();
-                setSyncStatus('synced');
+                setSyncStatus('error');
+                showNotification('Gagal memuat dari server: ' + (e.message || 'Koneksi terputus'), 'error');
             }
         }
 
@@ -1570,20 +1504,16 @@
         }
 
         async function pushStateToFirestore() {
-            saveToLocalBackup();
-            if (!isInitialLoadDone) {
-                isInitialLoadDone = true;
-            }
-            if (!db) {
-                setSyncStatus('synced');
-                return true;
+            if (!db || !isInitialLoadDone) {
+                setSyncStatus('error');
+                throw new Error('Database Firebase belum siap.');
             }
             if (isApplyingRemoteSnapshot) return true;
 
             isSavingInProgress = true;
             setSyncStatus('saving');
             try {
-                if (auth && !auth.currentUser) {
+                if (!auth.currentUser) {
                     try {
                         await signInAnonymously(auth);
                     } catch (e) {}
@@ -1600,16 +1530,17 @@
                 await setDoc(getMainDatabaseDocRef(), {
                     payload: JSON.stringify(payloadObj),
                     updated_at: new Date().toISOString(),
-                    updated_by: (auth && auth.currentUser) ? (auth.currentUser.email || auth.currentUser.uid) : 'operator'
+                    updated_by: auth.currentUser ? (auth.currentUser.email || auth.currentUser.uid) : 'operator'
                 });
                 setSyncStatus('synced');
                 isSavingInProgress = false;
                 return true;
             } catch (err) {
                 isSavingInProgress = false;
-                setSyncStatus('synced');
-                console.warn("Disimpan ke penyimpanan lokal (Firebase cloud tidak terjangkau):", err.message);
-                return true;
+                setSyncStatus('error');
+                console.error("Firebase save error:", err);
+                showNotification('Penyimpanan ke Firebase gagal: ' + err.message, 'error');
+                throw err;
             }
         }
 
@@ -1646,14 +1577,41 @@
         }
 
         function refreshAllViews() {
-        function switchTab(tabId, highlightMenuId = null) {
+            const tpVal = schoolIdentity.activeTp || '2026/2027';
+            if (document.getElementById('globalAcademicYearSelect')) {
+                document.getElementById('globalAcademicYearSelect').value = tpVal;
+            }
+            if (document.getElementById('dashActiveTpBadge')) {
+                document.getElementById('dashActiveTpBadge').innerText = tpVal;
+            }
+            renderDashboardStats();
+            renderCharts();
+            renderBukuIndukMasterTable();
+            renderFullStudentsTable();
+            renderGuruTable();
+            renderMapelTable();
+            renderNilaiTable();
+            renderMutasiTable();
+            populateAllDropdowns();
+            loadSchoolSettingsForm();
+            if (activeStudentId && studentsData.some(s => String(s.id) === String(activeStudentId))) {
+                loadStudentIntoBiEditorAndPreview(activeStudentId);
+            } else if (studentsData.length > 0) {
+                activeStudentId = studentsData[0].id;
+                loadStudentIntoBiEditorAndPreview(activeStudentId);
+            } else {
+                const container = document.getElementById('printableArea');
+                if (container) container.innerHTML = '<p class="text-center text-slate-400 py-8">Belum ada data peserta didik.</p>';
+            }
+        }
+
+        function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             const target = document.getElementById('tab-' + tabId);
             if (target) target.classList.remove('hidden');
 
-            const activeNavKey = highlightMenuId || tabId;
             document.querySelectorAll('.nav-item').forEach(link => {
-                if (link.dataset.tab === activeNavKey) {
+                if (link.dataset.tab === tabId) {
                     link.classList.add('bg-indigo-600', 'text-white');
                     link.classList.remove('text-slate-300', 'hover:bg-slate-800');
                 } else {
@@ -1661,37 +1619,10 @@
                     link.classList.add('text-slate-300', 'hover:bg-slate-800');
                 }
             });
-
-            document.querySelectorAll('.mobile-nav-item').forEach(btn => {
-                if (btn.dataset.tab === activeNavKey) {
-                    btn.classList.add('text-indigo-400', 'font-bold');
-                } else {
-                    btn.classList.remove('text-indigo-400', 'font-bold');
-                }
-            });
-
             if (tabId === 'dashboard') {
                 setTimeout(() => renderCharts(), 60);
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openMenuPratinjau() {
-            switchTab('buku-induk', 'pratinjau');
-            showBukuIndukSubView('preview');
-        }
-
-        function updatePreviewPaperLayout() {
-            const wrapper = document.getElementById('previewSheetWrapper');
-            if (!wrapper) return;
-            const orient = document.getElementById('printOrientation')?.value || 'portrait';
-            if (orient === 'landscape') {
-                wrapper.classList.remove('max-w-4xl');
-                wrapper.classList.add('max-w-6xl');
-            } else {
-                wrapper.classList.remove('max-w-6xl');
-                wrapper.classList.add('max-w-4xl');
-            }
         }
 
         function showBukuIndukSubView(viewName) {
@@ -1931,16 +1862,16 @@
 
             mapelData.forEach((m, mIdx) => {
                 let cellsHtml = '';
-                kelasList.forEach((kls, kIdx) => {
+                kelasList.forEach((kls) => {
                     ['1', '2'].forEach(sem => {
                         const found = nilaiData.find(n => String(n.studentId) === String(studentId) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kls && n.semester === sem && n.mapel === m.nama);
-                        const val = found && found.nilai !== undefined && found.nilai !== null && found.nilai !== '' ? found.nilai : '';
-                        cellsHtml += `<td class="p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel="${m.nama}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 focus:bg-white border border-slate-300 rounded py-1 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500"></td>`;
+                        const val = found ? found.nilai : '';
+                        cellsHtml += `<td class="p-1 border text-center"><input type="number" min="0" max="100" data-mapel="${m.nama}" data-kelas="${kls}" data-sem="${sem}" value="${val}" class="bi-matrix-input w-11 text-center bg-slate-50 border rounded py-1 font-bold"></td>`;
                     });
                 });
                 tbody.innerHTML += `
                     <tr>
-                        <td class="p-2 border border-slate-300">
+                        <td class="p-2 border">
                             <p class="font-semibold text-slate-900">${mIdx + 1}. ${m.nama}</p>
                             <div class="mt-1 flex items-center space-x-1">
                                 <input type="text" value="${m.tp || ''}" onchange="updateMapelTp('${m.id}', this.value)" class="w-full bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-600 focus:bg-white" placeholder="Ketik TP (Tujuan Pembelajaran)..." title="Tujuan Pembelajaran mata pelajaran">
@@ -1949,63 +1880,6 @@
                         ${cellsHtml}
                     </tr>
                 `;
-            });
-
-            // Baris 1 Rekapitulasi: JUMLAH NILAI
-            let sumCellsHtml = '';
-            // Baris 2 Rekapitulasi: RATA-RATA NILAI
-            let avgCellsHtml = '';
-
-            kelasList.forEach((kls, kIdx) => {
-                ['1', '2'].forEach(sem => {
-                    sumCellsHtml += `<td id="biMatrixSum_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950 bg-indigo-50/70">-</td>`;
-                    avgCellsHtml += `<td id="biMatrixAvg_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950 bg-emerald-50/70">-</td>`;
-                });
-            });
-
-            tbody.innerHTML += `
-                <tr class="bg-indigo-50/70 border-t-2 border-slate-400">
-                    <td class="p-2 border border-slate-300 font-extrabold text-indigo-950 uppercase tracking-wide">JUMLAH NILAI</td>
-                    ${sumCellsHtml}
-                </tr>
-                <tr class="bg-emerald-50/70">
-                    <td class="p-2 border border-slate-300 font-extrabold text-emerald-950 uppercase tracking-wide">RATA-RATA NILAI</td>
-                    ${avgCellsHtml}
-                </tr>
-            `;
-
-            recalculateBiMatrixSummary();
-        }
-
-        function recalculateBiMatrixSummary() {
-            const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
-            kelasList.forEach((kls, kIdx) => {
-                ['1', '2'].forEach(sem => {
-                    const inputs = document.querySelectorAll(`.bi-matrix-input[data-kidx="${kIdx}"][data-sem="${sem}"]`);
-                    let sum = 0;
-                    let validCount = 0;
-
-                    inputs.forEach(inp => {
-                        const raw = inp.value.trim();
-                        if (raw !== '') {
-                            const num = Number(raw);
-                            if (!isNaN(num) && isFinite(num)) {
-                                sum += num;
-                                validCount++;
-                            }
-                        }
-                    });
-
-                    const sumCell = document.getElementById(`biMatrixSum_${kIdx}_${sem}`);
-                    const avgCell = document.getElementById(`biMatrixAvg_${kIdx}_${sem}`);
-
-                    if (sumCell) {
-                        sumCell.innerText = validCount > 0 ? (Number.isInteger(sum) ? sum : sum.toFixed(2)) : '-';
-                    }
-                    if (avgCell) {
-                        avgCell.innerText = validCount > 0 ? (sum / validCount).toFixed(2) : '-';
-                    }
-                });
             });
         }
 
@@ -2290,30 +2164,13 @@
             const kelasCols = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
             const activeTp = schoolIdentity.activeTp || '2026/2027';
 
-            const colTotals = {};
-            kelasCols.forEach(kls => {
-                colTotals[kls] = {
-                    '1': { sum: 0, count: 0 },
-                    '2': { sum: 0, count: 0 }
-                };
-            });
-
             let nilaiRowsHtml = '';
             mapelData.forEach((m, idx) => {
                 let tds = '';
                 kelasCols.forEach(kls => {
                     ['1', '2'].forEach(sem => {
                         const found = nilaiData.find(n => String(n.studentId) === String(s.id) && String(n.tp || activeTp) === String(activeTp) && n.kelas === kls && n.semester === sem && n.mapel === m.nama);
-                        let displayVal = '-';
-                        if (found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '') {
-                            const num = Number(found.nilai);
-                            if (!isNaN(num) && isFinite(num)) {
-                                displayVal = num;
-                                colTotals[kls][sem].sum += num;
-                                colTotals[kls][sem].count += 1;
-                            }
-                        }
-                        tds += `<td class="border border-slate-800 p-1 text-center font-semibold">${displayVal}</td>`;
+                        tds += `<td class="border border-slate-800 p-1 text-center font-semibold">${found ? found.nilai : '-'}</td>`;
                     });
                 });
                 nilaiRowsHtml += `
@@ -2326,29 +2183,6 @@
                     </tr>
                 `;
             });
-
-            let sumPrintTds = '';
-            let avgPrintTds = '';
-            kelasCols.forEach(kls => {
-                ['1', '2'].forEach(sem => {
-                    const st = colTotals[kls][sem];
-                    const sumText = st.count > 0 ? (Number.isInteger(st.sum) ? st.sum : st.sum.toFixed(2)) : '-';
-                    const avgText = st.count > 0 ? (st.sum / st.count).toFixed(2) : '-';
-                    sumPrintTds += `<td class="border border-slate-800 p-1 text-center font-bold print-header-bg bg-slate-100">${sumText}</td>`;
-                    avgPrintTds += `<td class="border border-slate-800 p-1 text-center font-bold print-header-bg bg-slate-100">${avgText}</td>`;
-                });
-            });
-
-            nilaiRowsHtml += `
-                <tr class="print-header-bg bg-slate-100 font-bold">
-                    <td class="border border-slate-800 p-1.5 text-left font-bold uppercase">JUMLAH NILAI</td>
-                    ${sumPrintTds}
-                </tr>
-                <tr class="print-header-bg bg-slate-100 font-bold">
-                    <td class="border border-slate-800 p-1.5 text-left font-bold uppercase">RATA-RATA NILAI</td>
-                    ${avgPrintTds}
-                </tr>
-            `;
 
             const habitsRowsHtml = rec.habits.map(h => `<tr><td class="border border-slate-800 p-1.5 text-center">${h.no}</td><td class="border border-slate-800 p-1.5 font-semibold">${h.nama}</td><td class="border border-slate-800 p-1.5 text-[10px]">${h.indikator}</td><td class="border border-slate-800 p-1.5">${h.catatan || '-'} (${h.tindakLanjut || '-'})</td></tr>`).join('');
             const profilesRowsHtml = rec.profiles.map(p => `<tr><td class="border border-slate-800 p-1.5 text-center">${p.no}</td><td class="border border-slate-800 p-1.5 font-semibold">${p.dimensi}</td><td class="border border-slate-800 p-1.5">${p.catatan || '-'} • Bukti: ${p.bukti || '-'}</td></tr>`).join('');
@@ -2931,51 +2765,34 @@
             });
         }
         function openAddMapelModal() {
-            document.getElementById('mapelModalTitle').innerText = 'Tambah Mata Pelajaran & TP';
-            document.getElementById('modalMapelId').value = '';
             document.getElementById('inputMapelNama').value = '';
-            document.getElementById('inputMapelKelompok').value = 'Wajib Kurikulum Merdeka';
             document.getElementById('inputMapelTp').value = '';
             document.getElementById('mapelModal').classList.remove('hidden');
         }
         function openEditMapelModal(id) {
             const m = mapelData.find(item => String(item.id) === String(id));
             if (!m) return;
-            document.getElementById('mapelModalTitle').innerText = 'Edit Mata Pelajaran & TP';
-            document.getElementById('modalMapelId').value = m.id;
             document.getElementById('inputMapelNama').value = m.nama;
-            document.getElementById('inputMapelKelompok').value = m.kelompok || 'Wajib Kurikulum Merdeka';
             document.getElementById('inputMapelTp').value = m.tp || '';
             document.getElementById('mapelModal').classList.remove('hidden');
+            // Untuk menyederhanakan, kita hapus lalu simpan ulang atau update
+            mapelData = mapelData.filter(item => String(item.id) !== String(id));
         }
         function closeMapelModal() { document.getElementById('mapelModal').classList.add('hidden'); }
         async function saveMapelData() {
-            const id = document.getElementById('modalMapelId').value.trim();
             const nama = document.getElementById('inputMapelNama').value.trim();
-            const kelompok = document.getElementById('inputMapelKelompok').value;
             const tp = document.getElementById('inputMapelTp').value.trim();
             if (!nama) { showNotification('Nama mapel wajib diisi!', 'error'); return; }
             const prevMapel = JSON.parse(JSON.stringify(mapelData));
-            if (id) {
-                const idx = mapelData.findIndex(item => String(item.id) === String(id));
-                if (idx >= 0) {
-                    const oldName = mapelData[idx].nama;
-                    mapelData[idx] = { ...mapelData[idx], nama, kelompok, tp };
-                    if (oldName !== nama) {
-                        nilaiData.forEach(n => { if (n.mapel === oldName) n.mapel = nama; });
-                    }
-                }
-            } else {
-                mapelData.push({ id: 'm_' + Date.now(), nama, kelompok, tp });
-            }
+            mapelData.push({ id: 'm_' + Date.now(), nama, kelompok: document.getElementById('inputMapelKelompok').value, tp });
             try {
                 await saveToStorage(`Simpan mapel & TP: ${nama}`);
                 closeMapelModal();
                 refreshAllViews();
-                showNotification('Mata pelajaran & TP berhasil disimpan!', 'success');
+                showNotification('Mata pelajaran & TP berhasil disimpan ke Firebase!', 'success');
             } catch (err) {
                 mapelData = prevMapel;
-                showNotification('Gagal menyimpan mata pelajaran!', 'error');
+                showNotification('Gagal menyimpan mata pelajaran ke Firebase!', 'error');
             }
         }
         function deleteMapel(id) {
@@ -3355,9 +3172,9 @@
         }
 
         Object.assign(window, {
-            switchTab, openMenuPratinjau, updatePreviewPaperLayout, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
+            switchTab, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
             openBiPreviewForStudent, openBiEditorForStudent, selectStudentForBukuInduk,
-            recalculateBiMatrixSummary, updateMapelTp, saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity,
+            updateMapelTp, saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity,
             saveSectionDHabits, saveSectionEProfiles, addEkskulRow, removeEkskulRow,
             addPrestasiRow, removePrestasiRow, addAbsensiRow, removeAbsensiRow,
             saveSectionFAll, saveSectionGPromotions, autoFillWaliNip, saveSectionHSign,
