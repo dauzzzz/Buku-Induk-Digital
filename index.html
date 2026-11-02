@@ -1527,7 +1527,7 @@
                     config = defaultFirebaseConfig;
                 }
 
-                if (!config) {
+                if (!config || config.apiKey === "API_KEY_ANDA") {
                     ensureFallbackDataLoaded();
                     hideInitialLoadingOverlay();
                     setSyncStatus('synced');
@@ -1540,7 +1540,7 @@
 
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     try {
-                        const cred = await withTimeout(signInWithCustomToken(auth, __initial_auth_token), 5000);
+                        const cred = await withTimeout(signInWithCustomToken(auth, __initial_auth_token), 4000);
                         currentUser = cred.user;
                     } catch (tokenErr) {
                         console.warn("Custom token auth error:", tokenErr.message);
@@ -1548,7 +1548,7 @@
                 }
                 if (!auth.currentUser) {
                     try {
-                        const cred = await withTimeout(signInAnonymously(auth), 5000);
+                        const cred = await withTimeout(signInAnonymously(auth), 4000);
                         currentUser = cred.user;
                     } catch (anonErr) {
                         console.warn("Anonymous auth restricted:", anonErr.message);
@@ -1564,7 +1564,7 @@
                 });
 
                 const docRef = getMainDatabaseDocRef();
-                const snap = await withTimeout(getDoc(docRef), 8000, 'Waktu koneksi ke Firebase Cloud Firestore habis.');
+                const snap = await withTimeout(getDoc(docRef), 6000, 'Waktu koneksi ke Firebase Cloud Firestore habis.');
 
                 if (snap.exists()) {
                     const docData = snap.data();
@@ -1600,13 +1600,6 @@
                 ensureFallbackDataLoaded();
                 hideInitialLoadingOverlay();
                 setSyncStatus('synced');
-                let errMsg = 'Koneksi ke server terganggu. Menampilkan data tersimpan.';
-                if (e && e.code === 'permission-denied') {
-                    errMsg = 'Akses database ditolak (Permission Denied). Menampilkan data tersimpan.';
-                } else if (e && e.message && e.message.includes('habis')) {
-                    errMsg = 'Waktu pemuatan server habis. Menampilkan data tersimpan.';
-                }
-                showNotification(errMsg, 'error');
             } finally {
                 if (!isInitialLoadDone) {
                     ensureFallbackDataLoaded();
