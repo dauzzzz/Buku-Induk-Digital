@@ -1187,6 +1187,43 @@
         <span id="toastMessage">Berhasil menyimpan perubahan data.</span>
     </div>
 
+    <!-- FULL SCREEN ADMIN LOGIN GATE (GERBANG LOGIN UTAMA) -->
+    <div id="fullScreenLoginGate" class="no-print fixed inset-0 bg-slate-950 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col border border-slate-200 animate-fade-in">
+            <div class="bg-gradient-to-tr from-indigo-900 to-blue-900 text-white p-8 text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center font-extrabold text-white text-2xl mx-auto shadow-lg border border-white/20">BI</div>
+                <h1 class="font-extrabold text-lg tracking-tight text-white">BUKU INDUK DIGITAL</h1>
+                <p class="text-xs text-indigo-200">SDN Gedongboyountung - Kec. Turi, Kab. Lamongan</p>
+            </div>
+            <div class="p-8 space-y-4 text-xs">
+                <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-2xl text-indigo-900 flex items-start space-x-2.5">
+                    <i class="fa-solid fa-shield-halved text-indigo-600 text-base mt-0.5"></i>
+                    <p class="text-[11px] leading-relaxed">Silakan masukkan akun Email/Username dan Password Admin / Operator yang terdaftar di Firebase untuk masuk ke sistem.</p>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Email / Username Admin</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" id="gateEmailInput" placeholder="operator@sdngedongboyountung.sch.id" class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1.5">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="gatePasswordInput" placeholder="••••••••" class="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+                    </div>
+                </div>
+                <button type="button" onclick="executeGateLogin()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg transition cursor-pointer flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-right-to-bracket text-sm"></i><span>Masuk ke Sistem Buku Induk</span>
+                </button>
+            </div>
+            <div class="bg-slate-50 p-4 border-t text-center text-[11px] text-slate-500">
+                Penyimpanan Permanen Terintegrasi Firebase Cloud Firestore
+            </div>
+        </div>
+    </div>
+
     <!-- ENGINE JAVASCRIPT UTAMA & AUTO-SYNC FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -1561,6 +1598,15 @@
                     if (btnLabel) {
                         btnLabel.innerText = u && !u.isAnonymous ? (u.email || 'Admin') : 'Login Admin';
                     }
+                    const gate = document.getElementById('fullScreenLoginGate');
+                    if (gate) {
+                        if (u && !u.isAnonymous) {
+                            gate.classList.add('hidden');
+                        } else {
+                            // Jika belum login via email/password, tampilkan gerbang login
+                            gate.classList.remove('hidden');
+                        }
+                    }
                 });
 
                 const docRef = getMainDatabaseDocRef();
@@ -1626,11 +1672,31 @@
                 const cred = await signInWithEmailAndPassword(auth, email, password);
                 currentUser = cred.user;
                 closeLoginModal();
+                document.getElementById('fullScreenLoginGate')?.classList.add('hidden');
                 showNotification(`Berhasil login sebagai ${currentUser.email || email}!`, 'success');
                 refreshAllViews();
             } catch (err) {
                 console.error("Login error:", err);
                 showNotification('Gagal login: ' + err.message, 'error');
+            }
+        }
+
+        async function executeGateLogin() {
+            const email = document.getElementById('gateEmailInput').value.trim();
+            const password = document.getElementById('gatePasswordInput').value.trim();
+            if (!email || !password) {
+                showNotification('Email dan password wajib diisi!', 'error');
+                return;
+            }
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                currentUser = cred.user;
+                document.getElementById('fullScreenLoginGate').classList.add('hidden');
+                showNotification(`Selamat datang kembali, ${currentUser.email || email}!`, 'success');
+                refreshAllViews();
+            } catch (err) {
+                console.error("Gate login error:", err);
+                showNotification('Gagal masuk: ' + err.message, 'error');
             }
         }
 
@@ -3563,7 +3629,7 @@
             cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel,
             saveGlobalSchoolSettings, handleGlobalSearch, handleChangeAcademicYear,
             openAuditLogModal, closeAuditLogModal, openConfirmDeleteModal, closeConfirmDeleteModal,
-            executeConfirmedDelete, openLoginModal, closeLoginModal, executeFirebaseLogin,
+            executeConfirmedDelete, openLoginModal, closeLoginModal, executeFirebaseLogin, executeGateLogin,
             retryLoadFirebaseData, useOfflineBackupAndCloseLoading
         });
 
