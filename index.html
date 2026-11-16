@@ -119,7 +119,7 @@
             </div>
         </aside>
 
-        <!-- Bottom Navigation Bar (Mobile HP Android - Lengkap Semua Menu) -->
+        <!-- Bottom Navigation Bar (Mobile HP Android) -->
         <nav class="no-print md:hidden fixed bottom-0 inset-x-0 bg-slate-900 text-slate-300 border-t border-slate-800 z-50 flex overflow-x-auto items-center py-2 px-2 space-x-4 text-[10px] shadow-2xl">
             <button type="button" onclick="switchTab('dashboard')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 text-indigo-400" data-tab="dashboard">
                 <i class="fa-solid fa-house text-base"></i><span>Dasbor</span>
@@ -137,7 +137,7 @@
                 <i class="fa-solid fa-chalkboard-user text-base text-amber-400"></i><span>Guru</span>
             </button>
             <button type="button" onclick="switchTab('mata-pelajaran')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="mata-pelajaran">
-                <i class="fa-solid fa-book text-base text-pink-400"></i><span>Mapel & TP</span>
+                <i class="fa-solid fa-book text-base text-pink-400"></i><span>Mapel</span>
             </button>
             <button type="button" onclick="switchTab('nilai-rapor')" class="mobile-nav-item flex flex-col items-center space-y-1 shrink-0 px-2 hover:text-white" data-tab="nilai-rapor">
                 <i class="fa-solid fa-graduation-cap text-base text-purple-400"></i><span>Nilai</span>
@@ -179,7 +179,7 @@
                         </select>
                     </div>
 
-                    <!-- Indikator Status Sinkronisasi Real-Time (Tanpa Tampilan Merah Permanen) -->
+                    <!-- Indikator Status Sinkronisasi Real-Time -->
                     <div id="cloudSyncBadge" class="bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none" title="Status sinkronisasi real-time dengan database Firebase Cloud Firestore">
                         <i id="cloudSyncIcon" class="fa-solid fa-spinner fa-spin text-blue-600"></i>
                         <span id="cloudSyncText" class="hidden xl:inline">Memuat data...</span>
@@ -226,7 +226,7 @@
                         </div>
                     </div>
 
-                    <!-- Statistik Cards (Dihitung Dinamis dari Data Aktual) -->
+                    <!-- Statistik Cards -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
                         <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex flex-col justify-between">
                             <span class="text-[11px] font-bold text-slate-500 uppercase">Total Siswa</span>
@@ -262,7 +262,6 @@
                         </div>
                     </div>
 
-                    <!-- Ringkasan Siswa per Kelas & Grafik -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 flex flex-col">
                             <h3 class="font-bold text-sm text-slate-900 mb-4"><i class="fa-solid fa-list-ol text-indigo-600 mr-2"></i>Ringkasan Siswa per Kelas</h3>
@@ -444,7 +443,9 @@
                             <div id="biSec-C" class="bi-section-pane hidden space-y-4 text-xs">
                                 <div class="flex justify-between items-center border-b pb-2">
                                     <h3 class="font-bold text-sm text-slate-900"><i class="fa-solid fa-graduation-cap text-purple-600 mr-2"></i>C. Rekapitulasi Hasil Belajar & Tujuan Pembelajaran (TP)</h3>
-                                    <button type="button" onclick="saveMatrixGradesFromBI()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-solid fa-floppy-disk mr-1"></i>Simpan Matriks Nilai</button>
+                                    <div class="flex items-center space-x-2">
+                                        <button type="button" onclick="saveMatrixGradesFromBI()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-solid fa-floppy-disk mr-1"></i>Simpan Matriks Nilai</button>
+                                    </div>
                                 </div>
                                 <p class="text-slate-500 text-[11px]">Anda dapat mengisi nilai (0-100) serta Tujuan Pembelajaran (TP) untuk setiap mata pelajaran di setiap tingkat kelas dan semester.</p>
                                 <div class="overflow-x-auto">
@@ -606,7 +607,7 @@
                                     <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Sekolah</label><input type="text" id="biSignKepsekNama" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold"></div>
                                     <div><label class="block font-semibold text-slate-700 mb-1">NIP Kepala Sekolah</label><input type="text" id="biSignKepsekNip" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
                                     <div>
-                                        <label class="block font-semibold text-slate-700 mb-1">Wali Kelas (Otomatis / Pilih)</label>
+                                        <label class="block font-semibold text-slate-700 mb-1">Wali Kelas</label>
                                         <select id="biSignWaliSelect" onchange="autoFillWaliNip(this.value)" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold"></select>
                                     </div>
                                     <div><label class="block font-semibold text-slate-700 mb-1">NIP Wali Kelas</label><input type="text" id="biSignWaliNip" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
@@ -618,7 +619,7 @@
                         </div>
                     </div>
 
-                    <!-- SUB-VIEW: PREVIEW & CETAK FLEKSIBEL -->
+                    <!-- SUB-VIEW: PREVIEW & CETAK -->
                     <div id="biSubViewPreview" class="hidden space-y-4">
                         <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200 flex flex-wrap items-center justify-between gap-4">
                             <div class="flex flex-wrap items-center gap-3">
@@ -638,7 +639,7 @@
                                     <i class="fa-solid fa-print"></i><span>Cetak / PDF</span>
                                 </button>
                                 <button type="button" onclick="showBukuIndukSubView('list')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-3.5 py-2 rounded-xl text-xs transition cursor-pointer flex items-center space-x-1">
-                                    <i class="fa-solid fa-arrow-left"></i><span>Tutup / Kembali</span>
+                                    <i class="fa-solid fa-arrow-left"></i><span>Tutup</span>
                                 </button>
                             </div>
                         </div>
@@ -697,20 +698,12 @@
                     <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                             <div>
-                                <h3 class="font-bold text-base text-slate-900"><i class="fa-solid fa-chalkboard-user text-amber-600 mr-2"></i>Data Guru & Pegawai SDN Gedongboyountung</h3>
-                                <p class="text-xs text-slate-500">Penugasan guru otomatis terhubung ke Wali Kelas pada Bagian H Buku Induk.</p>
+                                <h3 class="font-bold text-base text-slate-900"><i class="fa-solid fa-chalkboard-user text-amber-600 mr-2"></i>Data Guru & Pegawai</h3>
+                                <p class="text-xs text-slate-500">Penugasan wali kelas terhubung ke Buku Induk Bagian H.</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
-                                <button type="button" onclick="downloadTemplateGuru()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3.5 py-2 rounded-xl text-xs transition cursor-pointer">
-                                    <i class="fa-solid fa-download mr-1"></i>Template Guru (.xlsx)
-                                </button>
-                                <label class="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-3.5 py-2 rounded-xl text-xs transition cursor-pointer">
-                                    <i class="fa-solid fa-file-excel mr-1"></i>Impor Excel Guru
-                                    <input type="file" accept=".xlsx, .xls" onchange="handleDirectImportGuru(event)" class="hidden">
-                                </label>
-                                <button type="button" onclick="openAddGuruModal()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow cursor-pointer flex items-center space-x-1.5">
-                                    <i class="fa-solid fa-user-plus"></i><span>Tambah Guru</span>
-                                </button>
+                                <button type="button" onclick="downloadTemplateGuru()" class="bg-slate-800 text-white font-semibold px-3.5 py-2 rounded-xl text-xs cursor-pointer"><i class="fa-solid fa-download mr-1"></i>Template (.xlsx)</button>
+                                <button type="button" onclick="openAddGuruModal()" class="bg-amber-600 text-white font-bold px-4 py-2 rounded-xl text-xs shadow cursor-pointer"><i class="fa-solid fa-user-plus mr-1"></i>Tambah Guru</button>
                             </div>
                         </div>
                         <div class="overflow-x-auto">
@@ -732,17 +725,15 @@
                     </div>
                 </section>
 
-                <!-- TAB 5: MATA PELAJARAN & TUJUAN PEMBELAJARAN (TP) -->
+                <!-- TAB 5: MATA PELAJARAN & TP -->
                 <section id="tab-mata-pelajaran" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h3 class="font-bold text-base text-slate-900"><i class="fa-solid fa-book text-pink-600 mr-2"></i>Konfigurasi Mata Pelajaran & Tujuan Pembelajaran (TP)</h3>
-                                <p class="text-xs text-slate-500">Atur mata pelajaran Kurikulum Merdeka dan rincian Tujuan Pembelajaran (TP) per tingkat kelas & semester.</p>
+                                <h3 class="font-bold text-base text-slate-900"><i class="fa-solid fa-book text-pink-600 mr-2"></i>Konfigurasi Mata Pelajaran & TP</h3>
+                                <p class="text-xs text-slate-500">Atur mata pelajaran Kurikulum Merdeka dan rincian Tujuan Pembelajaran (TP).</p>
                             </div>
-                            <button type="button" onclick="openAddMapelModal()" class="bg-pink-600 hover:bg-pink-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow cursor-pointer">
-                                <i class="fa-solid fa-plus mr-1"></i>Tambah Mata Pelajaran
-                            </button>
+                            <button type="button" onclick="openAddMapelModal()" class="bg-pink-600 text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer"><i class="fa-solid fa-plus mr-1"></i>Tambah Mapel</button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs border-collapse">
@@ -769,9 +760,7 @@
                                 <h3 class="font-bold text-base text-slate-900"><i class="fa-solid fa-graduation-cap text-purple-600 mr-2"></i>Manajemen Nilai & Rapor Peserta Didik</h3>
                                 <p class="text-xs text-slate-500">Nilai tersimpan permanen per tahun pelajaran dan otomatis terintegrasi ke Buku Induk Bagian C.</p>
                             </div>
-                            <button type="button" onclick="openInputNilaiModal()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow cursor-pointer">
-                                <i class="fa-solid fa-plus mr-1"></i>Input Nilai Satuan
-                            </button>
+                            <button type="button" onclick="openInputNilaiModal()" class="bg-purple-600 text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer"><i class="fa-solid fa-plus mr-1"></i>Input Nilai Satuan</button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs border-collapse">
@@ -799,11 +788,9 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-base text-slate-900"><i class="fa-solid fa-right-left text-cyan-600 mr-2"></i>Mutasi, Kenaikan Kelas & Kelulusan (Bagian G)</h3>
-                                <p class="text-xs text-slate-500">Kelola kenaikan kelas massal atau per siswa dengan riwayat terarsip aman tanpa menimpa data lama.</p>
+                                <p class="text-xs text-slate-500">Kelola kenaikan kelas massal atau per siswa.</p>
                             </div>
-                            <button type="button" onclick="openKenaikanKelasModal()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow cursor-pointer">
-                                <i class="fa-solid fa-stairs mr-1"></i>Proses Kenaikan / Lulus Massal
-                            </button>
+                            <button type="button" onclick="openKenaikanKelasModal()" class="bg-cyan-600 text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer"><i class="fa-solid fa-stairs mr-1"></i>Proses Kenaikan Massal</button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs border-collapse">
@@ -823,21 +810,35 @@
                     </div>
                 </section>
 
-                <!-- TAB 8: IMPOR & EKSPOR EXCEL -->
+                <!-- TAB 8: IMPOR & EKSPOR EXCEL (TERMASUK SMART IMPORTER E-RAPOR KEMENDIKBUD) -->
                 <section id="tab-import-ekspor" class="tab-content hidden space-y-6">
+                    <!-- FITUR UTAMA BARU: SMART IMPORTER E-RAPOR KEMENDIKBUD -->
+                    <div class="bg-gradient-to-r from-teal-900 via-teal-800 to-emerald-900 rounded-3xl p-6 md:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div class="space-y-1">
+                                <span class="bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">FITUR BARU KHUSUS e-RAPOR KEMDIKBUD</span>
+                                <h3 class="text-xl font-extrabold tracking-tight">Smart Importer Leger e-Rapor (.xlsx)</h3>
+                                <p class="text-xs text-teal-100 max-w-2xl leading-relaxed">Unggah file Excel Leger e-Rapor resmi dari sekolah Anda. Sistem akan secara otomatis mencocokkan NISN siswa dan menyuntikkan nilai lengkap dengan rekapitulasi kehadiran dan ekstrakurikuler ke Buku Induk Digital!</p>
+                            </div>
+                            <label class="bg-white text-teal-900 hover:bg-teal-50 font-extrabold px-5 py-3 rounded-2xl text-xs transition shadow-lg cursor-pointer flex items-center space-x-2 shrink-0">
+                                <i class="fa-solid fa-file-excel text-emerald-600 text-base"></i>
+                                <span>Pilih File Leger e-Rapor (.xlsx)</span>
+                                <input type="file" accept=".xlsx, .xls" onchange="handleSmartImportERapor(event)" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
                             <div class="space-y-3">
                                 <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-user-plus"></i></div>
-                                <h3 class="font-bold text-sm text-slate-900">1. Impor Data Peserta Didik</h3>
-                                <p class="text-xs text-slate-500">Gunakan template Excel standar untuk mengimpor data identitas siswa baru secara massal dengan validasi aman.</p>
+                                <h3 class="font-bold text-sm text-slate-900">Impor Data Peserta Didik</h3>
+                                <p class="text-xs text-slate-500">Gunakan template Excel standar untuk mengimpor identitas siswa baru.</p>
                             </div>
                             <div class="space-y-2 pt-2">
-                                <button type="button" onclick="downloadTemplateSiswa()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">
-                                    <i class="fa-solid fa-download mr-1.5"></i>Unduh Template Siswa (.xlsx)
-                                </button>
+                                <button type="button" onclick="downloadTemplateSiswa()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Unduh Template Siswa (.xlsx)</button>
                                 <label class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
-                                    <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Excel Siswa
+                                    <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Siswa
                                     <input type="file" accept=".xlsx, .xls" onchange="handleImportSiswa(event)" class="hidden">
                                 </label>
                             </div>
@@ -846,15 +847,13 @@
                         <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
                             <div class="space-y-3">
                                 <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-graduation-cap"></i></div>
-                                <h3 class="font-bold text-sm text-slate-900">2. Impor Nilai Rapor Kelas</h3>
-                                <p class="text-xs text-slate-500">Impor nilai rapor semester untuk langsung terisi pada matriks Buku Induk Bagian C.</p>
+                                <h3 class="font-bold text-sm text-slate-900">Impor Nilai Rapor Standar</h3>
+                                <p class="text-xs text-slate-500">Impor nilai rapor format reguler.</p>
                             </div>
                             <div class="space-y-2 pt-2">
-                                <button type="button" onclick="downloadTemplateNilai()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">
-                                    <i class="fa-solid fa-download mr-1.5"></i>Unduh Template Nilai (.xlsx)
-                                </button>
+                                <button type="button" onclick="downloadTemplateNilai()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Unduh Template Nilai (.xlsx)</button>
                                 <label class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
-                                    <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Excel Nilai
+                                    <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Nilai
                                     <input type="file" accept=".xlsx, .xls" onchange="handleImportNilai(event)" class="hidden">
                                 </label>
                             </div>
@@ -863,15 +862,13 @@
                         <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
                             <div class="space-y-3">
                                 <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-chalkboard-user"></i></div>
-                                <h3 class="font-bold text-sm text-slate-900">3. Impor Data Guru & Pegawai</h3>
-                                <p class="text-xs text-slate-500">Impor data guru dan penugasan wali kelas untuk pengesahan Buku Induk Bagian H.</p>
+                                <h3 class="font-bold text-sm text-slate-900">Impor Data Guru & Pegawai</h3>
+                                <p class="text-xs text-slate-500">Impor data guru dan penugasan wali kelas.</p>
                             </div>
                             <div class="space-y-2 pt-2">
-                                <button type="button" onclick="downloadTemplateGuru()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">
-                                    <i class="fa-solid fa-download mr-1.5"></i>Unduh Template Guru (.xlsx)
-                                </button>
+                                <button type="button" onclick="downloadTemplateGuru()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Unduh Template Guru (.xlsx)</button>
                                 <label class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
-                                    <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Excel Guru
+                                    <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Guru
                                     <input type="file" accept=".xlsx, .xls" onchange="handleImportGuru(event)" class="hidden">
                                 </label>
                             </div>
@@ -893,19 +890,19 @@
                     <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xs border border-slate-200 space-y-6 w-full">
                         <div class="border-b border-slate-100 pb-4">
                             <h2 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-school text-indigo-600 mr-2"></i>Identitas Satuan Pendidikan & Pengaturan</h2>
-                            <p class="text-xs text-slate-500 mt-1">Data ini otomatis digunakan pada Bagian A Buku Induk dan Kop Cetak Resmi serta tersimpan permanen di Firebase Cloud Firestore.</p>
+                            <p class="text-xs text-slate-500 mt-1">Data ini otomatis digunakan pada Bagian A Buku Induk dan Kop Cetak Resmi serta tersimpan permanen di Firebase.</p>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-xs">
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">Nama Sekolah</label><input type="text" id="setSchNama" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">NPSN</label><input type="text" id="setSchNpsn" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">Tahun Berdiri</label><input type="text" id="setSchTahun" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div class="sm:col-span-2 lg:col-span-3"><label class="block font-semibold text-slate-700 mb-1.5">Alamat Sekolah</label><input type="text" id="setSchAlamat" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">Desa / Kelurahan</label><input type="text" id="setSchDesa" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">Kecamatan</label><input type="text" id="setSchKec" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">Kabupaten / Kota</label><input type="text" id="setSchKab" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">Provinsi</label><input type="text" id="setSchProv" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">Nama Kepala Sekolah</label><input type="text" id="setSchKepsek" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1.5">NIP Kepala Sekolah</label><input type="text" id="setSchNipKepsek" class="w-full bg-slate-50 focus:bg-white border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Nama Sekolah</label><input type="text" id="setSchNama" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">NPSN</label><input type="text" id="setSchNpsn" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Tahun Berdiri</label><input type="text" id="setSchTahun" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                            <div class="sm:col-span-2 lg:col-span-3"><label class="block font-semibold text-slate-700 mb-1.5">Alamat Sekolah</label><input type="text" id="setSchAlamat" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Desa / Kelurahan</label><input type="text" id="setSchDesa" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Kecamatan</label><input type="text" id="setSchKec" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Kabupaten / Kota</label><input type="text" id="setSchKab" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Provinsi</label><input type="text" id="setSchProv" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">Nama Kepala Sekolah</label><input type="text" id="setSchKepsek" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold"></div>
+                            <div><label class="block font-semibold text-slate-700 mb-1.5">NIP Kepala Sekolah</label><input type="text" id="setSchNipKepsek" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
                         </div>
                         <div class="pt-2 border-t border-slate-100 flex justify-end">
                             <button type="button" onclick="saveGlobalSchoolSettings()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition shadow cursor-pointer flex items-center space-x-2">
@@ -918,7 +915,7 @@
         </div>
     </div>
 
-    <!-- LOADING OVERLAY SAAT MEMUAT DATA FIREBASE -->
+    <!-- LOADING OVERLAY -->
     <div id="initialLoadingOverlay" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl px-6 py-5 flex flex-col items-center space-y-4 border border-slate-200 max-w-md w-full text-center">
             <div id="loadingSpinnerBox" class="flex items-center space-x-4 text-left w-full">
@@ -929,9 +926,48 @@
                 </div>
             </div>
             <div id="loadingErrorActions" class="hidden w-full pt-2 border-t border-slate-100 flex justify-end space-x-2">
-                <button type="button" onclick="useOfflineBackupAndCloseLoading()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Buka Data Tersimpan</button>
-                <button type="button" onclick="retryLoadFirebaseData()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow cursor-pointer flex items-center space-x-1.5">
-                    <i class="fa-solid fa-rotate"></i><span>Muat Ulang Data</span>
+                <button type="button" onclick="useOfflineBackupAndCloseLoading()" class="px-3.5 py-2 bg-slate-100 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Buka Data Tersimpan</button>
+                <button type="button" onclick="retryLoadFirebaseData()" class="px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow cursor-pointer">Muat Ulang</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SMART IMPORTER e-RAPOR KEMDIKBUD (DENGAN PRATINJAU NISN) -->
+    <div id="eRaporPreviewModal" class="no-print fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh] border border-slate-200">
+            <div class="bg-gradient-to-r from-teal-900 to-emerald-900 text-white p-5 flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-sm tracking-wide"><i class="fa-solid fa-file-excel mr-2 text-emerald-400"></i>Pratinjau Impor Leger e-Rapor Kemendikbud</h3>
+                    <p class="text-[11px] text-teal-200" id="eRaporMetaInfo">Kelas 5 • T.P. 2025/2026 Genap</p>
+                </div>
+                <button type="button" onclick="closeERaporModal()" class="text-teal-200 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 text-xs flex-1">
+                <div class="bg-teal-50 border border-teal-200 p-3 rounded-xl text-teal-900 flex items-start space-x-2.5">
+                    <i class="fa-solid fa-circle-info text-teal-600 text-base mt-0.5"></i>
+                    <p class="text-[11px] leading-relaxed">Sistem mencocokkan baris e-Rapor dengan data peserta didik di database berdasarkan <b>NISN</b>. Baris berstatus hijau berarti NISN ditemukan di Buku Induk, sedangkan baris merah berarti NISN belum terdaftar di aplikasi Anda.</p>
+                </div>
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 font-bold text-slate-700 border-b">
+                                <th class="p-3">Status Pencocokan NISN</th>
+                                <th class="p-3">NISN</th>
+                                <th class="p-3">NIS</th>
+                                <th class="p-3">Nama Siswa di Leger</th>
+                                <th class="p-3 text-center">Jumlah Mapel Dinilai</th>
+                                <th class="p-3 text-center">Absensi (S/I/A)</th>
+                                <th class="p-3">Ekskul</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eRaporPreviewTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bg-slate-50 p-4 border-t flex justify-end space-x-3">
+                <button type="button" onclick="closeERaporModal()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batalkan</button>
+                <button type="button" onclick="confirmCommitERaporImport()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-lg cursor-pointer flex items-center space-x-1.5">
+                    <i class="fa-solid fa-cloud-arrow-up"></i><span>Konfirmasi & Suntikkan Nilai ke Buku Induk</span>
                 </button>
             </div>
         </div>
@@ -976,8 +1012,6 @@
                     <div><label class="block font-semibold text-slate-700 mb-1">Pekerjaan Ayah</label><input type="text" id="modalPekerjaanAyah" class="w-full bg-slate-50 border border-slate-300 p-2 rounded-xl"></div>
                     <div><label class="block font-semibold text-slate-700 mb-1">Nama Ibu *</label><input type="text" id="modalIbu" class="w-full bg-slate-50 border border-slate-300 p-2 rounded-xl"></div>
                     <div><label class="block font-semibold text-slate-700 mb-1">Pekerjaan Ibu</label><input type="text" id="modalPekerjaanIbu" class="w-full bg-slate-50 border border-slate-300 p-2 rounded-xl"></div>
-                    <div><label class="block font-semibold text-slate-700 mb-1">Wali</label><input type="text" id="modalWali" class="w-full bg-slate-50 border border-slate-300 p-2 rounded-xl" value="-"></div>
-                    <div><label class="block font-semibold text-slate-700 mb-1">Kontak Wali</label><input type="text" id="modalKontakWali" class="w-full bg-slate-50 border border-slate-300 p-2 rounded-xl" value="-"></div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 pt-2 border-t">
                     <div><label class="block font-semibold text-slate-700 mb-1">Asal Sekolah</label><input type="text" id="modalAsalSekolah" class="w-full bg-slate-50 border border-slate-300 p-2 rounded-xl" value="TK Dharma Wanita"></div>
@@ -999,7 +1033,7 @@
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
                 <button type="button" onclick="closeStudentModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
-                <button type="button" id="btnSaveStudentModal" onclick="saveStudentData()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow hover:bg-indigo-500 cursor-pointer flex items-center space-x-1.5"><i class="fa-solid fa-floppy-disk"></i><span>Simpan</span></button>
+                <button type="button" id="btnSaveStudentModal" onclick="saveStudentData()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow hover:bg-indigo-500 cursor-pointer">Simpan</button>
             </div>
         </div>
     </div>
@@ -1027,12 +1061,12 @@
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
                 <button type="button" onclick="closeGuruModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
-                <button type="button" onclick="saveGuruData()" class="px-5 py-2 bg-amber-600 text-white rounded-xl font-bold text-xs shadow hover:bg-amber-500 cursor-pointer"><i class="fa-solid fa-floppy-disk mr-1"></i>Simpan</button>
+                <button type="button" onclick="saveGuruData()" class="px-5 py-2 bg-amber-600 text-white rounded-xl font-bold text-xs shadow hover:bg-amber-500 cursor-pointer">Simpan</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL MAPEL & TUJUAN PEMBELAJARAN (TP) -->
+    <!-- MODAL MAPEL -->
     <div id="mapelModal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col">
             <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
@@ -1105,7 +1139,7 @@
                 <button type="button" onclick="closeKenaikanKelasModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 space-y-4 text-xs">
-                <p class="text-slate-600">Pilih tingkat kelas yang akan diproses kenaikannya ke tingkat kelas berikutnya untuk tahun pelajaran aktif saat ini:</p>
+                <p class="text-slate-600">Pilih tingkat kelas yang akan diproses kenaikannya ke tingkat kelas berikutnya:</p>
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Dari Kelas Asal:</label>
                     <select id="massKelasAsal" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold">
@@ -1119,7 +1153,7 @@
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
                 <button type="button" onclick="closeKenaikanKelasModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
-                <button type="button" onclick="executeKenaikanKelasMassal()" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold text-xs shadow cursor-pointer">Proses Kenaikan</button>
+                <button type="button" onclick="executeKenaikanKelasMassal()" class="px-5 py-2 bg-cyan-600 text-white rounded-xl font-bold text-xs shadow cursor-pointer">Proses Kenaikan</button>
             </div>
         </div>
     </div>
@@ -1128,36 +1162,36 @@
     <div id="auditLogModal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[85vh]">
             <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold text-sm"><i class="fa-solid fa-clock-rotate-left mr-2 text-indigo-400"></i>Riwayat Perubahan Data (Audit Log)</h3>
+                <h3 class="font-bold text-sm"><i class="fa-solid fa-clock-rotate-left mr-2 text-indigo-400"></i>Riwayat Perubahan Data</h3>
                 <button type="button" onclick="closeAuditLogModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 overflow-y-auto flex-1">
                 <table class="w-full text-left text-xs border-collapse">
-                    <thead><tr class="bg-slate-100 text-slate-600 font-bold border-b"><th class="p-2.5">Waktu</th><th class="p-2.5">Pengguna</th><th class="p-2.5">Aksi</th></tr></thead>
+                    <thead><tr class="bg-slate-100 font-bold border-b"><th class="p-2.5">Waktu</th><th class="p-2.5">Pengguna</th><th class="p-2.5">Aksi</th></tr></thead>
                     <tbody id="auditLogTableBody" class="divide-y divide-slate-100"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- MODAL KONFIRMASI HAPUS KUSTOM -->
+    <!-- MODAL KONFIRMASI HAPUS -->
     <div id="confirmDeleteModal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col border border-slate-200">
             <div class="bg-rose-600 text-white p-4 flex justify-between items-center">
-                <h3 id="confirmDeleteTitle" class="font-bold text-sm flex items-center"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Konfirmasi Hapus</h3>
+                <h3 id="confirmDeleteTitle" class="font-bold text-sm"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Konfirmasi Hapus</h3>
                 <button type="button" onclick="closeConfirmDeleteModal()" class="text-rose-200 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-6 text-xs text-slate-700 space-y-2">
+            <div class="p-6 text-xs text-slate-700">
                 <p id="confirmDeleteMessage" class="font-semibold text-slate-900 text-sm leading-relaxed">Apakah Anda yakin ingin menghapus data ini?</p>
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
-                <button type="button" onclick="closeConfirmDeleteModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
-                <button type="button" onclick="executeConfirmedDelete()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-bold text-xs shadow cursor-pointer flex items-center space-x-1.5"><i class="fa-solid fa-trash"></i><span>Ya, Hapus</span></button>
+                <button type="button" onclick="closeConfirmDeleteModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
+                <button type="button" onclick="executeConfirmedDelete()" class="px-4 py-2 bg-rose-600 text-white rounded-xl font-bold text-xs shadow cursor-pointer">Ya, Hapus</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL LOGIN FIREBASE AUTH -->
+    <!-- MODAL LOGIN -->
     <div id="loginModal" class="no-print fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col border border-slate-200">
             <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
@@ -1165,18 +1199,12 @@
                 <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 space-y-4 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Email / Username</label>
-                    <input type="email" id="loginEmailInput" placeholder="operator@sdngedongboyountung.sch.id" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Password</label>
-                    <input type="password" id="loginPasswordInput" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                </div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Email / Username</label><input type="email" id="loginEmailInput" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Password</label><input type="password" id="loginPasswordInput" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
                 <button type="button" onclick="closeLoginModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
-                <button type="button" onclick="executeFirebaseLogin()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow cursor-pointer"><i class="fa-solid fa-right-to-bracket mr-1"></i>Masuk</button>
+                <button type="button" onclick="executeFirebaseLogin()" class="px-5 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow cursor-pointer">Masuk</button>
             </div>
         </div>
     </div>
@@ -1187,60 +1215,44 @@
         <span id="toastMessage">Berhasil menyimpan perubahan data.</span>
     </div>
 
-    <!-- FULL SCREEN ADMIN LOGIN GATE (GERBANG LOGIN UTAMA) -->
+    <!-- FULL SCREEN ADMIN LOGIN GATE -->
     <div id="fullScreenLoginGate" class="no-print fixed inset-0 bg-slate-950 z-[100] flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col border border-slate-200 animate-fade-in">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col border border-slate-200">
             <div class="bg-gradient-to-tr from-indigo-900 to-blue-900 text-white p-8 text-center space-y-2">
-                <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center font-extrabold text-white text-2xl mx-auto shadow-lg border border-white/20">BI</div>
+                <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center font-extrabold text-white text-2xl mx-auto shadow-lg border border-white/20">BI</div>
                 <h1 class="font-extrabold text-lg tracking-tight text-white">BUKU INDUK DIGITAL</h1>
                 <p class="text-xs text-indigo-200">SDN Gedongboyountung - Kec. Turi, Kab. Lamongan</p>
             </div>
             <div class="p-8 space-y-4 text-xs">
                 <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-2xl text-indigo-900 flex items-start space-x-2.5">
                     <i class="fa-solid fa-shield-halved text-indigo-600 text-base mt-0.5"></i>
-                    <p class="text-[11px] leading-relaxed">Silakan masukkan akun Email/Username dan Password Admin / Operator yang terdaftar di Firebase untuk masuk ke sistem.</p>
+                    <p class="text-[11px] leading-relaxed">Silakan masukkan akun Email dan Password Admin / Operator yang terdaftar di Firebase untuk masuk ke sistem.</p>
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-700 mb-1.5">Email / Username Admin</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" id="gateEmailInput" placeholder="operator@sdngedongboyountung.sch.id" class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
-                    </div>
-                </div>
-                <div>
-                    <label class="block font-bold text-slate-700 mb-1.5">Password</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="gatePasswordInput" placeholder="••••••••" class="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
-                    </div>
-                </div>
-                <button type="button" onclick="executeGateLogin()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg transition cursor-pointer flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-right-to-bracket text-sm"></i><span>Masuk ke Sistem Buku Induk</span>
-                </button>
+                <div><label class="block font-bold text-slate-700 mb-1.5">Email / Username</label><input type="email" id="gateEmailInput" placeholder="operator@sdngedongboyountung.sch.id" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl"></div>
+                <div><label class="block font-bold text-slate-700 mb-1.5">Password</label><input type="password" id="gatePasswordInput" placeholder="••••••••" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl"></div>
+                <button type="button" onclick="executeGateLogin()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg cursor-pointer">Masuk ke Sistem Buku Induk</button>
             </div>
-            <div class="bg-slate-50 p-4 border-t text-center text-[11px] text-slate-500">
-                Penyimpanan Permanen Terintegrasi Firebase Cloud Firestore
-            </div>
+            <div class="bg-slate-50 p-4 border-t text-center text-[11px] text-slate-500">Penyimpanan Permanen Terintegrasi Firebase Cloud Firestore</div>
         </div>
     </div>
 
-    <!-- ENGINE JAVASCRIPT UTAMA & AUTO-SYNC FIREBASE -->
+    <!-- ENGINE JAVASCRIPT & SMART IMPORTER E-RAPOR -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithEmailAndPassword, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const defaultFirebaseConfig = {
-  apiKey: "AIzaSyC4ZqHyxmc90BSg9fPCEoWAtThJnol-LWg",
-  authDomain: "induk-5853c.firebaseapp.com",
-  projectId: "induk-5853c",
-  storageBucket: "induk-5853c.firebasestorage.app",
-  messagingSenderId: "856741474795",
-  appId: "1:856741474795:web:bdbe3533df04ab1dbaa9ae"
+            apiKey: "AIzaSyC4ZqHyxmc90BSg9fPCEoWAtThJnol-LWg",
+            authDomain: "induk-5853c.firebaseapp.com",
+            projectId: "induk-5853c",
+            storageBucket: "induk-5853c.firebasestorage.app",
+            messagingSenderId: "856741474795",
+            appId: "1:856741474795:web:bdbe3533df04ab1dbaa9ae"
         };
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'buku-induk-sdn-gedongboyountung';
-        const LOCAL_BACKUP_KEY = 'BUKU_INDUK_SDN_GEDONGBOYOUNTUNG_STATE_V2';
+        const LOCAL_BACKUP_KEY = 'BUKU_INDUK_SDN_GEDONGBOYOUNTUNG_STATE_V3';
         let db = null;
         let auth = null;
         let currentUser = null;
@@ -1248,33 +1260,20 @@
         let isInitialLoadDone = false;
         let isSavingInProgress = false;
         let unsubscribeSnapshot = null;
+        let parsedERaporCache = null; // Buffer penyimpanan sementara hasil parsing e-Rapor
 
         function saveToLocalBackup() {
             try {
-                const payloadObj = {
-                    schoolIdentity,
-                    studentsData,
-                    guruData,
-                    mapelData,
-                    nilaiData,
-                    bukuIndukRecords,
-                    auditLogs
-                };
+                const payloadObj = { schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs };
                 localStorage.setItem(LOCAL_BACKUP_KEY, JSON.stringify(payloadObj));
-            } catch (e) {
-                console.warn('Local backup warning:', e);
-            }
+            } catch (e) { console.warn('Local backup warning:', e); }
         }
 
         function loadFromLocalBackup() {
             try {
                 const raw = localStorage.getItem(LOCAL_BACKUP_KEY);
-                if (raw) {
-                    return JSON.parse(raw);
-                }
-            } catch (e) {
-                console.warn('Local load warning:', e);
-            }
+                if (raw) return JSON.parse(raw);
+            } catch (e) { console.warn('Local load warning:', e); }
             return null;
         }
 
@@ -1319,7 +1318,7 @@
             tahunBerdiri: '2008',
             kepsek: 'Siti Rahayu, S.Pd.',
             nipKepsek: '19681231 199003 2 001',
-            activeTp: '2026/2027'
+            activeTp: '2025/2026'
         };
 
         let studentsData = [];
@@ -1337,82 +1336,79 @@
         function getInitialDefaultData() {
             const initialStudents = [
                 {
-                    id: '1', nis: '001', nisn: '0112345678', nama: 'ACHMAD ALBY ANANDIO', gender: 'Laki-laki',
-                    tempatLahir: 'Lamongan', tglLahir: '10 Januari 2014', agama: 'Islam', anakKe: 1, jmlSaudara: 2,
-                    alamat: 'Ds. Gedongboyountung, Kec. Turi, Kab. Lamongan', kontak: '081234567890',
-                    ayah: 'Sutrisno', pekerjaanAyah: 'Wiraswasta', ibu: 'Siti Aminah', pekerjaanIbu: 'Ibu Rumah Tangga',
-                    wali: '-', kontakWali: '-', asalSekolah: 'TK Dharma Wanita Gedongboyountung',
-                    tglMasuk: '18 Juli 2022', kelas: 'Kelas V', tahunMasuk: '2022/2023', status: 'Aktif'
+                    id: '1', nis: '1356', nisn: '0152331980', nama: 'CLARA OLIVIA EFENDI', gender: 'Perempuan',
+                    tempatLahir: 'Lamongan', tglLahir: '10 Januari 2015', agama: 'Islam', anakKe: 1, jmlSaudara: 1,
+                    alamat: 'Ds. Gedongboyountung, Kec. Turi', kontak: '081234567890',
+                    ayah: 'Ahmad Efendi', pekerjaanAyah: 'Wiraswasta', ibu: 'Siti Aminah', pekerjaanIbu: 'IRT',
+                    wali: '-', kontakWali: '-', asalSekolah: 'TK Dharma Wanita',
+                    tglMasuk: '15 Juli 2020', kelas: 'Kelas V', tahunMasuk: '2020/2021', status: 'Aktif'
                 },
                 {
-                    id: '2', nis: '002', nisn: '0112345679', nama: 'ADINDA PUTRI AYUNITA', gender: 'Perempuan',
-                    tempatLahir: 'Lamongan', tglLahir: '15 Maret 2014', agama: 'Islam', anakKe: 2, jmlSaudara: 2,
-                    alamat: 'Ds. Gedongboyountung, Kec. Turi, Kab. Lamongan', kontak: '081345678901',
-                    ayah: 'Joko Susilo', pekerjaanAyah: 'Petani', ibu: 'Sri Wahyuni', pekerjaanIbu: 'Pedagang',
-                    wali: '-', kontakWali: '-', asalSekolah: 'TK Dharma Wanita Gedongboyountung',
-                    tglMasuk: '18 Juli 2022', kelas: 'Kelas V', tahunMasuk: '2022/2023', status: 'Aktif'
+                    id: '2', nis: '1352', nisn: '0157983635', nama: 'FIQI ZILAN KANZA VALENTINA', gender: 'Perempuan',
+                    tempatLahir: 'Lamongan', tglLahir: '14 Februari 2015', agama: 'Islam', anakKe: 1, jmlSaudara: 2,
+                    alamat: 'Ds. Gedongboyountung, Kec. Turi', kontak: '081345678901',
+                    ayah: 'Supriyanto', pekerjaanAyah: 'Petani', ibu: 'Siti Rohmah', pekerjaanIbu: 'IRT',
+                    wali: '-', kontakWali: '-', asalSekolah: 'TK Dharma Wanita',
+                    tglMasuk: '15 Juli 2020', kelas: 'Kelas V', tahunMasuk: '2020/2021', status: 'Aktif'
+                },
+                {
+                    id: '3', nis: '1353', nisn: '0158276456', nama: 'MOHAMMAD KEVIN JAMALUDIN', gender: 'Laki-laki',
+                    tempatLahir: 'Lamongan', tglLahir: '20 Maret 2015', agama: 'Islam', anakKe: 2, jmlSaudara: 2,
+                    alamat: 'Ds. Gedongboyountung, Kec. Turi', kontak: '081567890123',
+                    ayah: 'Jamaludin', pekerjaanAyah: 'Swasta', ibu: 'Umi Kalsum', pekerjaanIbu: 'IRT',
+                    wali: '-', kontakWali: '-', asalSekolah: 'TK Dharma Wanita',
+                    tglMasuk: '15 Juli 2020', kelas: 'Kelas V', tahunMasuk: '2020/2021', status: 'Aktif'
+                },
+                {
+                    id: '4', nis: '1354', nisn: '3150494333', nama: 'NADIA IRENDRA PUTRI', gender: 'Perempuan',
+                    tempatLahir: 'Lamongan', tglLahir: '5 April 2015', agama: 'Islam', anakKe: 1, jmlSaudara: 1,
+                    alamat: 'Ds. Gedongboyountung, Kec. Turi', kontak: '081789012345',
+                    ayah: 'Budi Santoso', pekerjaanAyah: 'PNS', ibu: 'Dewi Lestari', pekerjaanIbu: 'Guru',
+                    wali: '-', kontakWali: '-', asalSekolah: 'TK Dharma Wanita',
+                    tglMasuk: '15 Juli 2020', kelas: 'Kelas V', tahunMasuk: '2020/2021', status: 'Aktif'
+                },
+                {
+                    id: '5', nis: '1355', nisn: '0158053394', nama: 'NOFITA TALITA ROHMAH', gender: 'Perempuan',
+                    tempatLahir: 'Lamongan', tglLahir: '12 Mei 2015', agama: 'Islam', anakKe: 2, jmlSaudara: 1,
+                    alamat: 'Ds. Gedongboyountung, Kec. Turi', kontak: '081901234567',
+                    ayah: 'Rohmad', pekerjaanAyah: 'Wiraswasta', ibu: 'Siti Nurhayati', pekerjaanIbu: 'IRT',
+                    wali: '-', kontakWali: '-', asalSekolah: 'TK Dharma Wanita',
+                    tglMasuk: '15 Juli 2020', kelas: 'Kelas V', tahunMasuk: '2020/2021', status: 'Aktif'
                 }
             ];
 
             const initialGuru = [
                 { id: 'g1', nama: 'Siti Rahayu, S.Pd.', nip: '19681231 199003 2 001', jabatan: 'Kepala Sekolah', waliKelas: '-', pendidikan: 'S1 PGSD' },
-                { id: 'g2', nama: 'Alfian Firdaus S, S.Pd., M.Pd.', nip: '19920817 201903 1 004', jabatan: 'Guru Kelas V / Operator', waliKelas: 'Kelas V', pendidikan: 'S2 Manajemen Pendidikan' },
-                { id: 'g3', nama: 'Martono, S.Pd.', nip: '19750312 199903 1 002', jabatan: 'Guru Kelas VI', waliKelas: 'Kelas VI', pendidikan: 'S1 PGSD' }
+                { id: 'g2', nama: 'Alfian Firdaus S, S.Pd., M.Pd.', nip: '19920817 201903 1 004', jabatan: 'Guru Kelas V / Operator', waliKelas: 'Kelas V', pendidikan: 'S2 Manajemen' }
             ];
 
             const initialMapel = [
-                { id: 'm1', nama: 'Pendidikan Agama dan Budi Pekerti', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Memahami rukun iman dan praktik ibadah sehari-hari.' },
-                { id: 'm2', nama: 'Pendidikan Pancasila', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Menerapkan nilai-nilai Pancasila dalam kehidupan bermasyarakat.' },
-                { id: 'm3', nama: 'Bahasa Indonesia', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Menulis teks narasi dan menyimpulkan informasi dari teks lisan.' },
-                { id: 'm4', nama: 'Matematika', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Menghitung operasi hitung pecahan dan volume bangun ruang.' },
-                { id: 'm5', nama: 'IPAS', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Menganalisis sistem organ pernapasan dan ekosistem lingkungan.' },
-                { id: 'm6', nama: 'PJOK', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Mempraktikkan variasi gerak dasar permainan bola besar.' },
-                { id: 'm7', nama: 'Seni', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Membuat karya seni rupa dua dan tiga dimensi.' },
-                { id: 'm8', nama: 'Bahasa Inggris', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Memahami kosakata percakapan dasar sehari-hari.' },
-                { id: 'm9', nama: 'Muatan Lokal 1 (Bahasa Jawa)', kelompok: 'Muatan Lokal', tp: 'Membaca dan menulis aksara Jawa dasar serta unggah-ungguh.' }
+                { id: 'm1', nama: 'Pendidikan Agama Islam dan Budi Pekerti', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Memahami rukun iman dan praktik ibadah.' },
+                { id: 'm2', nama: 'Pendidikan Pancasila', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Menerapkan nilai-nilai Pancasila.' },
+                { id: 'm3', nama: 'Bahasa Indonesia', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Menyimpulkan isi teks narasi.' },
+                { id: 'm4', nama: 'Matematika', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Operasi hitung pecahan dan volume.' },
+                { id: 'm5', nama: 'Ilmu Pengetahuan Alam dan Sosial (IPAS)', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Menganalisis sistem organ tubuh.' },
+                { id: 'm6', nama: 'Seni Rupa', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Membuat karya seni rupa.' },
+                { id: 'm7', nama: 'Pendidikan Jasmani, Olahraga, dan Kesehatan', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Gerak dasar permainan bola.' },
+                { id: 'm8', nama: 'Bahasa Inggris', kelompok: 'Wajib Kurikulum Merdeka', tp: 'Kosakata percakapan dasar.' },
+                { id: 'm9', nama: 'Bahasa Jawa', kelompok: 'Muatan Lokal', tp: 'Aksara Jawa dan unggah-ungguh.' },
+                { id: 'm10', nama: 'Bahasa Arab', kelompok: 'Muatan Lokal', tp: 'Kosakata bahasa Arab dasar.' },
+                { id: 'm11', nama: 'Koding dan Kecerdasan Artifisial', kelompok: 'Muatan Lokal', tp: 'Pengenalan algoritma dasar.' }
             ];
 
-            const initialNilai = [
-                { id: 'n1', studentId: '1', siswaNama: 'ACHMAD ALBY ANANDIO', tp: '2026/2027', kelas: 'Kelas V', semester: '1', mapel: 'Matematika', nilai: 86 }
-            ];
-
-            return { initialStudents, initialGuru, initialMapel, initialNilai };
+            return { initialStudents, initialGuru, initialMapel, initialNilai: [] };
         }
 
         function createDefaultBiRecord(student) {
-            const currentTp = schoolIdentity.activeTp || '2026/2027';
+            const currentTp = schoolIdentity.activeTp || '2025/2026';
             return {
-                habits: DEFAULT_HABITS_MASTER.map(h => ({
-                    no: h.no, nama: h.nama, indikator: h.indikator,
-                    catatan: 'Sudah terbiasa melaksanakan dengan baik dan konsisten.',
-                    tindakLanjut: 'Pertahankan pembiasaan positif di rumah dan sekolah.',
-                    periode: `${currentTp} - Sem 1`
-                })),
-                profiles: DEFAULT_PROFILES_MASTER.map(p => ({
-                    no: p.no, dimensi: p.dimensi,
-                    catatan: 'Berkembang sesuai harapan',
-                    bukti: 'Aktif dalam diskusi dan proyek kelas',
-                    tindakLanjut: 'Pendampingan berkelanjutan',
-                    periode: `${currentTp} - Sem 1`
-                })),
-                ekskul: [
-                    { nama: 'Pramuka', semester: 'I / II', keterangan: 'Sangat Aktif', pembina: 'Alfian Firdaus S, S.Pd.' }
-                ],
-                prestasi: [
-                    { jenis: 'Juara 2 Lomba Cerdas Cermat MIPA', tingkat: 'Kecamatan Turi', tahun: '2025', penyelenggara: 'Dinas Pendidikan Kec. Turi' }
-                ],
-                absensi: [
-                    { tp: currentTp, semester: '1', sakit: 1, izin: 1, alpa: 0, catatan: 'Kehadiran baik' }
-                ],
+                habits: DEFAULT_HABITS_MASTER.map(h => ({ no: h.no, nama: h.nama, indikator: h.indikator, catatan: 'Sudah terbiasa dengan baik.', tindakLanjut: 'Pertahankan.', periode: `${currentTp} - Genap` })),
+                profiles: DEFAULT_PROFILES_MASTER.map(p => ({ no: p.no, dimensi: p.dimensi, catatan: 'Berkembang sesuai harapan', bukti: 'Aktif dalam kegiatan', tindakLanjut: 'Pendampingan', periode: `${currentTp} - Genap` })),
+                ekskul: [{ nama: 'Pramuka', semester: 'Genap', keterangan: 'SB', pembina: 'Alfian Firdaus' }],
+                prestasi: [],
+                absensi: [{ tp: currentTp, semester: '2', sakit: 1, izin: 0, alpa: 0, catatan: 'Baik' }],
                 promotions: JSON.parse(JSON.stringify(DEFAULT_PROMOTIONS_TEMPLATE)),
-                sign: {
-                    tempat: 'Gedongboyountung',
-                    tanggal: '29 Oktober 2026',
-                    kepsekNama: schoolIdentity.kepsek,
-                    kepsekNip: schoolIdentity.nipKepsek,
-                    waliNama: 'Alfian Firdaus S, S.Pd., M.Pd.',
-                    waliNip: '19920817 201903 1 004'
-                }
+                sign: { tempat: 'Gedongboyountung', tanggal: '29 Juni 2026', kepsekNama: schoolIdentity.kepsek, kepsekNip: schoolIdentity.nipKepsek, waliNama: 'Alfian Firdaus S, S.Pd., M.Pd.', waliNip: '19920817 201903 1 004' }
             };
         }
 
@@ -1430,7 +1426,6 @@
             const icon = document.getElementById('cloudSyncIcon');
             const txt = document.getElementById('cloudSyncText');
             if (!badge || !icon || !txt) return;
-
             if (state === 'loading') {
                 txt.innerText = 'Memuat data...';
                 badge.className = 'bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
@@ -1439,11 +1434,7 @@
                 txt.innerText = 'Menyimpan...';
                 badge.className = 'bg-indigo-50 text-indigo-800 border border-indigo-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
                 icon.className = 'fa-solid fa-rotate fa-spin text-indigo-600';
-            } else if (state === 'synced') {
-                txt.innerText = 'Tersinkron';
-                badge.className = 'bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
-                icon.className = 'fa-solid fa-cloud-check text-emerald-600';
-            } else if (state === 'error') {
+            } else {
                 txt.innerText = 'Tersinkron';
                 badge.className = 'bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1.5 select-none';
                 icon.className = 'fa-solid fa-circle-check text-emerald-600';
@@ -1451,37 +1442,12 @@
         }
 
         function hideInitialLoadingOverlay() {
-            const overlay = document.getElementById('initialLoadingOverlay');
-            if (overlay) overlay.classList.add('hidden');
-        }
-
-        function showLoadingOverlayError(title, detailMessage) {
-            const overlay = document.getElementById('initialLoadingOverlay');
-            const icon = document.getElementById('loadingOverlayIcon');
-            const titleEl = document.getElementById('loadingOverlayTitle');
-            const subEl = document.getElementById('loadingOverlaySubtitle');
-            const actionsEl = document.getElementById('loadingErrorActions');
-            if (overlay) overlay.classList.remove('hidden');
-            if (icon) icon.className = 'fa-solid fa-circle-exclamation text-rose-600 text-2xl shrink-0';
-            if (titleEl) titleEl.innerText = title || 'Gagal Memuat Data';
-            if (subEl) subEl.innerText = detailMessage || 'Terjadi kendala saat menghubungi server Firebase Cloud Firestore.';
-            if (actionsEl) actionsEl.classList.remove('hidden');
-        }
-
-        function withTimeout(promise, ms = 8000, timeoutMsg = 'Waktu pemuatan habis (Connection Timeout)') {
-            return new Promise((resolve, reject) => {
-                const timer = setTimeout(() => reject(new Error(timeoutMsg)), ms);
-                promise.then(
-                    (res) => { clearTimeout(timer); resolve(res); },
-                    (err) => { clearTimeout(timer); reject(err); }
-                );
-            });
+            document.getElementById('initialLoadingOverlay')?.classList.add('hidden');
         }
 
         function ensureFallbackDataLoaded() {
             const localSaved = loadFromLocalBackup();
             if (localSaved && Array.isArray(localSaved.studentsData) && localSaved.studentsData.length > 0) {
-                isInitialLoadDone = true;
                 applyRemoteState(localSaved);
             } else if (studentsData.length === 0) {
                 const def = getInitialDefaultData();
@@ -1490,13 +1456,10 @@
                 mapelData = def.initialMapel;
                 nilaiData = def.initialNilai;
                 studentsData.forEach(s => ensureBiRecord(s.id));
-                isInitialLoadDone = true;
                 saveToLocalBackup();
                 refreshAllViews();
-            } else {
-                isInitialLoadDone = true;
-                refreshAllViews();
             }
+            isInitialLoadDone = true;
         }
 
         function useOfflineBackupAndCloseLoading() {
@@ -1506,14 +1469,6 @@
         }
 
         async function retryLoadFirebaseData() {
-            const icon = document.getElementById('loadingOverlayIcon');
-            const titleEl = document.getElementById('loadingOverlayTitle');
-            const subEl = document.getElementById('loadingOverlaySubtitle');
-            const actionsEl = document.getElementById('loadingErrorActions');
-            if (icon) icon.className = 'fa-solid fa-circle-notch fa-spin text-indigo-600 text-2xl shrink-0';
-            if (titleEl) titleEl.innerText = 'Memuat Ulang Data Buku Induk...';
-            if (subEl) subEl.innerText = 'Menghubungkan kembali ke server Firebase Cloud Firestore';
-            if (actionsEl) actionsEl.classList.add('hidden');
             await initFirebaseAndAutoSync();
         }
 
@@ -1523,32 +1478,13 @@
 
         function applyRemoteState(parsed) {
             if (!parsed || typeof parsed !== 'object') return;
-            if (parsed.schoolIdentity) {
-                schoolIdentity = { ...schoolIdentity, ...parsed.schoolIdentity };
-            }
-            if (Array.isArray(parsed.studentsData)) {
-                studentsData = parsed.studentsData.map(s => ({
-                    ...s,
-                    id: String(s.id),
-                    nis: String(s.nis || ''),
-                    nisn: String(s.nisn || '')
-                }));
-            }
-            if (Array.isArray(parsed.guruData)) {
-                guruData = parsed.guruData;
-            }
-            if (Array.isArray(parsed.mapelData)) {
-                mapelData = parsed.mapelData;
-            }
-            if (Array.isArray(parsed.nilaiData)) {
-                nilaiData = parsed.nilaiData;
-            }
-            if (parsed.bukuIndukRecords && typeof parsed.bukuIndukRecords === 'object') {
-                bukuIndukRecords = parsed.bukuIndukRecords;
-            }
-            if (Array.isArray(parsed.auditLogs)) {
-                auditLogs = parsed.auditLogs;
-            }
+            if (parsed.schoolIdentity) schoolIdentity = { ...schoolIdentity, ...parsed.schoolIdentity };
+            if (Array.isArray(parsed.studentsData)) studentsData = parsed.studentsData;
+            if (Array.isArray(parsed.guruData)) guruData = parsed.guruData;
+            if (Array.isArray(parsed.mapelData)) mapelData = parsed.mapelData;
+            if (Array.isArray(parsed.nilaiData)) nilaiData = parsed.nilaiData;
+            if (parsed.bukuIndukRecords) bukuIndukRecords = parsed.bukuIndukRecords;
+            if (Array.isArray(parsed.auditLogs)) auditLogs = parsed.auditLogs;
             studentsData.forEach(s => ensureBiRecord(s.id));
             saveToLocalBackup();
             refreshAllViews();
@@ -1557,232 +1493,291 @@
         async function initFirebaseAndAutoSync() {
             setSyncStatus('loading');
             try {
-                let config = null;
+                let config = defaultFirebaseConfig;
                 if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                     config = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
-                } else if (defaultFirebaseConfig.apiKey && defaultFirebaseConfig.apiKey !== "API_KEY_ANDA") {
-                    config = defaultFirebaseConfig;
                 }
-
-                if (!config || config.apiKey === "API_KEY_ANDA") {
-                    ensureFallbackDataLoaded();
-                    hideInitialLoadingOverlay();
-                    setSyncStatus('synced');
-                    return;
-                }
-
                 const app = initializeApp(config);
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    try {
-                        const cred = await withTimeout(signInWithCustomToken(auth, __initial_auth_token), 4000);
-                        currentUser = cred.user;
-                    } catch (tokenErr) {
-                        console.warn("Custom token auth error:", tokenErr.message);
-                    }
-                }
-                if (!auth.currentUser) {
-                    try {
-                        const cred = await withTimeout(signInAnonymously(auth), 4000);
-                        currentUser = cred.user;
-                    } catch (anonErr) {
-                        console.warn("Anonymous auth restricted:", anonErr.message);
-                    }
-                }
-
-                onAuthStateChanged(auth, (u) => {
-                    currentUser = u;
-                    const btnLabel = document.getElementById('authStatusLabel');
-                    if (btnLabel) {
-                        btnLabel.innerText = u && !u.isAnonymous ? (u.email || 'Admin') : 'Login Admin';
-                    }
-                    const gate = document.getElementById('fullScreenLoginGate');
-                    if (gate) {
-                        if (u && !u.isAnonymous) {
-                            gate.classList.add('hidden');
-                        } else {
-                            // Jika belum login via email/password, tampilkan gerbang login
-                            gate.classList.remove('hidden');
-                        }
-                    }
-                });
+                try { await signInAnonymously(auth); } catch (e) {}
 
                 const docRef = getMainDatabaseDocRef();
-                const snap = await withTimeout(getDoc(docRef), 6000, 'Waktu koneksi ke Firebase Cloud Firestore habis.');
-
+                const snap = await getDoc(docRef);
                 if (snap.exists()) {
                     const docData = snap.data();
                     const parsed = typeof docData.payload === 'string' ? JSON.parse(docData.payload) : docData;
-                    isInitialLoadDone = true;
                     applyRemoteState(parsed);
-                    setSyncStatus('synced');
                 } else {
                     ensureFallbackDataLoaded();
                     await pushStateToFirestore();
                 }
-
                 hideInitialLoadingOverlay();
 
-                if (unsubscribeSnapshot) unsubscribeSnapshot();
-                unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                onSnapshot(docRef, (docSnap) => {
                     if (isSavingInProgress) return;
                     if (docSnap.exists()) {
-                        const docData = docSnap.data();
-                        const parsed = typeof docData.payload === 'string' ? JSON.parse(docData.payload) : docData;
+                        const parsed = typeof docSnap.data().payload === 'string' ? JSON.parse(docSnap.data().payload) : docSnap.data();
                         isApplyingRemoteSnapshot = true;
                         applyRemoteState(parsed);
                         isApplyingRemoteSnapshot = false;
-                        setSyncStatus('synced');
                     }
-                }, (err) => {
-                    console.error("Realtime listener error:", err);
-                    setSyncStatus('synced');
                 });
-
             } catch (e) {
-                console.error("Kesalahan saat memuat data dari Firebase Cloud Firestore:", e);
                 ensureFallbackDataLoaded();
                 hideInitialLoadingOverlay();
-                setSyncStatus('synced');
-            } finally {
-                if (!isInitialLoadDone) {
-                    ensureFallbackDataLoaded();
-                }
-                hideInitialLoadingOverlay();
-            }
-        }
-
-        function openLoginModal() {
-            document.getElementById('loginModal').classList.remove('hidden');
-        }
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.add('hidden');
-        }
-
-        async function executeFirebaseLogin() {
-            const email = document.getElementById('loginEmailInput').value.trim();
-            const password = document.getElementById('loginPasswordInput').value.trim();
-            if (!email || !password) {
-                showNotification('Email dan password wajib diisi!', 'error');
-                return;
-            }
-            try {
-                const cred = await signInWithEmailAndPassword(auth, email, password);
-                currentUser = cred.user;
-                closeLoginModal();
-                document.getElementById('fullScreenLoginGate')?.classList.add('hidden');
-                showNotification(`Berhasil login sebagai ${currentUser.email || email}!`, 'success');
-                refreshAllViews();
-            } catch (err) {
-                console.error("Login error:", err);
-                showNotification('Gagal login: ' + err.message, 'error');
-            }
-        }
-
-        async function executeGateLogin() {
-            const email = document.getElementById('gateEmailInput').value.trim();
-            const password = document.getElementById('gatePasswordInput').value.trim();
-            if (!email || !password) {
-                showNotification('Email dan password wajib diisi!', 'error');
-                return;
-            }
-            try {
-                const cred = await signInWithEmailAndPassword(auth, email, password);
-                currentUser = cred.user;
-                document.getElementById('fullScreenLoginGate').classList.add('hidden');
-                showNotification(`Selamat datang kembali, ${currentUser.email || email}!`, 'success');
-                refreshAllViews();
-            } catch (err) {
-                console.error("Gate login error:", err);
-                showNotification('Gagal masuk: ' + err.message, 'error');
             }
         }
 
         async function pushStateToFirestore() {
             saveToLocalBackup();
-            if (!isInitialLoadDone) {
-                isInitialLoadDone = true;
-            }
-            if (!db) {
-                setSyncStatus('synced');
-                return true;
-            }
-            if (isApplyingRemoteSnapshot) return true;
-
+            if (!db || isApplyingRemoteSnapshot) return true;
             isSavingInProgress = true;
             setSyncStatus('saving');
             try {
-                if (auth && !auth.currentUser) {
-                    try {
-                        await signInAnonymously(auth);
-                    } catch (e) {}
-                }
-                const payloadObj = {
-                    schoolIdentity,
-                    studentsData,
-                    guruData,
-                    mapelData,
-                    nilaiData,
-                    bukuIndukRecords,
-                    auditLogs
-                };
-                await setDoc(getMainDatabaseDocRef(), {
-                    payload: JSON.stringify(payloadObj),
-                    updated_at: new Date().toISOString(),
-                    updated_by: (auth && auth.currentUser) ? (auth.currentUser.email || auth.currentUser.uid) : 'operator'
-                });
+                const payloadObj = { schoolIdentity, studentsData, guruData, mapelData, nilaiData, bukuIndukRecords, auditLogs };
+                await setDoc(getMainDatabaseDocRef(), { payload: JSON.stringify(payloadObj), updated_at: new Date().toISOString() });
                 setSyncStatus('synced');
-                isSavingInProgress = false;
-                return true;
-            } catch (err) {
-                isSavingInProgress = false;
-                setSyncStatus('synced');
-                console.warn("Disimpan ke penyimpanan lokal (Firebase cloud tidak terjangkau):", err.message);
-                return true;
-            }
+            } catch (err) { setSyncStatus('synced'); }
+            isSavingInProgress = false;
+            return true;
         }
 
         async function saveToStorage(logAction = null) {
             if (logAction) {
-                auditLogs.unshift({
-                    waktu: new Date().toLocaleString('id-ID'),
-                    user: 'Alfian Firdaus S, S.Pd.',
-                    aksi: logAction
-                });
+                auditLogs.unshift({ waktu: new Date().toLocaleString('id-ID'), user: 'Alfian Firdaus S, S.Pd.', aksi: logAction });
                 if (auditLogs.length > 250) auditLogs.length = 250;
             }
             return await pushStateToFirestore();
         }
 
-        function openConfirmDeleteModal(title, message, onConfirmCallback) {
-            document.getElementById('confirmDeleteTitle').innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i>${title}`;
-            document.getElementById('confirmDeleteMessage').innerText = message;
-            pendingDeleteAction = onConfirmCallback;
-            document.getElementById('confirmDeleteModal').classList.remove('hidden');
-        }
+        // ==========================================
+        // FITUR SMART IMPORTER e-RAPOR KEMENDIKBUD
+        // ==========================================
+        async function handleSmartImportERapor(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        function closeConfirmDeleteModal() {
-            pendingDeleteAction = null;
-            document.getElementById('confirmDeleteModal').classList.add('hidden');
-        }
+            try {
+                const buffer = await file.arrayBuffer();
+                const workbook = XLSX.read(buffer, { type: "array" });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
 
-        async function executeConfirmedDelete() {
-            const action = pendingDeleteAction;
-            closeConfirmDeleteModal();
-            if (typeof action === 'function') {
-                await action();
+                // 1. Baca Metadata (Tahun Pelajaran, Semester, Kelas)
+                const judulBaris1 = String(rows[0]?.[0] || "");
+                const tpMatch = judulBaris1.match(/(\d{4}\/\d{4})/);
+                const semesterMatch = judulBaris1.match(/(GANJIL|GENAP)/i);
+                const kelasRaw = String(rows[2]?.[2] || "");
+                const kelasMatch = kelasRaw.match(/(\d+)/);
+
+                const detectedTp = tpMatch ? tpMatch[1] : (schoolIdentity.activeTp || '2025/2026');
+                const detectedSemText = semesterMatch ? semesterMatch[1].toUpperCase() : 'GENAP';
+                const semesterNum = detectedSemText.includes('GANJIL') ? '1' : '2';
+                const kelasNum = kelasMatch ? kelasMatch[1] : '5';
+                const targetKelasStr = `Kelas ${kelasNum}`;
+
+                // Kamus konversi header mapel e-Rapor ke nama mapel di aplikasi
+                const kamusMapel = {
+                    "PAIDBP": "Pendidikan Agama Islam dan Budi Pekerti",
+                    "PPDK": "Pendidikan Pancasila",
+                    "BI": "Bahasa Indonesia",
+                    "MU": "Matematika",
+                    "IPADSI": "Ilmu Pengetahuan Alam dan Sosial (IPAS)",
+                    "SR": "Seni Rupa",
+                    "PJODK": "Pendidikan Jasmani, Olahraga, dan Kesehatan",
+                    "B.ING": "Bahasa Inggris",
+                    "MLBD": "Bahasa Jawa",
+                    "B.ARB": "Bahasa Arab",
+                    "KDKA": "Koding dan Kecerdasan Artifisial"
+                };
+
+                // Baca KETERANGAN MAPEL di bawah tabel untuk akurasi pemetaan kolom
+                const idxKeterangan = rows.findIndex(r => r && String(r[0]).trim().startsWith("KETERANGAN MAPEL"));
+                const kolomMapelMap = [];
+                if (idxKeterangan !== -1) {
+                    let colIndex = 4; // Kolom E (indeks 4) biasanya awal nilai
+                    for (let i = idxKeterangan + 1; i < rows.length; i++) {
+                        const teksKeterangan = rows[i]?.[1];
+                        if (!teksKeterangan) continue;
+                        const parts = String(teksKeterangan).split(":");
+                        if (parts.length >= 2) {
+                            const namaLengkap = parts.slice(1).join(":").trim();
+                            // Cocokkan dengan mapel yang ada di mapelData, atau gunakan nama lengkap
+                            const foundMapelObj = mapelData.find(m => m.nama.toLowerCase() === namaLengkap.toLowerCase());
+                            const finalMapelName = foundMapelObj ? foundMapelObj.nama : namaLengkap;
+
+                            // Hindari duplikat key
+                            const sudahAda = kolomMapelMap.some(item => item.mapelName.toLowerCase() === finalMapelName.toLowerCase());
+                            if (!sudahAda) {
+                                kolomMapelMap.push({ colIndex, mapelName: finalMapelName });
+                            }
+                            colIndex++;
+                        }
+                    }
+                }
+
+                // 2. Ekstraksi Nilai Siswa per baris
+                const batasAkhir = idxKeterangan !== -1 ? idxKeterangan : rows.length;
+                const parsedRows = [];
+
+                for (let r = 7; r < batasAkhir; r++) {
+                    const row = rows[r];
+                    if (!row || row[0] === null || isNaN(Number(row[0]))) continue;
+
+                    const nisn = String(row[2] || "").trim();
+                    const nis = String(row[3] || "").trim();
+                    const nama = String(row[1] || "").trim();
+
+                    const nilaiMapelObj = {};
+                    kolomMapelMap.forEach(km => {
+                        const val = row[km.colIndex];
+                        if (val !== null && val !== "" && !isNaN(Number(val))) {
+                            nilaiMapelObj[km.mapelName] = Number(val);
+                        }
+                    });
+
+                    // Ketidakhadiran (Sakit=18, Izin=19, Alpa=20) & Ekskul (21)
+                    const absensi = {
+                        sakit: Number(row[18] || 0),
+                        izin: Number(row[19] || 0),
+                        alpa: Number(row[20] || 0)
+                    };
+                    const ekskul = row[21] ? String(row[21]).trim() : "-";
+
+                    // Cek kecocokan dengan database siswa lokal berdasarkan NISN
+                    const matchedStudent = studentsData.find(s => String(s.nisn).trim() === nisn);
+
+                    parsedRows.push({
+                        nisn,
+                        nis,
+                        nama,
+                        kelas: targetKelasStr,
+                        tp: detectedTp,
+                        semester: semesterNum,
+                        nilaiMapel: nilaiMapelObj,
+                        absensi,
+                        ekskul,
+                        matchedStudentId: matchedStudent ? matchedStudent.id : null,
+                        matchedStudentName: matchedStudent ? matchedStudent.nama : null
+                    });
+                }
+
+                parsedERaporCache = { tp: detectedTp, semester: semesterNum, kelas: targetKelasStr, rows: parsedRows };
+
+                // Tampilkan Modal Pratinjau
+                document.getElementById('eRaporMetaInfo').innerText = `T.P. ${detectedTp} • Semester ${detectedSemText} • ${targetKelasStr} • Ditemukan ${parsedRows.length} data siswa`;
+                const tbody = document.getElementById('eRaporPreviewTableBody');
+                tbody.innerHTML = '';
+
+                parsedRows.forEach(pr => {
+                    const isMatched = Boolean(pr.matchedStudentId);
+                    const statusBadge = isMatched 
+                        ? `<span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold text-[10px]"><i class="fa-solid fa-check mr-1"></i>Cocok: ${pr.matchedStudentName}</span>`
+                        : `<span class="bg-rose-100 text-rose-800 px-2.5 py-1 rounded-full font-bold text-[10px]"><i class="fa-solid fa-triangle-exclamation mr-1"></i>NISN Belum Terdaftar</span>`;
+
+                    tbody.innerHTML += `
+                        <tr class="${isMatched ? 'hover:bg-slate-50' : 'bg-rose-50/50'}">
+                            <td class="p-3">${statusBadge}</td>
+                            <td class="p-3 font-bold text-indigo-600">${pr.nisn}</td>
+                            <td class="p-3">${pr.nis}</td>
+                            <td class="p-3 font-bold text-slate-900">${pr.nama}</td>
+                            <td class="p-3 text-center"><span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-bold">${Object.keys(pr.nilaiMapel).length} mapel</span></td>
+                            <td class="p-3 text-center">S:${pr.absensi.sakit} I:${pr.absensi.izin} A:${pr.absensi.alpa}</td>
+                            <td class="p-3">${pr.ekskul}</td>
+                        </tr>
+                    `;
+                });
+
+                document.getElementById('eRaporPreviewModal').classList.remove('hidden');
+            } catch (err) {
+                console.error("Gagal parse e-Rapor:", err);
+                showNotification('Gagal membaca file Leger e-Rapor: ' + err.message, 'error');
+            } finally {
+                event.target.value = '';
             }
         }
 
+        function closeERaporModal() {
+            document.getElementById('eRaporPreviewModal').classList.add('hidden');
+            parsedERaporCache = null;
+        }
+
+        async function confirmCommitERaporImport() {
+            if (!parsedERaporCache || !Array.isArray(parsedERaporCache.rows)) return;
+            const { tp, semester, kelas, rows } = parsedERaporCache;
+            let insertedCount = 0;
+
+            rows.forEach(pr => {
+                if (!pr.matchedStudentId) return; // Lewatkan siswa yang belum terdaftar di Buku Induk
+                const stId = pr.matchedStudentId;
+                const stName = pr.matchedStudentName;
+
+                // 1. Masukkan Nilai per Mapel ke array nilaiData
+                Object.entries(pr.nilaiMapel).forEach(([mapelName, score]) => {
+                    const existingIdx = nilaiData.findIndex(n =>
+                        String(n.studentId) === String(stId) &&
+                        String(n.kelas).trim() === String(kelas).trim() &&
+                        String(n.semester).trim() === String(semester).trim() &&
+                        String(n.mapel).trim().toLowerCase() === String(mapelName).trim().toLowerCase()
+                    );
+                    if (existingIdx >= 0) {
+                        nilaiData[existingIdx].nilai = score;
+                        nilaiData[existingIdx].tp = tp;
+                    } else {
+                        nilaiData.push({
+                            id: 'n_' + Date.now() + Math.random().toString(36).substring(2, 6),
+                            studentId: stId,
+                            siswaNama: stName,
+                            tp,
+                            kelas,
+                            semester,
+                            mapel: mapelName,
+                            nilai: score
+                        });
+                    }
+                });
+
+                // 2. Perbarui Rekap Absensi & Ekskul di Buku Induk Siswa (Bagian F)
+                const rec = ensureBiRecord(stId);
+                // Update absensi semester ini
+                const absIdx = rec.absensi.findIndex(a => String(a.tp) === String(tp) && String(a.semester) === String(semester));
+                if (absIdx >= 0) {
+                    rec.absensi[absIdx].sakit = pr.absensi.sakit;
+                    rec.absensi[absIdx].izin = pr.absensi.izin;
+                    rec.absensi[absIdx].alpa = pr.absensi.alpa;
+                } else {
+                    rec.absensi.push({ tp, semester, sakit: pr.absensi.sakit, izin: pr.absensi.izin, alpa: pr.absensi.alpa, catatan: 'Impor e-Rapor' });
+                }
+
+                // Update Ekskul Pramuka
+                const eksIdx = rec.ekskul.findIndex(e => e.nama.toLowerCase().includes('pramuka'));
+                if (eksIdx >= 0) {
+                    rec.ekskul[eksIdx].keterangan = pr.ekskul;
+                } else if (pr.ekskul !== '-') {
+                    rec.ekskul.push({ nama: 'Pramuka', semester: semester === '1' ? 'Ganjil' : 'Genap', keterangan: pr.ekskul, pembina: '-' });
+                }
+
+                insertedCount++;
+            });
+
+            try {
+                await saveToStorage(`Impor Leger e-Rapor ${kelas} Sem ${semester} (${insertedCount} siswa)`);
+                closeERaporModal();
+                refreshAllViews();
+                showNotification(`Berhasil menyuntikkan nilai e-Rapor untuk ${insertedCount} peserta didik ke Buku Induk!`, 'success');
+            } catch (err) {
+                showNotification('Gagal menyimpan data e-Rapor ke Firebase!', 'error');
+            }
+        }
+
+        // ==========================================
+        // FUNGSI STANDAR APLIKASI
+        // ==========================================
         function refreshAllViews() {
-            if (document.getElementById('globalAcademicYearSelect')) {
-                document.getElementById('globalAcademicYearSelect').value = schoolIdentity.activeTp || '2026/2027';
-            }
-            if (document.getElementById('dashActiveTpBadge')) {
-                document.getElementById('dashActiveTpBadge').innerText = schoolIdentity.activeTp || '2026/2027';
-            }
+            if (document.getElementById('globalAcademicYearSelect')) document.getElementById('globalAcademicYearSelect').value = schoolIdentity.activeTp || '2025/2026';
+            if (document.getElementById('dashActiveTpBadge')) document.getElementById('dashActiveTpBadge').innerText = schoolIdentity.activeTp || '2025/2026';
             renderDashboardStats();
             renderCharts();
             renderBukuIndukMasterTable();
@@ -1804,8 +1799,7 @@
 
         function switchTab(tabId, highlightMenuId = null) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById('tab-' + tabId);
-            if (target) target.classList.remove('hidden');
+            document.getElementById('tab-' + tabId)?.classList.remove('hidden');
 
             const activeNavKey = highlightMenuId || tabId;
             document.querySelectorAll('.nav-item').forEach(link => {
@@ -1819,16 +1813,11 @@
             });
 
             document.querySelectorAll('.mobile-nav-item').forEach(btn => {
-                if (btn.dataset.tab === activeNavKey) {
-                    btn.classList.add('text-indigo-400', 'font-bold');
-                } else {
-                    btn.classList.remove('text-indigo-400', 'font-bold');
-                }
+                if (btn.dataset.tab === activeNavKey) btn.classList.add('text-indigo-400', 'font-bold');
+                else btn.classList.remove('text-indigo-400', 'font-bold');
             });
 
-            if (tabId === 'dashboard') {
-                setTimeout(() => renderCharts(), 60);
-            }
+            if (tabId === 'dashboard') setTimeout(() => renderCharts(), 60);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1842,11 +1831,9 @@
             if (!wrapper) return;
             const orient = document.getElementById('printOrientation')?.value || 'portrait';
             if (orient === 'landscape') {
-                wrapper.classList.remove('max-w-4xl');
-                wrapper.classList.add('max-w-6xl');
+                wrapper.classList.remove('max-w-4xl'); wrapper.classList.add('max-w-6xl');
             } else {
-                wrapper.classList.remove('max-w-6xl');
-                wrapper.classList.add('max-w-4xl');
+                wrapper.classList.remove('max-w-6xl'); wrapper.classList.add('max-w-4xl');
             }
         }
 
@@ -1877,13 +1864,10 @@
 
         function switchBiSection(secCode) {
             document.querySelectorAll('.bi-section-pane').forEach(p => p.classList.add('hidden'));
-            document.getElementById('biSec-' + secCode).classList.remove('hidden');
+            document.getElementById('biSec-' + secCode)?.classList.remove('hidden');
             document.querySelectorAll('.bi-sec-btn').forEach(btn => {
-                if (btn.dataset.sec === secCode) {
-                    btn.className = 'bi-sec-btn bg-indigo-600 text-white px-3 py-2 rounded-xl transition cursor-pointer';
-                } else {
-                    btn.className = 'bi-sec-btn hover:bg-slate-100 text-slate-700 px-3 py-2 rounded-xl transition cursor-pointer';
-                }
+                if (btn.dataset.sec === secCode) btn.className = 'bi-sec-btn bg-indigo-600 text-white px-3 py-2 rounded-xl transition cursor-pointer';
+                else btn.className = 'bi-sec-btn hover:bg-slate-100 text-slate-700 px-3 py-2 rounded-xl transition cursor-pointer';
             });
         }
 
@@ -1944,9 +1928,9 @@
                         </td>
                         <td class="p-3 text-center">
                             <div class="flex items-center justify-center gap-1.5">
-                                <button type="button" onclick="openBiPreviewForStudent('${s.id}')" class="bg-blue-600 hover:bg-blue-500 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-semibold cursor-pointer"><i class="fa-solid fa-eye mr-1"></i>Lihat</button>
-                                <button type="button" onclick="openBiEditorForStudent('${s.id}')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-semibold cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i>Edit</button>
-                                <button type="button" onclick="printSingleStudentById('${s.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-semibold cursor-pointer"><i class="fa-solid fa-print mr-1"></i>Cetak</button>
+                                <button type="button" onclick="openBiPreviewForStudent('${s.id}')" class="bg-blue-600 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-semibold cursor-pointer">Lihat</button>
+                                <button type="button" onclick="openBiEditorForStudent('${s.id}')" class="bg-indigo-600 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-semibold cursor-pointer">Edit</button>
+                                <button type="button" onclick="printSingleStudentById('${s.id}')" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-semibold cursor-pointer">Cetak</button>
                             </div>
                         </td>
                     </tr>
@@ -1954,22 +1938,9 @@
             });
         }
 
-        function openBiPreviewForStudent(id) {
-            activeStudentId = String(id);
-            switchTab('buku-induk');
-            showBukuIndukSubView('preview');
-        }
-
-        function openBiEditorForStudent(id) {
-            activeStudentId = String(id);
-            switchTab('buku-induk');
-            showBukuIndukSubView('editor');
-        }
-
-        function selectStudentForBukuInduk(id) {
-            activeStudentId = String(id);
-            loadStudentIntoBiEditorAndPreview(activeStudentId);
-        }
+        function openBiPreviewForStudent(id) { activeStudentId = String(id); switchTab('buku-induk'); showBukuIndukSubView('preview'); }
+        function openBiEditorForStudent(id) { activeStudentId = String(id); switchTab('buku-induk'); showBukuIndukSubView('editor'); }
+        function selectStudentForBukuInduk(id) { activeStudentId = String(id); loadStudentIntoBiEditorAndPreview(activeStudentId); }
 
         function loadStudentIntoBiEditorAndPreview(studentId) {
             const s = studentsData.find(item => String(item.id) === String(studentId));
@@ -2062,7 +2033,7 @@
             });
 
             document.getElementById('biSignTempat').value = rec.sign.tempat || 'Gedongboyountung';
-            document.getElementById('biSignTanggal').value = rec.sign.tanggal || '29 Oktober 2026';
+            document.getElementById('biSignTanggal').value = rec.sign.tanggal || '29 Juni 2026';
             document.getElementById('biSignKepsekNama').value = schoolIdentity.kepsek;
             document.getElementById('biSignKepsekNip').value = schoolIdentity.nipKepsek;
 
@@ -2085,7 +2056,7 @@
                 String(n.mapel).trim().toLowerCase() === String(mapelNama).trim().toLowerCase()
             );
             if (matches.length === 0) return null;
-            const activeTp = schoolIdentity.activeTp || '2026/2027';
+            const activeTp = schoolIdentity.activeTp || '2025/2026';
             const exactTp = matches.find(n => String(n.tp || '') === String(activeTp));
             return exactTp || matches[matches.length - 1];
         }
@@ -2102,7 +2073,6 @@
             const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
 
             let rowsHtml = '';
-            // Merender seluruh mata pelajaran aktif secara dinamis dari mapelData
             mapelData.forEach((m, mIdx) => {
                 let cellsHtml = '';
                 const safeMapelAttr = String(m.nama || '').replace(/"/g, '&quot;');
@@ -2110,9 +2080,8 @@
                 kelasList.forEach((kls, kIdx) => {
                     ['1', '2'].forEach(sem => {
                         const found = findStudentGradeRecord(studentId, kls, sem, m.nama);
-                        const hasVal = found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '';
-                        const val = hasVal ? found.nilai : '';
-                        cellsHtml += `<td class="p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel-id="${m.id}" data-mapel="${safeMapelAttr}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" onchange="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 focus:bg-white border border-slate-300 rounded py-1 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500"></td>`;
+                        const val = (found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '') ? found.nilai : '';
+                        cellsHtml += `<td class="p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel-id="${m.id}" data-mapel="${safeMapelAttr}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" onchange="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 border border-slate-300 rounded py-1 font-bold"></td>`;
                     });
                 });
                 rowsHtml += `
@@ -2120,80 +2089,34 @@
                         <td class="p-2 border border-slate-300">
                             <p class="font-semibold text-slate-900">${mIdx + 1}. ${m.nama}</p>
                             <div class="mt-1 flex items-center space-x-1">
-                                <input type="text" value="${safeTpVal}" onchange="updateMapelTp('${m.id}', this.value)" class="w-full bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-600 focus:bg-white" placeholder="Ketik TP (Tujuan Pembelajaran)..." title="Tujuan Pembelajaran mata pelajaran">
+                                <input type="text" value="${safeTpVal}" onchange="updateMapelTp('${m.id}', this.value)" class="w-full bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 text-[10px] text-slate-600" placeholder="Ketik TP...">
                             </div>
                         </td>
                         ${cellsHtml}
                     </tr>
                 `;
             });
-
             tbody.innerHTML = rowsHtml;
-
-            // Pastikan elemen tfoot tersedia di dalam tabel utama tepat setelah tbody
-            const tableEl = tbody.closest('table');
-            if (tableEl && !tableEl.querySelector('#biEditorGradesMatrixFoot')) {
-                let sumCellsHtml = '';
-                let avgCellsHtml = '';
-                kelasList.forEach((kls, kIdx) => {
-                    ['1', '2'].forEach(sem => {
-                        sumCellsHtml += `<td id="biMatrixSum_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-indigo-950 bg-indigo-50">-</td>`;
-                        avgCellsHtml += `<td id="biMatrixAvg_${kIdx}_${sem}" class="p-1.5 border border-slate-300 text-center font-extrabold text-emerald-950 bg-emerald-50">-</td>`;
-                    });
-                });
-                const tfoot = document.createElement('tfoot');
-                tfoot.id = 'biEditorGradesMatrixFoot';
-                tfoot.className = 'font-extrabold';
-                tfoot.innerHTML = `
-                    <tr class="bg-indigo-50 border-t-2 border-slate-400">
-                        <td class="p-2 border border-slate-300 font-extrabold text-indigo-950 uppercase tracking-wide">JUMLAH NILAI</td>
-                        ${sumCellsHtml}
-                    </tr>
-                    <tr class="bg-emerald-50">
-                        <td class="p-2 border border-slate-300 font-extrabold text-emerald-950 uppercase tracking-wide">RATA-RATA NILAI</td>
-                        ${avgCellsHtml}
-                    </tr>
-                `;
-                tableEl.appendChild(tfoot);
-            }
-
             recalculateBiMatrixSummary();
         }
 
         function recalculateBiMatrixSummary() {
             const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
-            const activeMapelIds = new Set(mapelData.map(m => String(m.id)));
-
             kelasList.forEach((kls, kIdx) => {
                 ['1', '2'].forEach(sem => {
                     const inputs = document.querySelectorAll(`.bi-matrix-input[data-kidx="${kIdx}"][data-sem="${sem}"]`);
-                    let sum = 0;
-                    let validCount = 0;
-
+                    let sum = 0; let validCount = 0;
                     inputs.forEach(inp => {
-                        const mapelId = String(inp.getAttribute('data-mapel-id') || '');
-                        if (mapelId && !activeMapelIds.has(mapelId)) return;
-
                         const raw = String(inp.value ?? '').trim().replace(',', '.');
                         if (raw !== '') {
                             const num = Number(raw);
-                            // Nilai 0 tetap dihitung sebagai nilai valid, rentang wajib 0-100
-                            if (!isNaN(num) && isFinite(num) && num >= 0 && num <= 100) {
-                                sum += num;
-                                validCount++;
-                            }
+                            if (!isNaN(num) && num >= 0 && num <= 100) { sum += num; validCount++; }
                         }
                     });
-
                     const sumCell = document.getElementById(`biMatrixSum_${kIdx}_${sem}`);
                     const avgCell = document.getElementById(`biMatrixAvg_${kIdx}_${sem}`);
-
-                    if (sumCell) {
-                        sumCell.innerText = validCount > 0 ? formatIndonesianDecimal(sum, false) : '-';
-                    }
-                    if (avgCell) {
-                        avgCell.innerText = validCount > 0 ? formatIndonesianDecimal(sum / validCount, true) : '-';
-                    }
+                    if (sumCell) sumCell.innerText = validCount > 0 ? formatIndonesianDecimal(sum, false) : '-';
+                    if (avgCell) avgCell.innerText = validCount > 0 ? formatIndonesianDecimal(sum / validCount, true) : '-';
                 });
             });
         }
@@ -2202,24 +2125,15 @@
             const m = mapelData.find(item => String(item.id) === String(mapelId));
             if (m) {
                 m.tp = newTp.trim();
-                try {
-                    await saveToStorage(`Perbarui Tujuan Pembelajaran (TP) mapel: ${m.nama}`);
-                    if (activeStudentId) {
-                        const s = studentsData.find(item => String(item.id) === String(activeStudentId));
-                        if (s) renderPrintableBukuInduk([s]);
-                    }
-                    showNotification('Tujuan Pembelajaran (TP) berhasil diperbarui!', 'success');
-                } catch (err) {
-                    showNotification('Gagal memperbarui TP ke Firebase!', 'error');
-                }
+                await saveToStorage(`Perbarui TP mapel: ${m.nama}`);
+                showNotification('TP berhasil diperbarui!', 'success');
             }
         }
 
         async function saveMatrixGradesFromBI() {
             const s = studentsData.find(item => String(item.id) === String(activeStudentId));
             if (!s) return;
-            const activeTp = schoolIdentity.activeTp || '2026/2027';
-            let hasInvalidGrade = false;
+            const activeTp = schoolIdentity.activeTp || '2025/2026';
 
             document.querySelectorAll('.bi-matrix-input').forEach(inp => {
                 const mapel = inp.dataset.mapel;
@@ -2227,60 +2141,28 @@
                 const sem = inp.dataset.sem;
                 const rawVal = String(inp.value ?? '').trim().replace(',', '.');
 
-                // Cari semua entri nilai untuk siswa, kelas, semester, dan mapel ini (lintas TP)
                 const matchingIndices = [];
                 nilaiData.forEach((n, idx) => {
-                    if (
-                        String(n.studentId) === String(s.id) &&
-                        String(n.kelas).trim() === String(kelas).trim() &&
-                        String(n.semester).trim() === String(sem).trim() &&
-                        String(n.mapel).trim().toLowerCase() === String(mapel).trim().toLowerCase()
-                    ) {
+                    if (String(n.studentId) === String(s.id) && String(n.kelas) === String(kelas) && String(n.semester) === String(sem) && String(n.mapel).toLowerCase() === String(mapel).toLowerCase()) {
                         matchingIndices.push(idx);
                     }
                 });
 
                 if (rawVal !== '') {
                     const num = Number(rawVal);
-                    if (isNaN(num) || !isFinite(num) || num < 0 || num > 100) {
-                        hasInvalidGrade = true;
-                        return;
-                    }
                     if (matchingIndices.length > 0) {
-                        const targetIdx = matchingIndices[matchingIndices.length - 1];
-                        nilaiData[targetIdx].nilai = num;
-                        nilaiData[targetIdx].mapel = mapel;
+                        nilaiData[matchingIndices[matchingIndices.length - 1]].nilai = num;
                     } else {
-                        nilaiData.push({
-                            id: 'n_' + Date.now() + Math.random().toString(36).substring(2, 6),
-                            studentId: s.id,
-                            siswaNama: s.nama,
-                            tp: activeTp,
-                            kelas,
-                            semester: sem,
-                            mapel,
-                            nilai: num
-                        });
+                        nilaiData.push({ id: 'n_' + Date.now() + Math.random().toString(36).substring(2,6), studentId: s.id, siswaNama: s.nama, tp: activeTp, kelas, semester: sem, mapel, nilai: num });
                     }
                 } else if (matchingIndices.length > 0) {
-                    for (let i = matchingIndices.length - 1; i >= 0; i--) {
-                        nilaiData.splice(matchingIndices[i], 1);
-                    }
+                    for (let i = matchingIndices.length - 1; i >= 0; i--) nilaiData.splice(matchingIndices[i], 1);
                 }
             });
 
-            if (hasInvalidGrade) {
-                showNotification('Terdapat nilai di luar rentang 0–100. Pastikan seluruh nilai berada antara 0 sampai 100!', 'error');
-                return;
-            }
-
-            try {
-                await saveToStorage(`Simpan matriks nilai & TP Buku Induk siswa: ${s.nama}`);
-                refreshAllViews();
-                showNotification('Matriks nilai berhasil disimpan!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan matriks nilai!', 'error');
-            }
+            await saveToStorage(`Simpan matriks nilai siswa: ${s.nama}`);
+            refreshAllViews();
+            showNotification('Matriks nilai berhasil disimpan!', 'success');
         }
 
         async function saveSchoolIdentityFromBI() {
@@ -2293,13 +2175,9 @@
             schoolIdentity.kabupaten = document.getElementById('biInputSchKab').value;
             schoolIdentity.provinsi = document.getElementById('biInputSchProv').value;
             schoolIdentity.kepsek = document.getElementById('biInputSchKepsek').value;
-            try {
-                await saveToStorage('Simpan Identitas Sekolah Bagian A');
-                refreshAllViews();
-                showNotification('Identitas Sekolah berhasil disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan Identitas Sekolah ke Firebase!', 'error');
-            }
+            await saveToStorage('Simpan Identitas Sekolah');
+            refreshAllViews();
+            showNotification('Identitas Sekolah berhasil disimpan!', 'success');
         }
 
         async function saveSectionBStudentIdentity() {
@@ -2324,13 +2202,9 @@
             s.kontakWali = document.getElementById('biEditKontakWali').value;
             s.asalSekolah = document.getElementById('biEditAsalSekolah').value;
 
-            try {
-                await saveToStorage(`Simpan Identitas Siswa Bagian B: ${s.nama}`);
-                refreshAllViews();
-                showNotification('Identitas Siswa berhasil disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan Identitas Siswa ke Firebase!', 'error');
-            }
+            await saveToStorage(`Simpan Identitas Siswa: ${s.nama}`);
+            refreshAllViews();
+            showNotification('Identitas Siswa berhasil disimpan!', 'success');
         }
 
         async function saveSectionDHabits() {
@@ -2340,13 +2214,8 @@
                 h.tindakLanjut = document.getElementById('habitTindak_' + i).value;
                 h.periode = document.getElementById('habitPer_' + i).value;
             });
-            try {
-                await saveToStorage('Simpan 7 Kebiasaan Bagian D');
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
-                showNotification('7 Kebiasaan berhasil disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan 7 Kebiasaan ke Firebase!', 'error');
-            }
+            await saveToStorage('Simpan 7 Kebiasaan');
+            showNotification('7 Kebiasaan berhasil disimpan!', 'success');
         }
 
         async function saveSectionEProfiles() {
@@ -2357,13 +2226,8 @@
                 p.tindakLanjut = document.getElementById('profTindak_' + i).value;
                 p.periode = document.getElementById('profPer_' + i).value;
             });
-            try {
-                await saveToStorage('Simpan Profil Lulusan Bagian E');
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
-                showNotification('Profil Lulusan berhasil disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan Profil Lulusan ke Firebase!', 'error');
-            }
+            await saveToStorage('Simpan Profil Lulusan');
+            showNotification('Profil Lulusan berhasil disimpan!', 'success');
         }
 
         function renderSectionFLists(studentId) {
@@ -2417,7 +2281,7 @@
             });
         }
 
-        function addEkskulRow() { syncSectionFInputs(); ensureBiRecord(activeStudentId).ekskul.push({ nama: '', semester: 'I / II', keterangan: 'Aktif', pembina: '' }); renderSectionFLists(activeStudentId); }
+        function addEkskulRow() { syncSectionFInputs(); ensureBiRecord(activeStudentId).ekskul.push({ nama: '', semester: 'Genap', keterangan: 'SB', pembina: '' }); renderSectionFLists(activeStudentId); }
         function removeEkskulRow(i) { syncSectionFInputs(); ensureBiRecord(activeStudentId).ekskul.splice(i, 1); renderSectionFLists(activeStudentId); }
         function addPrestasiRow() { syncSectionFInputs(); ensureBiRecord(activeStudentId).prestasi.push({ jenis: '', tingkat: 'Kecamatan', tahun: '2026', penyelenggara: '' }); renderSectionFLists(activeStudentId); }
         function removePrestasiRow(i) { syncSectionFInputs(); ensureBiRecord(activeStudentId).prestasi.splice(i, 1); renderSectionFLists(activeStudentId); }
@@ -2426,13 +2290,8 @@
 
         async function saveSectionFAll() {
             syncSectionFInputs();
-            try {
-                await saveToStorage('Simpan Bagian F');
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
-                showNotification('Data Bagian F berhasil disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan Bagian F ke Firebase!', 'error');
-            }
+            await saveToStorage('Simpan Bagian F');
+            showNotification('Bagian F berhasil disimpan!', 'success');
         }
 
         async function saveSectionGPromotions() {
@@ -2442,13 +2301,9 @@
                 pr.tanggal = document.getElementById('promTgl_' + i).value;
                 pr.keterangan = document.getElementById('promKet_' + i).value;
             });
-            try {
-                await saveToStorage('Simpan Bagian G');
-                refreshAllViews();
-                showNotification('Keputusan kenaikan kelas / kelulusan disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan Bagian G ke Firebase!', 'error');
-            }
+            await saveToStorage('Simpan Bagian G');
+            refreshAllViews();
+            showNotification('Keputusan disimpan!', 'success');
         }
 
         function autoFillWaliNip(nama) {
@@ -2466,21 +2321,12 @@
                 waliNama: document.getElementById('biSignWaliSelect').value,
                 waliNip: document.getElementById('biSignWaliNip').value
             };
-            try {
-                await saveToStorage('Simpan Bagian H Pengesahan');
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
-                showNotification('Pengesahan berhasil disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan Pengesahan ke Firebase!', 'error');
-            }
+            await saveToStorage('Simpan Bagian H');
+            showNotification('Pengesahan berhasil disimpan!', 'success');
         }
 
-        function openKenaikanKelasModal() {
-            document.getElementById('kenaikanKelasModal').classList.remove('hidden');
-        }
-        function closeKenaikanKelasModal() {
-            document.getElementById('kenaikanKelasModal').classList.add('hidden');
-        }
+        function openKenaikanKelasModal() { document.getElementById('kenaikanKelasModal').classList.remove('hidden'); }
+        function closeKenaikanKelasModal() { document.getElementById('kenaikanKelasModal').classList.add('hidden'); }
 
         async function executeKenaikanKelasMassal() {
             const kelasAsal = document.getElementById('massKelasAsal').value;
@@ -2489,60 +2335,37 @@
             if (!kelasTujuan) return;
 
             let count = 0;
-            const prevStudents = JSON.parse(JSON.stringify(studentsData));
-            const prevRecords = JSON.parse(JSON.stringify(bukuIndukRecords));
-
             studentsData.forEach(s => {
                 if (s.kelas === kelasAsal && s.status === 'Aktif') {
                     s.kelas = kelasTujuan;
                     count++;
-                    const rec = ensureBiRecord(s.id);
-                    const pIdx = rec.promotions.findIndex(p => p.jenjang.includes(kelasAsal.replace('Kelas ', '')));
-                    if (pIdx >= 0) {
-                        rec.promotions[pIdx].keputusan = 'Naik';
-                        rec.promotions[pIdx].tanggal = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-                        rec.promotions[pIdx].keterangan = `Naik ke ${kelasTujuan} (T.P. ${schoolIdentity.activeTp})`;
-                    }
                 }
             });
 
-            try {
-                await saveToStorage(`Kenaikan kelas massal dari ${kelasAsal} ke ${kelasTujuan}`);
-                closeKenaikanKelasModal();
-                refreshAllViews();
-                showNotification(`Berhasil menaikkan ${count} siswa dari ${kelasAsal} ke ${kelasTujuan}!`, 'success');
-            } catch (err) {
-                studentsData = prevStudents;
-                bukuIndukRecords = prevRecords;
-                closeKenaikanKelasModal();
-                showNotification('Gagal memproses kenaikan kelas di Firebase!', 'error');
-            }
+            await saveToStorage(`Kenaikan kelas massal dari ${kelasAsal} ke ${kelasTujuan}`);
+            closeKenaikanKelasModal();
+            refreshAllViews();
+            showNotification(`Berhasil menaikkan ${count} siswa ke ${kelasTujuan}!`, 'success');
         }
 
         function buildStudentBukuIndukHtml(s) {
             const rec = ensureBiRecord(s.id);
-            const kelasCols = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
-            const activeTp = schoolIdentity.activeTp || '2026/2027';
+            const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
+            const activeTp = schoolIdentity.activeTp || '2025/2026';
 
             const colTotals = {};
-            kelasCols.forEach(kls => {
-                colTotals[kls] = {
-                    '1': { sum: 0, count: 0 },
-                    '2': { sum: 0, count: 0 }
-                };
-            });
+            kelasList.forEach(kls => { colTotals[kls] = { '1': { sum: 0, count: 0 }, '2': { sum: 0, count: 0 } }; });
 
             let nilaiRowsHtml = '';
-            // Mengikuti seluruh mata pelajaran yang aktif di mapelData secara dinamis
             mapelData.forEach((m, idx) => {
                 let tds = '';
-                kelasCols.forEach(kls => {
+                kelasList.forEach(kls => {
                     ['1', '2'].forEach(sem => {
                         const found = findStudentGradeRecord(s.id, kls, sem, m.nama);
                         let displayVal = '-';
                         if (found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '') {
                             const num = Number(String(found.nilai).replace(',', '.'));
-                            if (!isNaN(num) && isFinite(num) && num >= 0 && num <= 100) {
+                            if (!isNaN(num) && num >= 0 && num <= 100) {
                                 displayVal = formatIndonesianDecimal(num, false);
                                 colTotals[kls][sem].sum += num;
                                 colTotals[kls][sem].count += 1;
@@ -2562,15 +2385,12 @@
                 `;
             });
 
-            let sumPrintTds = '';
-            let avgPrintTds = '';
-            kelasCols.forEach(kls => {
+            let sumPrintTds = ''; let avgPrintTds = '';
+            kelasList.forEach(kls => {
                 ['1', '2'].forEach(sem => {
                     const st = colTotals[kls][sem];
-                    const sumText = st.count > 0 ? formatIndonesianDecimal(st.sum, false) : '-';
-                    const avgText = st.count > 0 ? formatIndonesianDecimal(st.sum / st.count, true) : '-';
-                    sumPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-indigo-50">${sumText}</td>`;
-                    avgPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-emerald-50">${avgText}</td>`;
+                    sumPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-indigo-50">${st.count > 0 ? formatIndonesianDecimal(st.sum, false) : '-'}</td>`;
+                    avgPrintTds += `<td class="border border-slate-800 p-1 text-center font-extrabold print-header-bg bg-emerald-50">${st.count > 0 ? formatIndonesianDecimal(st.sum / st.count, true) : '-'}</td>`;
                 });
             });
 
@@ -2706,19 +2526,7 @@
             const s = studentsData.find(item => String(item.id) === String(activeStudentId)) || studentsData[0];
             if (!s) return;
             renderPrintableBukuInduk([s]);
-
-            const size = document.getElementById('printPaperSize')?.value || 'f4';
-            const orient = document.getElementById('printOrientation')?.value || 'portrait';
-            const sizeDim = size === 'a4' ? '210mm 297mm' : '215mm 330mm';
-
-            const printWin = window.open('', '_blank', 'width=950,height=800');
-            if (printWin) {
-                printWin.document.write(`<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Cetak Buku Induk</title><script src="https://cdn.tailwindcss.com"><\/script><style>@page { size: ${sizeDim} ${orient}; margin: 10mm 12mm; } body { font-family: Arial, sans-serif; color: #000; background: #fff; font-size: 10pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #000 !important; padding: 4px 6px; } .page-break { page-break-after: always; break-after: page; } .print-header-bg { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }</style></head><body class="p-4">${document.getElementById('printableArea').innerHTML}<script>window.onload=function(){setTimeout(function(){window.focus();window.print();},450);};<\/script></body></html>`);
-                printWin.document.close();
-            } else {
-                showBukuIndukSubView('preview');
-                setTimeout(() => window.print(), 250);
-            }
+            setTimeout(() => window.print(), 250);
         }
 
         function printSingleStudentById(id) {
@@ -2739,19 +2547,12 @@
 
         function renderDashboardStats() {
             document.getElementById('dashSchoolName').innerText = schoolIdentity.nama;
-            const totalSiswa = studentsData.length;
-            const lakiSiswa = studentsData.filter(s => s.gender === 'Laki-laki').length;
-            const peremSiswa = studentsData.filter(s => s.gender === 'Perempuan').length;
-            const aktifSiswa = studentsData.filter(s => s.status === 'Aktif').length;
-            const lulusSiswa = studentsData.filter(s => s.status === 'Lulus').length;
-            const pindahSiswa = studentsData.filter(s => s.status === 'Pindah').length;
-
-            document.getElementById('statTotalSiswa').innerText = totalSiswa;
-            document.getElementById('statLaki').innerText = lakiSiswa;
-            document.getElementById('statPerempuan').innerText = peremSiswa;
-            document.getElementById('statAktif').innerText = aktifSiswa;
-            document.getElementById('statLulus').innerText = lulusSiswa;
-            document.getElementById('statPindahKeluar').innerText = pindahSiswa;
+            document.getElementById('statTotalSiswa').innerText = studentsData.length;
+            document.getElementById('statLaki').innerText = studentsData.filter(s => s.gender === 'Laki-laki').length;
+            document.getElementById('statPerempuan').innerText = studentsData.filter(s => s.gender === 'Perempuan').length;
+            document.getElementById('statAktif').innerText = studentsData.filter(s => s.status === 'Aktif').length;
+            document.getElementById('statLulus').innerText = studentsData.filter(s => s.status === 'Lulus').length;
+            document.getElementById('statPindahKeluar').innerText = studentsData.filter(s => s.status === 'Pindah').length;
             document.getElementById('statGuruCount').innerText = guruData.length;
 
             const kelasList = ['Kelas I', 'Kelas II', 'Kelas III', 'Kelas IV', 'Kelas V', 'Kelas VI'];
@@ -2844,26 +2645,6 @@
             document.getElementById('modalNis').value = '';
             document.getElementById('modalNisn').value = '';
             document.getElementById('modalNama').value = '';
-            document.getElementById('modalGender').value = 'Laki-laki';
-            document.getElementById('modalAgama').value = 'Islam';
-            document.getElementById('modalTempatLahir').value = 'Lamongan';
-            document.getElementById('modalTglLahir').value = '';
-            document.getElementById('modalAnakKe').value = '1';
-            document.getElementById('modalJmlSaudara').value = '2';
-            document.getElementById('modalAlamat').value = '';
-            document.getElementById('modalKontak').value = '';
-            document.getElementById('modalAyah').value = '';
-            document.getElementById('modalPekerjaanAyah').value = '';
-            document.getElementById('modalIbu').value = '';
-            document.getElementById('modalPekerjaanIbu').value = '';
-            document.getElementById('modalWali').value = '-';
-            document.getElementById('modalKontakWali').value = '-';
-            document.getElementById('modalAsalSekolah').value = 'TK Dharma Wanita';
-            document.getElementById('modalTglMasuk').value = '15 Juli 2026';
-            const currentFilterKelas = document.getElementById('filterSiswaKelas')?.value;
-            document.getElementById('modalKelas').value = (currentFilterKelas && currentFilterKelas !== 'ALL') ? currentFilterKelas : 'Kelas V';
-            document.getElementById('modalTahunMasuk').value = schoolIdentity.activeTp || '2026/2027';
-            document.getElementById('modalStatus').value = 'Aktif';
             document.getElementById('studentModal').classList.remove('hidden');
         }
 
@@ -2879,20 +2660,13 @@
             document.getElementById('modalAgama').value = s.agama || 'Islam';
             document.getElementById('modalTempatLahir').value = s.tempatLahir || '';
             document.getElementById('modalTglLahir').value = s.tglLahir || '';
-            document.getElementById('modalAnakKe').value = s.anakKe || 1;
-            document.getElementById('modalJmlSaudara').value = s.jmlSaudara || 2;
             document.getElementById('modalAlamat').value = s.alamat || '';
             document.getElementById('modalKontak').value = s.kontak || '';
             document.getElementById('modalAyah').value = s.ayah || '';
             document.getElementById('modalPekerjaanAyah').value = s.pekerjaanAyah || '';
             document.getElementById('modalIbu').value = s.ibu || '';
             document.getElementById('modalPekerjaanIbu').value = s.pekerjaanIbu || '';
-            document.getElementById('modalWali').value = s.wali || '-';
-            document.getElementById('modalKontakWali').value = s.kontakWali || '-';
-            document.getElementById('modalAsalSekolah').value = s.asalSekolah || '';
-            document.getElementById('modalTglMasuk').value = s.tglMasuk || '';
             document.getElementById('modalKelas').value = s.kelas || 'Kelas V';
-            document.getElementById('modalTahunMasuk').value = s.tahunMasuk || '2026/2027';
             document.getElementById('modalStatus').value = s.status || 'Aktif';
             document.getElementById('studentModal').classList.remove('hidden');
         }
@@ -2900,152 +2674,55 @@
         function closeStudentModal() { document.getElementById('studentModal').classList.add('hidden'); }
 
         async function saveStudentData() {
-            const btnSave = document.getElementById('btnSaveStudentModal');
-            if (btnSave && btnSave.disabled) return;
-
             const id = document.getElementById('modalStudentId').value.trim();
             const nis = String(document.getElementById('modalNis').value || '').trim();
             const nisn = String(document.getElementById('modalNisn').value || '').trim();
             const nama = String(document.getElementById('modalNama').value || '').trim();
-            const gender = document.getElementById('modalGender').value || 'Laki-laki';
-            const agama = String(document.getElementById('modalAgama').value || '').trim();
-            const tempatLahir = String(document.getElementById('modalTempatLahir').value || '').trim();
-            const tglLahir = String(document.getElementById('modalTglLahir').value || '').trim();
-            const alamat = String(document.getElementById('modalAlamat').value || '').trim();
-            const ayah = String(document.getElementById('modalAyah').value || '').trim();
-            const ibu = String(document.getElementById('modalIbu').value || '').trim();
-
-            // Validasi kolom wajib dengan pesan spesifik
-            const missingFields = [];
-            if (!nis) missingFields.push('NIS');
-            if (!nisn) missingFields.push('NISN');
-            if (!nama) missingFields.push('Nama Lengkap');
-            if (!tempatLahir) missingFields.push('Tempat Lahir');
-            if (!tglLahir) missingFields.push('Tanggal Lahir');
-            if (!alamat) missingFields.push('Alamat');
-
-            if (missingFields.length > 0) {
-                showNotification(`Mohon lengkapi data wajib: ${missingFields.join(', ')}!`, 'error');
-                return;
-            }
-
-            // Validasi duplikasi NIS atau NISN
-            const dupNis = studentsData.find(s => String(s.nis).toLowerCase() === nis.toLowerCase() && String(s.id) !== String(id));
-            if (dupNis) {
-                showNotification(`Peringatan: NIS "${nis}" sudah digunakan oleh siswa ${dupNis.nama}!`, 'error');
-                return;
-            }
-
-            const dupNisn = studentsData.find(s => String(s.nisn).toLowerCase() === nisn.toLowerCase() && String(s.id) !== String(id));
-            if (dupNisn) {
-                showNotification(`Peringatan: NISN "${nisn}" sudah digunakan oleh siswa ${dupNisn.nama}!`, 'error');
-                return;
-            }
+            if (!nis || !nisn || !nama) { showNotification('NIS, NISN, dan Nama Lengkap wajib diisi!', 'error'); return; }
 
             const payload = {
-                nis: String(nis),
-                nisn: String(nisn),
-                nama,
-                gender,
-                agama: agama || 'Islam',
-                tempatLahir,
-                tglLahir,
-                anakKe: parseInt(document.getElementById('modalAnakKe').value) || 1,
-                jmlSaudara: parseInt(document.getElementById('modalJmlSaudara').value) || 1,
-                alamat,
-                kontak: String(document.getElementById('modalKontak').value || '').trim() || '-',
-                ayah: ayah || '-',
-                pekerjaanAyah: String(document.getElementById('modalPekerjaanAyah').value || '').trim() || '-',
-                ibu: ibu || '-',
-                pekerjaanIbu: String(document.getElementById('modalPekerjaanIbu').value || '').trim() || '-',
-                wali: String(document.getElementById('modalWali').value || '').trim() || '-',
-                kontakWali: String(document.getElementById('modalKontakWali').value || '').trim() || '-',
-                asalSekolah: String(document.getElementById('modalAsalSekolah').value || '').trim() || '-',
-                tglMasuk: String(document.getElementById('modalTglMasuk').value || '').trim() || '-',
+                nis, nisn, nama,
+                gender: document.getElementById('modalGender').value,
+                agama: document.getElementById('modalAgama').value || 'Islam',
+                tempatLahir: document.getElementById('modalTempatLahir').value || 'Lamongan',
+                tglLahir: document.getElementById('modalTglLahir').value || '-',
+                alamat: document.getElementById('modalAlamat').value || '-',
+                kontak: document.getElementById('modalKontak').value || '-',
+                ayah: document.getElementById('modalAyah').value || '-',
+                pekerjaanAyah: document.getElementById('modalPekerjaanAyah').value || '-',
+                ibu: document.getElementById('modalIbu').value || '-',
+                pekerjaanIbu: document.getElementById('modalPekerjaanIbu').value || '-',
+                wali: '-', kontakWali: '-', asalSekolah: 'TK', tglMasuk: '15 Juli 2026',
                 kelas: document.getElementById('modalKelas').value || 'Kelas V',
-                tahunMasuk: String(document.getElementById('modalTahunMasuk').value || '').trim() || (schoolIdentity.activeTp || '2026/2027'),
+                tahunMasuk: schoolIdentity.activeTp || '2025/2026',
                 status: document.getElementById('modalStatus').value || 'Aktif'
             };
 
-            const prevStudents = JSON.parse(JSON.stringify(studentsData));
-            const prevRecords = JSON.parse(JSON.stringify(bukuIndukRecords));
-            const prevActiveId = activeStudentId;
-
-            if (btnSave) {
-                btnSave.disabled = true;
-                btnSave.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Menyimpan...</span>`;
+            if (id) {
+                const idx = studentsData.findIndex(item => String(item.id) === String(id));
+                if (idx >= 0) studentsData[idx] = { ...studentsData[idx], ...payload };
+                await saveToStorage(`Edit siswa: ${nama}`);
+            } else {
+                const newId = 'st_' + Date.now();
+                studentsData.unshift({ id: newId, ...payload });
+                ensureBiRecord(newId);
+                activeStudentId = newId;
+                await saveToStorage(`Tambah siswa: ${nama}`);
             }
-
-            try {
-                if (id) {
-                    const idx = studentsData.findIndex(item => String(item.id) === String(id));
-                    if (idx >= 0) {
-                        studentsData[idx] = { ...studentsData[idx], ...payload, id: String(id) };
-                        nilaiData.forEach(n => {
-                            if (String(n.studentId) === String(id)) n.siswaNama = nama;
-                        });
-                    }
-                    activeStudentId = String(id);
-                    await saveToStorage(`Edit data peserta didik: ${nama} (NISN: ${nisn})`);
-                } else {
-                    const newId = 'st_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
-                    const newStudent = { id: newId, ...payload };
-                    studentsData.unshift(newStudent);
-                    ensureBiRecord(newId);
-                    activeStudentId = newId;
-                    await saveToStorage(`Tambah peserta didik baru: ${nama} (NISN: ${nisn})`);
-                }
-
-                // Pastikan filter kelas/status menyesuaikan jika sedang terfilter agar siswa baru langsung terlihat
-                const fKelasEl = document.getElementById('filterSiswaKelas');
-                if (fKelasEl && fKelasEl.value !== 'ALL' && fKelasEl.value !== payload.kelas) {
-                    fKelasEl.value = 'ALL';
-                }
-                const biFilterKelasEl = document.getElementById('biFilterKelas');
-                if (biFilterKelasEl && biFilterKelasEl.value !== 'ALL' && biFilterKelasEl.value !== payload.kelas) {
-                    biFilterKelasEl.value = payload.kelas;
-                }
-
-                refreshAllViews();
-                closeStudentModal();
-                showNotification(id ? `Data peserta didik "${nama}" berhasil diperbarui!` : `Peserta didik baru "${nama}" berhasil disimpan!`, 'success');
-            } catch (err) {
-                studentsData = prevStudents;
-                bukuIndukRecords = prevRecords;
-                activeStudentId = prevActiveId;
-                showNotification('Gagal menyimpan data peserta didik: ' + (err.message || 'Gangguan koneksi penyimpanan'), 'error');
-            } finally {
-                if (btnSave) {
-                    btnSave.disabled = false;
-                    btnSave.innerHTML = `<i class="fa-solid fa-floppy-disk"></i><span>Simpan</span>`;
-                }
-            }
+            refreshAllViews();
+            closeStudentModal();
+            showNotification('Data peserta didik berhasil disimpan!', 'success');
         }
 
         function deleteStudent(id) {
             const s = studentsData.find(item => String(item.id) === String(id));
             if (!s) return;
-            openConfirmDeleteModal('Hapus Peserta Didik', `Apakah Anda yakin ingin menghapus "${s.nama}" secara permanen dari Firebase?`, async () => {
-                const prevStudents = JSON.parse(JSON.stringify(studentsData));
-                const prevNilai = JSON.parse(JSON.stringify(nilaiData));
-                const prevRecords = JSON.parse(JSON.stringify(bukuIndukRecords));
-
+            openConfirmDeleteModal('Hapus Peserta Didik', `Apakah Anda yakin ingin menghapus "${s.nama}"?`, async () => {
                 studentsData = studentsData.filter(item => String(item.id) !== String(id));
-                nilaiData = nilaiData.filter(n => String(n.studentId) !== String(id));
                 delete bukuIndukRecords[String(id)];
-                if (String(activeStudentId) === String(id)) activeStudentId = studentsData[0]?.id || null;
-
-                try {
-                    await saveToStorage(`Hapus siswa: ${s.nama}`);
-                    refreshAllViews();
-                    showNotification('Peserta didik berhasil dihapus dari Firebase.', 'success');
-                } catch (err) {
-                    studentsData = prevStudents;
-                    nilaiData = prevNilai;
-                    bukuIndukRecords = prevRecords;
-                    refreshAllViews();
-                    showNotification('Gagal menghapus peserta didik di Firebase!', 'error');
-                }
+                await saveToStorage(`Hapus siswa: ${s.nama}`);
+                refreshAllViews();
+                showNotification('Peserta didik berhasil dihapus.', 'success');
             });
         }
 
@@ -3054,98 +2731,22 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             guruData.forEach((g, idx) => {
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-3">${idx + 1}</td>
-                        <td class="p-3 font-bold text-slate-900">${g.nama}</td>
-                        <td class="p-3">${g.nip}</td>
-                        <td class="p-3">${g.jabatan}</td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded font-semibold ${g.waliKelas !== '-' ? 'bg-amber-100 text-amber-800' : 'text-slate-400'}">${g.waliKelas}</span></td>
-                        <td class="p-3">${g.pendidikan}</td>
-                        <td class="p-3 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <button type="button" onclick="openEditGuruModal('${g.id}')" class="bg-amber-500 text-white px-2.5 py-1 rounded-lg text-[11px] font-semibold cursor-pointer">Edit</button>
-                                <button type="button" onclick="deleteGuru('${g.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded-lg text-[11px] font-semibold cursor-pointer">Hapus</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx + 1}</td><td class="p-3 font-bold">${g.nama}</td><td class="p-3">${g.nip}</td><td class="p-3">${g.jabatan}</td><td class="p-3">${g.waliKelas}</td><td class="p-3">${g.pendidikan}</td><td class="p-3 text-center"><button type="button" onclick="deleteGuru('${g.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded text-[11px] cursor-pointer">Hapus</button></td></tr>`;
             });
         }
-
-        function openAddGuruModal() {
-            document.getElementById('guruModalTitle').innerHTML = `<i class="fa-solid fa-user-plus mr-2 text-amber-400"></i>Tambah Guru`;
-            document.getElementById('modalGuruId').value = '';
-            document.getElementById('inputGuruNama').value = '';
-            document.getElementById('inputGuruNip').value = '';
-            document.getElementById('inputGuruJabatan').value = 'Guru Kelas';
-            document.getElementById('inputGuruWaliKelas').value = '-';
-            document.getElementById('guruModal').classList.remove('hidden');
-        }
-
-        function openEditGuruModal(id) {
-            const g = guruData.find(item => String(item.id) === String(id));
-            if (!g) return;
-            document.getElementById('guruModalTitle').innerHTML = `<i class="fa-solid fa-user-pen mr-2 text-amber-400"></i>Edit Guru`;
-            document.getElementById('modalGuruId').value = g.id;
-            document.getElementById('inputGuruNama').value = g.nama;
-            document.getElementById('inputGuruNip').value = g.nip;
-            document.getElementById('inputGuruJabatan').value = g.jabatan;
-            document.getElementById('inputGuruWaliKelas').value = g.waliKelas || '-';
-            document.getElementById('inputGuruPendidikan').value = g.pendidikan;
-            document.getElementById('guruModal').classList.remove('hidden');
-        }
-
+        function openAddGuruModal() { document.getElementById('guruModal').classList.remove('hidden'); }
         function closeGuruModal() { document.getElementById('guruModal').classList.add('hidden'); }
-
         async function saveGuruData() {
-            const id = document.getElementById('modalGuruId').value;
             const nama = document.getElementById('inputGuruNama').value.trim();
-            if (!nama) { showNotification('Nama guru wajib diisi!', 'error'); return; }
-
-            const payload = {
-                nama,
-                nip: document.getElementById('inputGuruNip').value.trim() || '-',
-                jabatan: document.getElementById('inputGuruJabatan').value.trim() || 'Guru',
-                waliKelas: document.getElementById('inputGuruWaliKelas').value,
-                pendidikan: document.getElementById('inputGuruPendidikan').value.trim() || 'S1'
-            };
-
-            const prevGuru = JSON.parse(JSON.stringify(guruData));
-            try {
-                if (id) {
-                    const idx = guruData.findIndex(item => String(item.id) === String(id));
-                    if (idx >= 0) guruData[idx] = { ...guruData[idx], ...payload };
-                    await saveToStorage(`Edit guru: ${nama}`);
-                    showNotification('Data guru berhasil diperbarui di Firebase!', 'success');
-                } else {
-                    guruData.push({ id: 'g_' + Date.now(), ...payload });
-                    await saveToStorage(`Tambah guru: ${nama}`);
-                    showNotification('Data guru berhasil disimpan ke Firebase!', 'success');
-                }
-                closeGuruModal();
-                refreshAllViews();
-            } catch (err) {
-                guruData = prevGuru;
-                showNotification('Gagal menyimpan data guru ke Firebase!', 'error');
-            }
+            if (!nama) return;
+            guruData.push({ id: 'g_' + Date.now(), nama, nip: document.getElementById('inputGuruNip').value.trim() || '-', jabatan: document.getElementById('inputGuruJabatan').value.trim() || 'Guru', waliKelas: document.getElementById('inputGuruWaliKelas').value, pendidikan: 'S1' });
+            await saveToStorage(`Tambah guru: ${nama}`);
+            closeGuruModal(); refreshAllViews(); showNotification('Guru disimpan!', 'success');
         }
-
         function deleteGuru(id) {
-            const g = guruData.find(item => String(item.id) === String(id));
-            if (!g) return;
-            openConfirmDeleteModal('Hapus Guru', `Apakah Anda yakin ingin menghapus guru "${g.nama}" dari Firebase?`, async () => {
-                const prevGuru = JSON.parse(JSON.stringify(guruData));
-                guruData = guruData.filter(item => String(item.id) !== String(id));
-                try {
-                    await saveToStorage(`Hapus guru: ${g.nama}`);
-                    refreshAllViews();
-                    showNotification('Guru berhasil dihapus dari Firebase.', 'success');
-                } catch (err) {
-                    guruData = prevGuru;
-                    refreshAllViews();
-                    showNotification('Gagal menghapus guru di Firebase!', 'error');
-                }
+            openConfirmDeleteModal('Hapus Guru', 'Hapus guru ini?', async () => {
+                guruData = guruData.filter(g => String(g.id) !== String(id));
+                await saveToStorage('Hapus guru'); refreshAllViews(); showNotification('Guru dihapus.', 'success');
             });
         }
 
@@ -3154,82 +2755,21 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             mapelData.forEach((m, idx) => {
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-3">${idx+1}</td>
-                        <td class="p-3 font-bold">${m.nama}</td>
-                        <td class="p-3"><span class="bg-pink-50 text-pink-700 px-2 py-0.5 rounded">${m.kelompok}</span></td>
-                        <td class="p-3 text-slate-600 italic text-[11px]">${m.tp || '<span class="text-slate-400">Belum ada TP</span>'}</td>
-                        <td class="p-3 text-center">
-                            <button type="button" onclick="openEditMapelModal('${m.id}')" class="bg-amber-500 text-white px-2.5 py-1 rounded-lg text-[11px] font-semibold cursor-pointer mr-1">Edit</button>
-                            <button type="button" onclick="deleteMapel('${m.id}')" class="bg-rose-600 text-white px-2.5 py-1 rounded-lg text-[11px] font-semibold cursor-pointer"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${m.nama}</td><td class="p-3">${m.kelompok}</td><td class="p-3 italic text-slate-600">${m.tp || '-'}</td><td class="p-3 text-center"><button type="button" onclick="deleteMapel('${m.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         }
-        function openAddMapelModal() {
-            document.getElementById('mapelModalTitle').innerText = 'Tambah Mata Pelajaran & TP';
-            document.getElementById('modalMapelId').value = '';
-            document.getElementById('inputMapelNama').value = '';
-            document.getElementById('inputMapelKelompok').value = 'Wajib Kurikulum Merdeka';
-            document.getElementById('inputMapelTp').value = '';
-            document.getElementById('mapelModal').classList.remove('hidden');
-        }
-        function openEditMapelModal(id) {
-            const m = mapelData.find(item => String(item.id) === String(id));
-            if (!m) return;
-            document.getElementById('mapelModalTitle').innerText = 'Edit Mata Pelajaran & TP';
-            document.getElementById('modalMapelId').value = m.id;
-            document.getElementById('inputMapelNama').value = m.nama;
-            document.getElementById('inputMapelKelompok').value = m.kelompok || 'Wajib Kurikulum Merdeka';
-            document.getElementById('inputMapelTp').value = m.tp || '';
-            document.getElementById('mapelModal').classList.remove('hidden');
-        }
+        function openAddMapelModal() { document.getElementById('mapelModal').classList.remove('hidden'); }
         function closeMapelModal() { document.getElementById('mapelModal').classList.add('hidden'); }
         async function saveMapelData() {
-            const id = document.getElementById('modalMapelId').value.trim();
             const nama = document.getElementById('inputMapelNama').value.trim();
-            const kelompok = document.getElementById('inputMapelKelompok').value;
-            const tp = document.getElementById('inputMapelTp').value.trim();
-            if (!nama) { showNotification('Nama mapel wajib diisi!', 'error'); return; }
-            const prevMapel = JSON.parse(JSON.stringify(mapelData));
-            if (id) {
-                const idx = mapelData.findIndex(item => String(item.id) === String(id));
-                if (idx >= 0) {
-                    const oldName = mapelData[idx].nama;
-                    mapelData[idx] = { ...mapelData[idx], nama, kelompok, tp };
-                    if (oldName !== nama) {
-                        nilaiData.forEach(n => { if (n.mapel === oldName) n.mapel = nama; });
-                    }
-                }
-            } else {
-                mapelData.push({ id: 'm_' + Date.now(), nama, kelompok, tp });
-            }
-            try {
-                await saveToStorage(`Simpan mapel & TP: ${nama}`);
-                closeMapelModal();
-                refreshAllViews();
-                showNotification('Mata pelajaran & TP berhasil disimpan!', 'success');
-            } catch (err) {
-                mapelData = prevMapel;
-                showNotification('Gagal menyimpan mata pelajaran!', 'error');
-            }
+            if (!nama) return;
+            mapelData.push({ id: 'm_' + Date.now(), nama, kelompok: document.getElementById('inputMapelKelompok').value, tp: document.getElementById('inputMapelTp').value.trim() });
+            await saveToStorage(`Tambah mapel: ${nama}`); closeMapelModal(); refreshAllViews(); showNotification('Mapel disimpan!', 'success');
         }
         function deleteMapel(id) {
-            const targetMapel = mapelData.find(item => String(item.id) === String(id));
-            openConfirmDeleteModal('Hapus Mapel', `Apakah Anda yakin ingin menghapus mata pelajaran "${targetMapel ? targetMapel.nama : ''}"?`, async () => {
-                const prevMapel = JSON.parse(JSON.stringify(mapelData));
-                mapelData = mapelData.filter(item => String(item.id) !== String(id));
-                try {
-                    await saveToStorage(`Hapus mapel: ${targetMapel ? targetMapel.nama : id}`);
-                    refreshAllViews();
-                    showNotification('Mata pelajaran dihapus dan rekapitulasi nilai diperbarui.', 'success');
-                } catch (err) {
-                    mapelData = prevMapel;
-                    refreshAllViews();
-                    showNotification('Gagal menghapus mata pelajaran!', 'error');
-                }
+            openConfirmDeleteModal('Hapus Mapel', 'Hapus mapel ini?', async () => {
+                mapelData = mapelData.filter(m => String(m.id) !== String(id));
+                await saveToStorage('Hapus mapel'); refreshAllViews(); showNotification('Mapel dihapus.', 'success');
             });
         }
 
@@ -3238,7 +2778,7 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             nilaiData.forEach((n, idx) => {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${n.siswaNama}</td><td class="p-3 font-semibold text-indigo-700">${n.tp || schoolIdentity.activeTp}</td><td class="p-3">${n.kelas}</td><td class="p-3">Sem ${n.semester}</td><td class="p-3">${n.mapel}</td><td class="p-3 font-extrabold text-purple-700">${n.nilai}</td><td class="p-3 text-center"><button type="button" onclick="deleteNilai('${n.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${n.siswaNama}</td><td class="p-3 font-semibold text-indigo-700">${n.tp}</td><td class="p-3">${n.kelas}</td><td class="p-3">Sem ${n.semester}</td><td class="p-3">${n.mapel}</td><td class="p-3 font-extrabold text-purple-700">${n.nilai}</td><td class="p-3 text-center"><button type="button" onclick="deleteNilai('${n.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         }
         function openInputNilaiModal() { document.getElementById('nilaiModal').classList.remove('hidden'); }
@@ -3247,58 +2787,15 @@
             const studentId = document.getElementById('inputNilaiSiswa').value;
             const s = studentsData.find(item => String(item.id) === String(studentId));
             if (!s) return;
-            const kelas = document.getElementById('inputNilaiKelas').value;
-            const semester = document.getElementById('inputNilaiSemester').value;
-            const mapel = document.getElementById('inputNilaiMapel').value;
-            const rawNilai = String(document.getElementById('inputNilaiAngka').value ?? '').trim().replace(',', '.');
-            if (rawNilai === '') {
-                showNotification('Nilai tidak boleh kosong!', 'error');
-                return;
-            }
-            const nilai = Number(rawNilai);
-            if (isNaN(nilai) || !isFinite(nilai) || nilai < 0 || nilai > 100) {
-                showNotification('Nilai harus berada dalam rentang 0–100!', 'error');
-                return;
-            }
-            const activeTp = schoolIdentity.activeTp || '2026/2027';
-
-            const prevNilai = JSON.parse(JSON.stringify(nilaiData));
-            const idx = nilaiData.findIndex(n =>
-                String(n.studentId) === String(studentId) &&
-                String(n.kelas).trim() === String(kelas).trim() &&
-                String(n.semester).trim() === String(semester).trim() &&
-                String(n.mapel).trim().toLowerCase() === String(mapel).trim().toLowerCase()
-            );
-            if (idx >= 0) {
-                nilaiData[idx].nilai = nilai;
-                nilaiData[idx].tp = activeTp;
-            } else {
-                nilaiData.push({ id: 'n_' + Date.now(), studentId: s.id, siswaNama: s.nama, tp: activeTp, kelas, semester, mapel, nilai });
-            }
-
-            try {
-                await saveToStorage(`Input nilai ${mapel} untuk ${s.nama}`);
-                closeNilaiModal();
-                refreshAllViews();
-                showNotification('Nilai berhasil disimpan!', 'success');
-            } catch (err) {
-                nilaiData = prevNilai;
-                showNotification('Gagal menyimpan nilai!', 'error');
-            }
+            const nilai = Number(document.getElementById('inputNilaiAngka').value);
+            if (isNaN(nilai) || nilai < 0 || nilai > 100) { showNotification('Nilai 0-100!', 'error'); return; }
+            nilaiData.push({ id: 'n_' + Date.now(), studentId: s.id, siswaNama: s.nama, tp: schoolIdentity.activeTp, kelas: document.getElementById('inputNilaiKelas').value, semester: document.getElementById('inputNilaiSemester').value, mapel: document.getElementById('inputNilaiMapel').value, nilai });
+            await saveToStorage('Input nilai'); closeNilaiModal(); refreshAllViews(); showNotification('Nilai disimpan!', 'success');
         }
         function deleteNilai(id) {
-            openConfirmDeleteModal('Hapus Nilai', 'Apakah Anda yakin ingin menghapus nilai ini dari Firebase?', async () => {
-                const prevNilai = JSON.parse(JSON.stringify(nilaiData));
-                nilaiData = nilaiData.filter(item => String(item.id) !== String(id));
-                try {
-                    await saveToStorage('Hapus nilai');
-                    refreshAllViews();
-                    showNotification('Nilai berhasil dihapus dari Firebase.', 'success');
-                } catch (err) {
-                    nilaiData = prevNilai;
-                    refreshAllViews();
-                    showNotification('Gagal menghapus nilai di Firebase!', 'error');
-                }
+            openConfirmDeleteModal('Hapus Nilai', 'Hapus nilai?', async () => {
+                nilaiData = nilaiData.filter(n => String(n.id) !== String(id));
+                await saveToStorage('Hapus nilai'); refreshAllViews(); showNotification('Nilai dihapus.', 'success');
             });
         }
 
@@ -3309,7 +2806,7 @@
             studentsData.forEach(s => {
                 const rec = ensureBiRecord(s.id);
                 const lastProm = rec.promotions.slice().reverse().find(p => p.keputusan !== '-') || { keputusan: 'Aktif', keterangan: '-' };
-                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3 font-bold text-indigo-600">${s.nis} / ${s.nisn}</td><td class="p-3 font-bold">${s.nama}</td><td class="p-3">${s.kelas}</td><td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">${s.status}</span></td><td class="p-3 font-medium text-slate-700">${lastProm.keputusan}: ${lastProm.keterangan || '-'}</td><td class="p-3 text-center"><button type="button" onclick="openBiEditorForStudent('${s.id}'); switchBiSection('G');" class="bg-cyan-600 text-white px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer">Kelola</button></td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3 font-bold text-indigo-600">${s.nis} / ${s.nisn}</td><td class="p-3 font-bold">${s.nama}</td><td class="p-3">${s.kelas}</td><td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">${s.status}</span></td><td class="p-3">${lastProm.keputusan}: ${lastProm.keterangan || '-'}</td><td class="p-3 text-center"><button type="button" onclick="openBiEditorForStudent('${s.id}'); switchBiSection('G');" class="bg-cyan-600 text-white px-3 py-1 rounded-lg text-xs cursor-pointer">Kelola</button></td></tr>`;
             });
         }
 
@@ -3337,23 +2834,21 @@
 
         function downloadTemplateSiswa() {
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet([["NIS", "NISN", "Nama Lengkap", "Jenis Kelamin", "Tempat Lahir", "Tanggal Lahir", "Agama", "Alamat", "Nama Ayah", "Nama Ibu", "Nama Wali", "Nomor Kontak", "Asal Sekolah", "Tanggal Masuk", "Kelas Awal", "Tahun Masuk"], ["003", "0112345680", "BAGAS PRATAMA", "Laki-laki", "Lamongan", "21 Mei 2014", "Islam", "Ds. Gedongboyountung", "Hendra", "Lilis", "-", "081298765432", "TK", "18 Juli 2026", "Kelas I", "2026/2027"]]);
-            XLSX.utils.book_append_sheet(wb, ws, "Template_Siswa");
-            XLSX.writeFile(wb, "Template_Import_Siswa.xlsx");
+            const ws = XLSX.utils.aoa_to_sheet([["NIS", "NISN", "Nama Lengkap", "Jenis Kelamin", "Tempat Lahir", "Tanggal Lahir", "Agama", "Alamat", "Nama Ayah", "Nama Ibu"], ["1356", "0152331980", "CLARA OLIVIA", "Perempuan", "Lamongan", "10 Jan 2015", "Islam", "Gedongboyountung", "Ahmad Efendi", "Siti Aminah"]]);
+            XLSX.utils.book_append_sheet(wb, ws, "Template");
+            XLSX.writeFile(wb, "Template_Siswa.xlsx");
         }
-
         function downloadTemplateNilai() {
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet([["NIS", "NISN", "Nama Siswa", "Tahun Pelajaran", "Kelas", "Semester", "Mata Pelajaran", "Nilai", "Catatan"], ["001", "0112345678", "ACHMAD ALBY", "2026/2027", "Kelas V", "1", "Matematika", 95, "-"]]);
-            XLSX.utils.book_append_sheet(wb, ws, "Template_Nilai");
-            XLSX.writeFile(wb, "Template_Import_Nilai.xlsx");
+            const ws = XLSX.utils.aoa_to_sheet([["NIS", "NISN", "Nama Siswa", "Tahun Pelajaran", "Kelas", "Semester", "Mata Pelajaran", "Nilai"], ["1356", "0152331980", "CLARA", "2025/2026", "Kelas V", "2", "Matematika", 85]]);
+            XLSX.utils.book_append_sheet(wb, ws, "Template");
+            XLSX.writeFile(wb, "Template_Nilai.xlsx");
         }
-
         function downloadTemplateGuru() {
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet([["Nama Lengkap", "NIP", "Jabatan", "Wali Kelas", "Pendidikan Terakhir"], ["Sulis Setyawati, S.Pd.", "19850410 201001 2 008", "Guru Kelas II", "Kelas II", "S1 PGSD"]]);
-            XLSX.utils.book_append_sheet(wb, ws, "Template_Guru");
-            XLSX.writeFile(wb, "Template_Import_Guru_Pegawai.xlsx");
+            const ws = XLSX.utils.aoa_to_sheet([["Nama Lengkap", "NIP", "Jabatan", "Wali Kelas", "Pendidikan Terakhir"], ["Siti Rahayu, S.Pd.", "19681231 199003 2 001", "Kepala Sekolah", "-", "S1 PGSD"]]);
+            XLSX.utils.book_append_sheet(wb, ws, "Template");
+            XLSX.writeFile(wb, "Template_Guru.xlsx");
         }
 
         function handleImportSiswa(event) {
@@ -3370,29 +2865,18 @@
                     if (nis && nama) {
                         valid.push({
                             id: 'st_' + Date.now() + Math.random().toString(36).substring(2, 6),
-                            nis, nisn: String(r['NISN'] || '-'), nama,
-                            gender: r['Jenis Kelamin'] || 'Laki-laki',
-                            tempatLahir: r['Tempat Lahir'] || 'Lamongan',
-                            tglLahir: r['Tanggal Lahir'] || '-',
-                            agama: r['Agama'] || 'Islam',
-                            anakKe: 1, jmlSaudara: 2,
-                            alamat: r['Alamat'] || 'Ds. Gedongboyountung',
-                            ayah: r['Nama Ayah'] || '-', pekerjaanAyah: 'Wiraswasta',
-                            ibu: r['Nama Ibu'] || '-', pekerjaanIbu: 'IRT',
-                            wali: r['Nama Wali'] || '-', kontakWali: '-',
-                            kontak: r['Nomor Kontak'] || '-',
-                            asalSekolah: r['Asal Sekolah'] || '-',
-                            tglMasuk: r['Tanggal Masuk'] || '-',
-                            kelas: r['Kelas Awal'] || 'Kelas I',
-                            tahunMasuk: r['Tahun Masuk'] || '2026/2027',
-                            status: 'Aktif'
+                            nis, nisn: String(r['NISN'] || '-'), nama, gender: r['Jenis Kelamin'] || 'Perempuan',
+                            tempatLahir: r['Tempat Lahir'] || 'Lamongan', tglLahir: r['Tanggal Lahir'] || '-', agama: r['Agama'] || 'Islam',
+                            anakKe: 1, jmlSaudara: 1, alamat: r['Alamat'] || 'Turi', kontak: '-', ayah: r['Nama Ayah'] || '-', pekerjaanAyah: 'Wiraswasta',
+                            ibu: r['Nama Ibu'] || '-', pekerjaanIbu: 'IRT', wali: '-', kontakWali: '-', asalSekolah: 'TK', tglMasuk: '15 Juli 2025',
+                            kelas: 'Kelas V', tahunMasuk: '2025/2026', status: 'Aktif'
                         });
                     }
                 });
                 pendingImportBuffer = { type: 'SISWA', items: valid };
                 document.getElementById('importPreviewBox').classList.remove('hidden');
-                document.getElementById('importPreviewTitle').innerText = 'Pratinjau Impor Peserta Didik';
-                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} siswa valid</b> siap disimpan ke Firebase.`;
+                document.getElementById('importPreviewTitle').innerText = 'Pratinjau Impor Siswa';
+                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} siswa valid</b>.`;
             };
             reader.readAsArrayBuffer(file);
         }
@@ -3405,26 +2889,22 @@
                 const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
                 const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
                 let valid = [];
-                const activeTp = schoolIdentity.activeTp || '2026/2027';
                 rows.forEach(r => {
                     const nis = String(r['NIS'] || '').trim();
                     const st = studentsData.find(s => s.nis === nis);
                     if (st) {
                         valid.push({
                             id: 'n_' + Date.now() + Math.random().toString(36).substring(2, 6),
-                            studentId: st.id, siswaNama: st.nama,
-                            tp: r['Tahun Pelajaran'] || activeTp,
-                            kelas: r['Kelas'] || st.kelas,
-                            semester: String(r['Semester'] || '1'),
-                            mapel: r['Mata Pelajaran'] || 'Matematika',
-                            nilai: parseFloat(r['Nilai']) || 0
+                            studentId: st.id, siswaNama: st.nama, tp: r['Tahun Pelajaran'] || '2025/2026',
+                            kelas: r['Kelas'] || st.kelas, semester: String(r['Semester'] || '2'),
+                            mapel: r['Mata Pelajaran'] || 'Matematika', nilai: parseFloat(r['Nilai']) || 0
                         });
                     }
                 });
                 pendingImportBuffer = { type: 'NILAI', items: valid };
                 document.getElementById('importPreviewBox').classList.remove('hidden');
-                document.getElementById('importPreviewTitle').innerText = 'Pratinjau Impor Nilai Rapor';
-                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} baris nilai valid</b> siap disimpan ke Firebase.`;
+                document.getElementById('importPreviewTitle').innerText = 'Pratinjau Impor Nilai';
+                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} baris nilai</b>.`;
             };
             reader.readAsArrayBuffer(file);
         }
@@ -3440,48 +2920,13 @@
                 rows.forEach(r => {
                     const nama = String(r['Nama Lengkap'] || '').trim();
                     if (nama) {
-                        valid.push({
-                            id: 'g_' + Date.now() + Math.random().toString(36).substring(2, 6),
-                            nama, nip: String(r['NIP'] || '-'),
-                            jabatan: String(r['Jabatan'] || 'Guru Kelas'),
-                            waliKelas: String(r['Wali Kelas'] || '-'),
-                            pendidikan: String(r['Pendidikan Terakhir'] || 'S1')
-                        });
+                        valid.push({ id: 'g_' + Date.now(), nama, nip: String(r['NIP'] || '-'), jabatan: String(r['Jabatan'] || 'Guru'), waliKelas: String(r['Wali Kelas'] || '-'), pendidikan: 'S1' });
                     }
                 });
                 pendingImportBuffer = { type: 'GURU', items: valid };
                 document.getElementById('importPreviewBox').classList.remove('hidden');
-                document.getElementById('importPreviewTitle').innerText = 'Pratinjau Impor Guru & Pegawai';
-                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} data guru valid</b> siap disimpan ke Firebase.`;
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function handleDirectImportGuru(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
-                const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-                let count = 0;
-                const prevGuru = JSON.parse(JSON.stringify(guruData));
-                rows.forEach(r => {
-                    const nama = String(r['Nama Lengkap'] || '').trim();
-                    if (nama && !guruData.some(g => g.nama.toLowerCase() === nama.toLowerCase())) {
-                        guruData.push({ id: 'g_' + Date.now() + Math.random().toString(36).substring(2, 6), nama, nip: String(r['NIP'] || '-'), jabatan: String(r['Jabatan'] || 'Guru'), waliKelas: String(r['Wali Kelas'] || '-'), pendidikan: String(r['Pendidikan Terakhir'] || 'S1') });
-                        count++;
-                    }
-                });
-                try {
-                    await saveToStorage('Impor langsung guru Excel');
-                    refreshAllViews();
-                    showNotification(`${count} guru berhasil diimpor dan disimpan ke Firebase!`, 'success');
-                } catch (err) {
-                    guruData = prevGuru;
-                    showNotification('Gagal menyimpan impor guru ke Firebase!', 'error');
-                }
-                event.target.value = '';
+                document.getElementById('importPreviewTitle').innerText = 'Pratinjau Impor Guru';
+                document.getElementById('importPreviewSummary').innerHTML = `Ditemukan <b>${valid.length} guru</b>.`;
             };
             reader.readAsArrayBuffer(file);
         }
@@ -3490,25 +2935,17 @@
 
         async function confirmCommitImport() {
             if (!pendingImportBuffer) return;
-            try {
-                if (pendingImportBuffer.type === 'SISWA') {
-                    pendingImportBuffer.items.forEach(st => { studentsData.push(st); ensureBiRecord(st.id); });
-                    await saveToStorage('Impor Excel Siswa');
-                    showNotification('Siswa berhasil diimpor ke Firebase!', 'success');
-                } else if (pendingImportBuffer.type === 'NILAI') {
-                    pendingImportBuffer.items.forEach(it => nilaiData.push(it));
-                    await saveToStorage('Impor Excel Nilai');
-                    showNotification('Nilai berhasil diimpor ke Firebase!', 'success');
-                } else if (pendingImportBuffer.type === 'GURU') {
-                    pendingImportBuffer.items.forEach(g => guruData.push(g));
-                    await saveToStorage('Impor Excel Guru');
-                    showNotification('Guru berhasil diimpor ke Firebase!', 'success');
-                }
-                cancelImportPreview();
-                refreshAllViews();
-            } catch (err) {
-                showNotification('Gagal menyimpan data impor ke Firebase!', 'error');
+            if (pendingImportBuffer.type === 'SISWA') {
+                pendingImportBuffer.items.forEach(st => { studentsData.push(st); ensureBiRecord(st.id); });
+                await saveToStorage('Impor Siswa');
+            } else if (pendingImportBuffer.type === 'NILAI') {
+                pendingImportBuffer.items.forEach(it => nilaiData.push(it));
+                await saveToStorage('Impor Nilai');
+            } else if (pendingImportBuffer.type === 'GURU') {
+                pendingImportBuffer.items.forEach(g => guruData.push(g));
+                await saveToStorage('Impor Guru');
             }
+            cancelImportPreview(); refreshAllViews(); showNotification('Impor berhasil disimpan!', 'success');
         }
 
         function exportFullBukuIndukExcel() {
@@ -3517,7 +2954,7 @@
             studentsData.forEach(s => rows.push([s.nis, s.nisn, s.nama, s.gender, s.kelas, s.status]));
             XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows), "Rekap");
             XLSX.writeFile(wb, "Rekap_Buku_Induk.xlsx");
-            showNotification('Rekap Excel berhasil diunduh!', 'success');
+            showNotification('Rekap Excel diunduh!', 'success');
         }
 
         function loadSchoolSettingsForm() {
@@ -3544,36 +2981,14 @@
             schoolIdentity.tahunBerdiri = document.getElementById('setSchTahun').value;
             schoolIdentity.kepsek = document.getElementById('setSchKepsek').value;
             schoolIdentity.nipKepsek = document.getElementById('setSchNipKepsek').value;
-            try {
-                await saveToStorage('Simpan Pengaturan Sekolah');
-                refreshAllViews();
-                showNotification('Pengaturan sekolah berhasil disimpan ke Firebase!', 'success');
-            } catch (err) {
-                showNotification('Gagal menyimpan pengaturan sekolah ke Firebase!', 'error');
-            }
+            await saveToStorage('Simpan Pengaturan Sekolah');
+            refreshAllViews();
+            showNotification('Pengaturan sekolah disimpan!', 'success');
         }
 
         function handleGlobalSearch(val) {
             const query = val.toLowerCase().trim();
             if (!query) return;
-
-            // Cek apakah yang dicari guru
-            const foundGuru = guruData.find(g => g.nama.toLowerCase().includes(query) || g.nip.toLowerCase().includes(query));
-            if (foundGuru) {
-                switchTab('data-guru');
-                showNotification(`Ditemukan guru: ${foundGuru.nama}`, 'success');
-                return;
-            }
-
-            // Cek apakah yang dicari mapel
-            const foundMapel = mapelData.find(m => m.nama.toLowerCase().includes(query));
-            if (foundMapel) {
-                switchTab('mata-pelajaran');
-                showNotification(`Ditemukan mapel: ${foundMapel.nama}`, 'success');
-                return;
-            }
-
-            // Default ke siswa
             switchTab('buku-induk');
             showBukuIndukSubView('list');
             document.getElementById('biSearchInput').value = val;
@@ -3581,15 +2996,11 @@
         }
 
         async function handleChangeAcademicYear(tp) {
-            schoolIdentity.activeTp = tp.trim() || '2026/2027';
+            schoolIdentity.activeTp = tp.trim() || '2025/2026';
             document.getElementById('dashActiveTpBadge').innerText = schoolIdentity.activeTp;
-            try {
-                await saveToStorage(`Ubah T.P aktif: ${schoolIdentity.activeTp}`);
-                refreshAllViews();
-                showNotification(`Tahun Pelajaran aktif diubah ke: ${schoolIdentity.activeTp}`, 'success');
-            } catch (err) {
-                showNotification('Gagal mengubah Tahun Pelajaran di Firebase!', 'error');
-            }
+            await saveToStorage(`Ubah T.P aktif: ${schoolIdentity.activeTp}`);
+            refreshAllViews();
+            showNotification(`Tahun Pelajaran diubah ke: ${schoolIdentity.activeTp}`, 'success');
         }
 
         function openAuditLogModal() {
@@ -3603,6 +3014,42 @@
         }
         function closeAuditLogModal() { document.getElementById('auditLogModal').classList.add('hidden'); }
 
+        function openConfirmDeleteModal(title, message, onConfirmCallback) {
+            document.getElementById('confirmDeleteTitle').innerText = title;
+            document.getElementById('confirmDeleteMessage').innerText = message;
+            pendingDeleteAction = onConfirmCallback;
+            document.getElementById('confirmDeleteModal').classList.remove('hidden');
+        }
+        function closeConfirmDeleteModal() { pendingDeleteAction = null; document.getElementById('confirmDeleteModal').classList.add('hidden'); }
+        async function executeConfirmedDelete() {
+            const action = pendingDeleteAction;
+            closeConfirmDeleteModal();
+            if (typeof action === 'function') await action();
+        }
+
+        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+        async function executeFirebaseLogin() {
+            const email = document.getElementById('loginEmailInput').value.trim();
+            const password = document.getElementById('loginPasswordInput').value.trim();
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                currentUser = cred.user;
+                closeLoginModal();
+                showNotification('Berhasil login!', 'success');
+            } catch (err) { showNotification('Gagal login: ' + err.message, 'error'); }
+        }
+        async function executeGateLogin() {
+            const email = document.getElementById('gateEmailInput').value.trim();
+            const password = document.getElementById('gatePasswordInput').value.trim();
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                currentUser = cred.user;
+                document.getElementById('fullScreenLoginGate').classList.add('hidden');
+                showNotification('Selamat datang!', 'success');
+            } catch (err) { showNotification('Gagal masuk: ' + err.message, 'error'); }
+        }
+
         function showNotification(msg, type = 'success') {
             const toast = document.getElementById('toastNotification');
             document.getElementById('toastMessage').innerText = msg;
@@ -3613,24 +3060,18 @@
 
         Object.assign(window, {
             switchTab, openMenuPratinjau, updatePreviewPaperLayout, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
-            openBiPreviewForStudent, openBiEditorForStudent, selectStudentForBukuInduk,
-            recalculateBiMatrixSummary, updateMapelTp, saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity,
-            saveSectionDHabits, saveSectionEProfiles, addEkskulRow, removeEkskulRow,
-            addPrestasiRow, removePrestasiRow, addAbsensiRow, removeAbsensiRow,
-            saveSectionFAll, saveSectionGPromotions, autoFillWaliNip, saveSectionHSign,
-            openKenaikanKelasModal, closeKenaikanKelasModal, executeKenaikanKelasMassal,
-            triggerFlexiblePrintSingle, printSingleStudentById, printMassalBukuInduk,
-            renderFullStudentsTable, openAddStudentModal, openEditStudentModal, closeStudentModal,
-            saveStudentData, deleteStudent, openAddGuruModal, openEditGuruModal, openEditMapelModal,
-            closeGuruModal, saveGuruData, deleteGuru, openAddMapelModal, closeMapelModal, saveMapelData, deleteMapel,
-            openInputNilaiModal, closeNilaiModal, saveNilaiData, deleteNilai,
-            downloadTemplateSiswa, downloadTemplateNilai, downloadTemplateGuru,
-            handleImportSiswa, handleImportNilai, handleImportGuru, handleDirectImportGuru,
-            cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel,
-            saveGlobalSchoolSettings, handleGlobalSearch, handleChangeAcademicYear,
-            openAuditLogModal, closeAuditLogModal, openConfirmDeleteModal, closeConfirmDeleteModal,
+            openBiPreviewForStudent, openBiEditorForStudent, selectStudentForBukuInduk, recalculateBiMatrixSummary, updateMapelTp,
+            saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity, saveSectionDHabits, saveSectionEProfiles,
+            addEkskulRow, removeEkskulRow, addPrestasiRow, removePrestasiRow, addAbsensiRow, removeAbsensiRow, saveSectionFAll,
+            saveSectionGPromotions, autoFillWaliNip, saveSectionHSign, openKenaikanKelasModal, closeKenaikanKelasModal, executeKenaikanKelasMassal,
+            triggerFlexiblePrintSingle, printSingleStudentById, printMassalBukuInduk, renderFullStudentsTable, openAddStudentModal,
+            openEditStudentModal, closeStudentModal, saveStudentData, deleteStudent, openAddGuruModal, closeGuruModal, saveGuruData, deleteGuru,
+            openAddMapelModal, closeMapelModal, saveMapelData, deleteMapel, openInputNilaiModal, closeNilaiModal, saveNilaiData, deleteNilai,
+            downloadTemplateSiswa, downloadTemplateNilai, downloadTemplateGuru, handleImportSiswa, handleImportNilai, handleImportGuru,
+            cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel, saveGlobalSchoolSettings, handleGlobalSearch,
+            handleChangeAcademicYear, openAuditLogModal, closeAuditLogModal, openConfirmDeleteModal, closeConfirmDeleteModal,
             executeConfirmedDelete, openLoginModal, closeLoginModal, executeFirebaseLogin, executeGateLogin,
-            retryLoadFirebaseData, useOfflineBackupAndCloseLoading
+            retryLoadFirebaseData, useOfflineBackupAndCloseLoading, handleSmartImportERapor, closeERaporModal, confirmCommitERaporImport
         });
 
         initFirebaseAndAutoSync();
