@@ -1569,52 +1569,87 @@
                 const judulBaris1 = String(rows[0]?.[0] || "");
                 const tpMatch = judulBaris1.match(/(\d{4}\/\d{4})/);
                 const semesterMatch = judulBaris1.match(/(GANJIL|GENAP)/i);
-                const kelasRaw = String(rows[2]?.[2] || "");
-                const kelasMatch = kelasRaw.match(/(\d+)/);
+                const kelasRaw = String(rows[2]?.[2] || rows[2]?.[1] || rows[1]?.[2] || "");
+                const kelasMatch = kelasRaw.match(/(\d+|VI|IV|V|III|II|I)/i);
 
                 const detectedTp = tpMatch ? tpMatch[1] : (schoolIdentity.activeTp || '2025/2026');
                 const detectedSemText = semesterMatch ? semesterMatch[1].toUpperCase() : 'GENAP';
                 const semesterNum = detectedSemText.includes('GANJIL') ? '1' : '2';
-                const kelasNum = kelasMatch ? kelasMatch[1] : '5';
-                const targetKelasStr = `Kelas ${kelasNum}`;
 
-                // Kamus konversi header mapel e-Rapor ke nama mapel di aplikasi
+                // Konversi angka Arab (1-6) ke Romawi (I-VI) agar cocok 100% dengan kolom Buku Induk
+                const romanMap = { '1': 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V', '6': 'VI', 'I': 'I', 'II': 'II', 'III': 'III', 'IV': 'IV', 'V': 'V', 'VI': 'VI' };
+                const rawKelasToken = kelasMatch ? kelasMatch[1].toUpperCase() : '5';
+                const kelasRoman = romanMap[rawKelasToken] || 'V';
+                const targetKelasStr = `Kelas ${kelasRoman}`;
+
+                // Kamus konversi singkatan/header mapel e-Rapor ke nama mapel di aplikasi
                 const kamusMapel = {
                     "PAIDBP": "Pendidikan Agama Islam dan Budi Pekerti",
+                    "PAI": "Pendidikan Agama Islam dan Budi Pekerti",
                     "PPDK": "Pendidikan Pancasila",
+                    "PPKN": "Pendidikan Pancasila",
                     "BI": "Bahasa Indonesia",
+                    "BIND": "Bahasa Indonesia",
                     "MU": "Matematika",
+                    "MTK": "Matematika",
                     "IPADSI": "Ilmu Pengetahuan Alam dan Sosial (IPAS)",
+                    "IPAS": "Ilmu Pengetahuan Alam dan Sosial (IPAS)",
                     "SR": "Seni Rupa",
+                    "SBDP": "Seni Rupa",
                     "PJODK": "Pendidikan Jasmani, Olahraga, dan Kesehatan",
+                    "PJOK": "Pendidikan Jasmani, Olahraga, dan Kesehatan",
                     "B.ING": "Bahasa Inggris",
+                    "BING": "Bahasa Inggris",
                     "MLBD": "Bahasa Jawa",
+                    "B.JAWA": "Bahasa Jawa",
                     "B.ARB": "Bahasa Arab",
-                    "KDKA": "Koding dan Kecerdasan Artifisial"
+                    "BARB": "Bahasa Arab",
+                    "KDKA": "Koding dan Kecerdasan Artifisial",
+                    "KKA": "Koding dan Kecerdasan Artifisial"
                 };
 
-                // Baca KETERANGAN MAPEL di bawah tabel untuk akurasi pemetaan kolom
-                const idxKeterangan = rows.findIndex(r => r && String(r[0]).trim().startsWith("KETERANGAN MAPEL"));
+                function resolveMapelToAppName(rawName) {
+                    const clean = String(rawName || '').trim();
+                    const upper = clean.toUpperCase();
+                    const mappedCandidate = kamusMapel[upper] || clean;
+                    // 1. Cocok persis (case-insensitive)
+                    let found = mapelData.find(m => m.nama.trim().toLowerCase() === mappedCandidate.toLowerCase());
+                    if (found) return found.nama;
+                    // 2. Cocok parsial (misal "Seni Rupa" <-> "Seni" atau "IPAS" <-> "Ilmu Pengetahuan Alam dan Sosial (IPAS)")
+                    found = mapelData.find(m =>
+                        m.nama.toLowerCase().includes(mappedCandidate.toLowerCase()) ||
+                        mappedCandidate.toLowerCase().includes(m.nama.toLowerCase())
+                    );
+                    return found ? found.nama : mappedCandidate;
+                }
+
+                // Baca KETERANGAN MAPEL di bawah tabel atau baris header tabel untuk akurasi pemetaan kolom
+                const idxKeterangan = rows.findIndex(r => r && String(r[0] || '').trim().toUpperCase().startsWith("KETERANGAN MAPEL"));
                 const kolomMapelMap = [];
                 if (idxKeterangan !== -1) {
-                    let colIndex = 4; // Kolom E (indeks 4) biasanya awal nilai
+                    let colIndex = 4; // Kolom E (indeks 4) awal nilai
                     for (let i = idxKeterangan + 1; i < rows.length; i++) {
-                        const teksKeterangan = rows[i]?.[1];
+                        const teksKeterangan = rows[i]?.[1] || rows[i]?.[0];
                         if (!teksKeterangan) continue;
                         const parts = String(teksKeterangan).split(":");
                         if (parts.length >= 2) {
                             const namaLengkap = parts.slice(1).join(":").trim();
-                            // Cocokkan dengan mapel yang ada di mapelData, atau gunakan nama lengkap
-                            const foundMapelObj = mapelData.find(m => m.nama.toLowerCase() === namaLengkap.toLowerCase());
-                            const finalMapelName = foundMapelObj ? foundMapelObj.nama : namaLengkap;
-
-                            // Hindari duplikat key
+                            const finalMapelName = resolveMapelToAppName(namaLengkap);
                             const sudahAda = kolomMapelMap.some(item => item.mapelName.toLowerCase() === finalMapelName.toLowerCase());
                             if (!sudahAda) {
                                 kolomMapelMap.push({ colIndex, mapelName: finalMapelName });
                             }
                             colIndex++;
                         }
+                    }
+                } else {
+                    // Fallback: baca dari baris header tabel (baris indeks 5 atau 6)
+                    const headerRow = rows[6] || rows[5] || [];
+                    for (let c = 4; c < headerRow.length; c++) {
+                        const hVal = String(headerRow[c] || '').trim();
+                        if (!hVal || /^(JUMLAH|RATA|SAKIT|IZIN|ALPA|EKSKUL|CATATAN|NO|NAMA|NIS)/i.test(hVal)) break;
+                        const finalMapelName = resolveMapelToAppName(hVal);
+                        kolomMapelMap.push({ colIndex: c, mapelName: finalMapelName });
                     }
                 }
 
@@ -1646,8 +1681,13 @@
                     };
                     const ekskul = row[21] ? String(row[21]).trim() : "-";
 
-                    // Cek kecocokan dengan database siswa lokal berdasarkan NISN
-                    const matchedStudent = studentsData.find(s => String(s.nisn).trim() === nisn);
+                    // Cek kecocokan dengan database siswa lokal berdasarkan NISN (termasuk toleransi nol di depan) atau NIS
+                    const normNisn = nisn.replace(/^0+/, '');
+                    const matchedStudent = studentsData.find(s =>
+                        String(s.nisn || '').trim() === nisn ||
+                        (normNisn && String(s.nisn || '').trim().replace(/^0+/, '') === normNisn) ||
+                        (nis && String(s.nis || '').trim() === nis)
+                    );
 
                     parsedRows.push({
                         nisn,
@@ -1708,11 +1748,13 @@
             if (!parsedERaporCache || !Array.isArray(parsedERaporCache.rows)) return;
             const { tp, semester, kelas, rows } = parsedERaporCache;
             let insertedCount = 0;
+            let firstMatchedStudentId = null;
 
             rows.forEach(pr => {
                 if (!pr.matchedStudentId) return; // Lewatkan siswa yang belum terdaftar di Buku Induk
                 const stId = pr.matchedStudentId;
                 const stName = pr.matchedStudentName;
+                if (!firstMatchedStudentId) firstMatchedStudentId = stId;
 
                 // 1. Masukkan Nilai per Mapel ke array nilaiData
                 Object.entries(pr.nilaiMapel).forEach(([mapelName, score]) => {
@@ -1761,6 +1803,10 @@
 
                 insertedCount++;
             });
+
+            if (firstMatchedStudentId) {
+                activeStudentId = String(firstMatchedStudentId);
+            }
 
             try {
                 await saveToStorage(`Impor Leger e-Rapor ${kelas} Sem ${semester} (${insertedCount} siswa)`);
@@ -2049,9 +2095,11 @@
         }
 
         function findStudentGradeRecord(studentId, kelas, sem, mapelNama) {
+            const romanToDigit = { 'Kelas I': 'Kelas 1', 'Kelas II': 'Kelas 2', 'Kelas III': 'Kelas 3', 'Kelas IV': 'Kelas 4', 'Kelas V': 'Kelas 5', 'Kelas VI': 'Kelas 6' };
+            const altKelas = romanToDigit[String(kelas).trim()] || String(kelas).trim();
             const matches = nilaiData.filter(n =>
                 String(n.studentId) === String(studentId) &&
-                String(n.kelas).trim() === String(kelas).trim() &&
+                (String(n.kelas).trim() === String(kelas).trim() || String(n.kelas).trim() === altKelas) &&
                 String(n.semester).trim() === String(sem).trim() &&
                 String(n.mapel).trim().toLowerCase() === String(mapelNama).trim().toLowerCase()
             );
