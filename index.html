@@ -620,23 +620,23 @@
                     </div>
 
                     <!-- SUB-VIEW: PREVIEW & CETAK -->
-                    <div id="biSubViewPreview" class="hidden space-y-4">
-                        <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200 flex flex-wrap items-center justify-between gap-4">
-                            <div class="flex flex-wrap items-center gap-2.5">
-                                <span class="font-bold text-xs text-slate-700"><i class="fa-solid fa-filter text-indigo-600 mr-1"></i>Kelas:</span>
-                                <select id="previewFilterKelas" onchange="handlePreviewFilterKelasChange()" class="bg-slate-100 border border-slate-200 font-bold px-3 py-2 rounded-xl text-xs text-slate-800 cursor-pointer">
-                                    <option value="ALL">Semua Kelas</option>
-                                    <option value="Kelas I">Kelas I</option>
-                                    <option value="Kelas II">Kelas II</option>
-                                    <option value="Kelas III">Kelas III</option>
-                                    <option value="Kelas IV">Kelas IV</option>
-                                    <option value="Kelas V">Kelas V</option>
-                                    <option value="Kelas VI">Kelas VI</option>
-                                </select>
-                                <span class="font-bold text-xs text-slate-700"><i class="fa-solid fa-file-lines text-emerald-600 mr-1.5"></i>Pilih Siswa Pratinjau:</span>
-                                <select id="previewSelectStudent" onchange="selectStudentForBukuInduk(this.value)" class="bg-indigo-50 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs text-indigo-900"></select>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-2">
+                <div id="biSubViewPreview" class="hidden space-y-4">
+                    <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <span class="font-bold text-xs text-slate-700"><i class="fa-solid fa-filter text-indigo-600 mr-1"></i>Kelas:</span>
+                            <select id="previewFilterKelas" onchange="handlePreviewFilterKelasChange()" class="bg-slate-100 border border-slate-200 font-bold px-3 py-2 rounded-xl text-xs text-slate-800 cursor-pointer">
+                                <option value="ALL">Semua Kelas</option>
+                                <option value="Kelas I">Kelas I</option>
+                                <option value="Kelas II">Kelas II</option>
+                                <option value="Kelas III">Kelas III</option>
+                                <option value="Kelas IV">Kelas IV</option>
+                                <option value="Kelas V">Kelas V</option>
+                                <option value="Kelas VI">Kelas VI</option>
+                            </select>
+                            <span class="font-bold text-xs text-slate-700"><i class="fa-solid fa-file-lines text-emerald-600 mr-1.5"></i>Pilih Siswa Pratinjau:</span>
+                            <select id="previewSelectStudent" onchange="selectStudentForBukuInduk(this.value)" class="bg-indigo-50 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs text-indigo-900"></select>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
                                 <select id="printPaperSize" onchange="updatePreviewPaperLayout()" class="bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold cursor-pointer">
                                     <option value="f4">Kertas F4 / Folio (215x330 mm)</option>
                                     <option value="a4">Kertas A4 (210x297 mm)</option>
@@ -838,6 +838,19 @@
                         </div>
                     </div>
 
+                    <!-- KOTAK BANTUAN KHUSUS CETAK FISIK (TANPA KETIK ULANG DARI PRINT OUT) -->
+                    <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 rounded-3xl p-6 md:p-7 text-white shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="space-y-1.5 max-w-2xl">
+                            <span class="bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"><i class="fa-solid fa-camera mr-1"></i>PANDUAN CETAK FISIK / PRINT OUT</span>
+                            <h3 class="text-lg font-extrabold tracking-tight">Hanya Punya Hasil Print Out Kertas (Tanpa File Excel/PDF)?</h3>
+                            <p class="text-xs text-indigo-100 leading-relaxed">Anda tidak perlu mengetik ulang ratusan angka nilai secara manual. Cukup gunakan asisten foto/scan lembar cetak atau gunakan template cepat kami!</p>
+                        </div>
+                        <button type="button" onclick="openPrintScanGuideModal()" class="bg-white text-indigo-950 hover:bg-indigo-50 font-bold px-5 py-3 rounded-2xl text-xs transition shadow cursor-pointer flex items-center space-x-2 shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-600 text-base"></i>
+                            <span>Buka Panduan Input dari Print Out</span>
+                        </button>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
                             <div class="space-y-3">
@@ -942,7 +955,7 @@
         </div>
     </div>
 
-    <!-- MODAL SMART IMPORTER e-RAPOR KEMDIKBUD (DENGAN PRATINJAU NISN) -->
+    <!-- MODAL SMART IMPORTER e-RAPOR KEMENDIKBUD (DENGAN PRATINJAU NISN) -->
     <div id="eRaporPreviewModal" class="no-print fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh] border border-slate-200">
             <div class="bg-gradient-to-r from-teal-900 to-emerald-900 text-white p-5 flex justify-between items-center">
@@ -979,6 +992,49 @@
                 <button type="button" onclick="confirmCommitERaporImport()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-lg cursor-pointer flex items-center space-x-1.5">
                     <i class="fa-solid fa-cloud-arrow-up"></i><span>Konfirmasi & Suntikkan Nilai ke Buku Induk</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PANDUAN & BANTUAN INPUT DARI CETAK FISIK (PRINT OUT) -->
+    <div id="printScanGuideModal" class="no-print fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col border border-slate-200">
+            <div class="bg-gradient-to-r from-indigo-900 to-blue-900 text-white p-5 flex justify-between items-center">
+                <h3 class="font-bold text-sm flex items-center"><i class="fa-solid fa-camera-retro mr-2 text-indigo-300"></i>Panduan Input Nilai dari Hasil Print Out (Kertas Fisik)</h3>
+                <button type="button" onclick="closePrintScanGuideModal()" class="text-indigo-200 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4 text-xs text-slate-700 leading-relaxed">
+                <div class="bg-indigo-50 border border-indigo-100 p-3.5 rounded-2xl text-indigo-950 space-y-2">
+                    <p class="font-bold text-xs"><i class="fa-solid fa-circle-check text-indigo-600 mr-1.5"></i>Apakah bisa tanpa mengetik ulang nilainya?</p>
+                    <p class="text-[11px]">Ya! Anda dapat menggunakan bantuan foto/scan dokumen atau teknik salin-tempel (copy-paste) kilat ke template Excel aplikasi.</p>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">1</div>
+                        <div>
+                            <p class="font-bold text-slate-900">Foto / Scan Lembar Print Out</p>
+                            <p class="text-slate-500 text-[11px]">Ambil foto lembar cetak rapor menggunakan kamera HP dengan pencahayaan terang agar angka nilai dan NISN terbaca jelas.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">2</div>
+                        <div>
+                            <p class="font-bold text-slate-900">Gunakan Template Cepat Aplikasi</p>
+                            <p class="text-slate-500 text-[11px]">Unduh tombol <b>Template Nilai (.xlsx)</b> di bawah, lalu cukup salin baris nilai dari lembar print out ke file Excel tersebut (atau gunakan fitur Google Lens/OCR foto untuk menyalin teks tabel ke Excel secara otomatis).</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">3</div>
+                        <div>
+                            <p class="font-bold text-slate-900">Impor ke Buku Induk</p>
+                            <p class="text-slate-500 text-[11px]">Unggah file Excel yang sudah terisi melalui tombol <b>Pilih File Nilai</b>. Nilai akan otomatis masuk dan terhitung pada Menu Pratinjau Dokumen!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-50 p-4 border-t flex justify-between items-center">
+                <button type="button" onclick="downloadTemplateNilai()" class="px-4 py-2 bg-slate-800 text-white rounded-xl font-bold text-xs shadow hover:bg-slate-700 cursor-pointer"><i class="fa-solid fa-download mr-1.5"></i>Unduh Template Nilai</button>
+                <button type="button" onclick="closePrintScanGuideModal()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow cursor-pointer">Mengerti & Tutup</button>
             </div>
         </div>
     </div>
@@ -3102,6 +3158,13 @@
         }
         function closeAuditLogModal() { document.getElementById('auditLogModal').classList.add('hidden'); }
 
+        function openPrintScanGuideModal() {
+            document.getElementById('printScanGuideModal')?.classList.remove('hidden');
+        }
+        function closePrintScanGuideModal() {
+            document.getElementById('printScanGuideModal')?.classList.add('hidden');
+        }
+
         function openConfirmDeleteModal(title, message, onConfirmCallback) {
             document.getElementById('confirmDeleteTitle').innerText = title;
             document.getElementById('confirmDeleteMessage').innerText = message;
@@ -3157,9 +3220,10 @@
             openAddMapelModal, closeMapelModal, saveMapelData, deleteMapel, openInputNilaiModal, closeNilaiModal, saveNilaiData, deleteNilai,
             downloadTemplateSiswa, downloadTemplateNilai, downloadTemplateGuru, handleImportSiswa, handleImportNilai, handleImportGuru,
             cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel, saveGlobalSchoolSettings, handleGlobalSearch,
-            handleChangeAcademicYear, openAuditLogModal, closeAuditLogModal, openConfirmDeleteModal, closeConfirmDeleteModal,
-            executeConfirmedDelete, openLoginModal, closeLoginModal, executeFirebaseLogin, executeGateLogin,
-            retryLoadFirebaseData, useOfflineBackupAndCloseLoading, handleSmartImportERapor, closeERaporModal, confirmCommitERaporImport
+            handleChangeAcademicYear, openAuditLogModal, closeAuditLogModal, openPrintScanGuideModal, closePrintScanGuideModal,
+            openConfirmDeleteModal, closeConfirmDeleteModal, executeConfirmedDelete, openLoginModal, closeLoginModal,
+            executeFirebaseLogin, executeGateLogin, retryLoadFirebaseData, useOfflineBackupAndCloseLoading,
+            handleSmartImportERapor, closeERaporModal, confirmCommitERaporImport
         });
 
         initFirebaseAndAutoSync();
