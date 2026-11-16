@@ -852,20 +852,25 @@
                 <!-- TAB 8: IMPOR & EKSPOR EXCEL (TERMASUK SMART IMPORTER E-RAPOR KEMENDIKBUD) -->
                 <section id="tab-import-ekspor" class="tab-content hidden space-y-6">
                     <!-- FITUR UTAMA BARU: SMART IMPORTER E-RAPOR KEMENDIKBUD -->
-                    <div class="bg-gradient-to-r from-teal-900 via-teal-800 to-emerald-900 rounded-3xl p-6 md:p-8 text-white shadow-xl space-y-4">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                            <div class="space-y-1">
-                                <span class="bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">FITUR BARU KHUSUS e-RAPOR KEMDIKBUD</span>
-                                <h3 class="text-xl font-extrabold tracking-tight">Smart Importer Leger e-Rapor (.xlsx)</h3>
-                                <p class="text-xs text-teal-100 max-w-2xl leading-relaxed">Unggah file Excel Leger e-Rapor resmi dari sekolah Anda. Sistem akan secara otomatis mencocokkan NISN siswa dan menyuntikkan nilai lengkap dengan rekapitulasi kehadiran dan ekstrakurikuler ke Buku Induk Digital!</p>
+                    <div class="bg-gradient-to-r from-teal-900 via-teal-800 to-emerald-900 rounded-3xl p-5 md:p-7 text-white shadow-xl">
+                        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                            <div class="space-y-1.5 max-w-2xl">
+                                <span class="inline-block bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">FITUR BARU KHUSUS e-RAPOR KEMDIKBUD</span>
+                                <h3 class="text-base md:text-xl font-extrabold tracking-tight">Smart Importer Leger e-Rapor (.xlsx)</h3>
+                                <p class="text-xs text-teal-100 leading-relaxed">Unggah file Excel Leger e-Rapor resmi dari sekolah Anda. Sistem akan secara otomatis mencocokkan NISN siswa dan menyuntikkan nilai lengkap dengan rekapitulasi kehadiran dan ekstrakurikuler ke Buku Induk Digital!</p>
                             </div>
-                            <label class="bg-white text-teal-900 hover:bg-teal-50 font-extrabold px-5 py-3 rounded-2xl text-xs transition shadow-lg cursor-pointer flex items-center space-x-2 shrink-0">
+                            <label class="w-full sm:w-auto justify-center bg-white text-teal-900 hover:bg-teal-50 font-extrabold px-5 py-3 rounded-2xl text-xs transition shadow-lg cursor-pointer flex items-center space-x-2 shrink-0">
                                 <i class="fa-solid fa-file-excel text-emerald-600 text-base"></i>
                                 <span>Pilih File Leger e-Rapor (.xlsx)</span>
+                                <input type="file" accept=".xlsx, .xls" onchange="handleSmartImportERapor(event)" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- FITUR BARU: KAMERA SCANNER, UPLOAD PDF & ANALISIS AI DARI PRINT OUT KERTAS -->
                     <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 rounded-3xl p-5 md:p-7 text-white shadow-xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                         <div class="space-y-1.5 max-w-2xl">
-                            <span class="bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"><i class="fa-solid fa-camera mr-1"></i>PEMINDAI KAMERA, UPLOAD PDF & AI ANALYZER</span>
+                            <span class="inline-block bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"><i class="fa-solid fa-camera mr-1"></i>PEMINDAI KAMERA, UPLOAD PDF & AI ANALYZER</span>
                             <h3 class="text-base md:text-lg font-extrabold tracking-tight">Hanya Punya Hasil Print Out Kertas Fisik atau File PDF?</h3>
                             <p class="text-xs text-indigo-100 leading-relaxed">Potret lembar rapor/leger cetak langsung dari kamera HP/laptop atau unggah file <b>PDF / Foto</b>. Sistem AI & OCR akan mengekstrak daftar nilai dan menyuntikkannya otomatis ke Buku Induk tanpa mengetik ulang!</p>
                         </div>
