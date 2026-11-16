@@ -622,7 +622,17 @@
                     <!-- SUB-VIEW: PREVIEW & CETAK -->
                     <div id="biSubViewPreview" class="hidden space-y-4">
                         <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-200 flex flex-wrap items-center justify-between gap-4">
-                            <div class="flex flex-wrap items-center gap-3">
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <span class="font-bold text-xs text-slate-700"><i class="fa-solid fa-filter text-indigo-600 mr-1"></i>Kelas:</span>
+                                <select id="previewFilterKelas" onchange="handlePreviewFilterKelasChange()" class="bg-slate-100 border border-slate-200 font-bold px-3 py-2 rounded-xl text-xs text-slate-800 cursor-pointer">
+                                    <option value="ALL">Semua Kelas</option>
+                                    <option value="Kelas I">Kelas I</option>
+                                    <option value="Kelas II">Kelas II</option>
+                                    <option value="Kelas III">Kelas III</option>
+                                    <option value="Kelas IV">Kelas IV</option>
+                                    <option value="Kelas V">Kelas V</option>
+                                    <option value="Kelas VI">Kelas VI</option>
+                                </select>
                                 <span class="font-bold text-xs text-slate-700"><i class="fa-solid fa-file-lines text-emerald-600 mr-1.5"></i>Pilih Siswa Pratinjau:</span>
                                 <select id="previewSelectStudent" onchange="selectStudentForBukuInduk(this.value)" class="bg-indigo-50 border border-indigo-200 font-bold px-3 py-2 rounded-xl text-xs text-indigo-900"></select>
                             </div>
@@ -1872,6 +1882,23 @@
             showBukuIndukSubView('preview');
         }
 
+        function handlePreviewFilterKelasChange() {
+            const filterKelas = document.getElementById('previewFilterKelas')?.value || 'ALL';
+            populateAllDropdowns();
+            const filtered = filterKelas === 'ALL'
+                ? studentsData
+                : studentsData.filter(s => String(s.kelas).trim() === filterKelas);
+            if (filtered.length > 0 && !filtered.some(s => String(s.id) === String(activeStudentId))) {
+                activeStudentId = String(filtered[0].id);
+                loadStudentIntoBiEditorAndPreview(activeStudentId);
+            } else if (filtered.length === 0) {
+                const container = document.getElementById('printableArea');
+                if (container) {
+                    container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs font-medium">Tidak ada peserta didik pada ${filterKelas}.</div>`;
+                }
+            }
+        }
+
         function updatePreviewPaperLayout() {
             const wrapper = document.getElementById('previewSheetWrapper');
             if (!wrapper) return;
@@ -1994,6 +2021,11 @@
             const rec = ensureBiRecord(s.id);
 
             if (document.getElementById('editorSelectStudent')) document.getElementById('editorSelectStudent').value = s.id;
+            const previewFilterEl = document.getElementById('previewFilterKelas');
+            if (previewFilterEl && previewFilterEl.value !== 'ALL' && previewFilterEl.value !== s.kelas) {
+                previewFilterEl.value = s.kelas || 'ALL';
+                populateAllDropdowns();
+            }
             if (document.getElementById('previewSelectStudent')) document.getElementById('previewSelectStudent').value = s.id;
 
             document.getElementById('biInputSchNama').value = schoolIdentity.nama;
@@ -2862,6 +2894,8 @@
             const editorSel = document.getElementById('editorSelectStudent');
             const previewSel = document.getElementById('previewSelectStudent');
             const nilaiSiswaSel = document.getElementById('inputNilaiSiswa');
+            const previewFilterKelas = document.getElementById('previewFilterKelas')?.value || 'ALL';
+
             if (editorSel) editorSel.innerHTML = '';
             if (previewSel) previewSel.innerHTML = '';
             if (nilaiSiswaSel) nilaiSiswaSel.innerHTML = '';
@@ -2869,9 +2903,15 @@
             studentsData.forEach(s => {
                 const opt = `<option value="${s.id}" ${String(s.id) === String(activeStudentId) ? 'selected' : ''}>${s.nis} - ${s.nama} (${s.kelas})</option>`;
                 if (editorSel) editorSel.innerHTML += opt;
-                if (previewSel) previewSel.innerHTML += opt;
                 if (nilaiSiswaSel) nilaiSiswaSel.innerHTML += opt;
+                if (previewSel && (previewFilterKelas === 'ALL' || String(s.kelas).trim() === previewFilterKelas)) {
+                    previewSel.innerHTML += opt;
+                }
             });
+
+            if (previewSel && previewSel.options.length === 0) {
+                previewSel.innerHTML = `<option value="">-- Tidak ada siswa di kelas ini --</option>`;
+            }
 
             const selectMapel = document.getElementById('inputNilaiMapel');
             if (selectMapel) {
@@ -3107,7 +3147,7 @@
         }
 
         Object.assign(window, {
-            switchTab, openMenuPratinjau, updatePreviewPaperLayout, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
+            switchTab, openMenuPratinjau, handlePreviewFilterKelasChange, updatePreviewPaperLayout, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
             openBiPreviewForStudent, openBiEditorForStudent, selectStudentForBukuInduk, recalculateBiMatrixSummary, updateMapelTp,
             saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity, saveSectionDHabits, saveSectionEProfiles,
             addEkskulRow, removeEkskulRow, addPrestasiRow, removePrestasiRow, addAbsensiRow, removeAbsensiRow, saveSectionFAll,
