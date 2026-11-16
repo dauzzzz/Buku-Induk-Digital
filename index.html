@@ -1284,8 +1284,8 @@
                 <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 space-y-4 text-xs">
-                <div><label class="block font-semibold text-slate-700 mb-1">Email / Username</label><input type="email" id="loginEmailInput" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
-                <div><label class="block font-semibold text-slate-700 mb-1">Password</label><input type="password" id="loginPasswordInput" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Email / Username</label><input type="email" id="loginEmailInput" name="username" autocomplete="username" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Password</label><input type="password" id="loginPasswordInput" name="password" autocomplete="current-password" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl"></div>
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-end space-x-2">
                 <button type="button" onclick="closeLoginModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs cursor-pointer">Batal</button>
@@ -1308,13 +1308,19 @@
                 <h1 class="font-extrabold text-lg tracking-tight text-white">BUKU INDUK DIGITAL</h1>
                 <p class="text-xs text-indigo-200">SDN Gedongboyountung - Kec. Turi, Kab. Lamongan</p>
             </div>
-            <form onsubmit="event.preventDefault(); executeGateLogin();" class="p-8 space-y-4 text-xs">
+            <form id="gateLoginForm" onsubmit="event.preventDefault(); executeGateLogin();" class="p-8 space-y-4 text-xs" autocomplete="on">
                 <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-2xl text-indigo-900 flex items-start space-x-2.5">
                     <i class="fa-solid fa-shield-halved text-indigo-600 text-base mt-0.5"></i>
                     <p class="text-[11px] leading-relaxed">Silakan masukkan akun Email dan Password Admin / Operator yang terdaftar di Firebase untuk masuk ke sistem.</p>
                 </div>
-                <div><label class="block font-bold text-slate-700 mb-1.5">Email / Username</label><input type="email" id="gateEmailInput" autocomplete="username" autofocus placeholder="operator@sdngedongboyountung.sch.id" class="w-full p-2.5 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
-                <div><label class="block font-bold text-slate-700 mb-1.5">Password</label><input type="password" id="gatePasswordInput" autocomplete="current-password" placeholder="••••••••" class="w-full p-2.5 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+                <div><label class="block font-bold text-slate-700 mb-1.5">Email / Username</label><input type="email" id="gateEmailInput" name="username" autocomplete="username" autofocus placeholder="operator@sdngedongboyountung.sch.id" class="w-full p-2.5 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+                <div><label class="block font-bold text-slate-700 mb-1.5">Password</label><input type="password" id="gatePasswordInput" name="password" autocomplete="current-password" placeholder="••••••••" class="w-full p-2.5 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+                <div class="flex items-center justify-between pt-0.5">
+                    <label class="flex items-center space-x-2 cursor-pointer select-none text-slate-700 font-semibold">
+                        <input type="checkbox" id="gateRememberMe" checked class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+                        <span class="text-[11px]">Simpan Email & Password di perangkat ini</span>
+                    </label>
+                </div>
                 <button type="submit" id="btnGateLoginSubmit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg cursor-pointer transition flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-right-to-bracket"></i><span>Masuk ke Sistem Buku Induk</span>
                 </button>
@@ -1340,6 +1346,7 @@
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'buku-induk-sdn-gedongboyountung';
         const LOCAL_BACKUP_KEY = 'BUKU_INDUK_SDN_GEDONGBOYOUNTUNG_STATE_V3';
+        const SAVED_CREDENTIALS_KEY = 'BUKU_INDUK_SAVED_LOGIN_CREDS_V1';
         let db = null;
         let auth = null;
         let currentUser = null;
@@ -1348,6 +1355,47 @@
         let isSavingInProgress = false;
         let unsubscribeSnapshot = null;
         let parsedERaporCache = null; // Buffer penyimpanan sementara hasil parsing e-Rapor
+        let currentActiveTab = 'dashboard';
+        let currentBiSubView = 'list';
+        let refreshDebounceTimer = null;
+
+        function loadSavedLoginCredentials() {
+            try {
+                const raw = localStorage.getItem(SAVED_CREDENTIALS_KEY);
+                if (!raw) return;
+                const creds = JSON.parse(raw);
+                if (creds && creds.email) {
+                    const gateEmail = document.getElementById('gateEmailInput');
+                    const modalEmail = document.getElementById('loginEmailInput');
+                    if (gateEmail) gateEmail.value = creds.email;
+                    if (modalEmail) modalEmail.value = creds.email;
+                }
+                if (creds && creds.password) {
+                    const gatePass = document.getElementById('gatePasswordInput');
+                    const modalPass = document.getElementById('loginPasswordInput');
+                    if (gatePass) gatePass.value = creds.password;
+                    if (modalPass) modalPass.value = creds.password;
+                }
+                const rememberChk = document.getElementById('gateRememberMe');
+                if (rememberChk && typeof creds.remember === 'boolean') {
+                    rememberChk.checked = creds.remember;
+                }
+            } catch (e) {
+                console.warn('Gagal memuat kredensial tersimpan:', e);
+            }
+        }
+
+        function saveLoginCredentials(email, password, remember = true) {
+            try {
+                if (remember) {
+                    localStorage.setItem(SAVED_CREDENTIALS_KEY, JSON.stringify({ email, password, remember: true }));
+                } else {
+                    localStorage.removeItem(SAVED_CREDENTIALS_KEY);
+                }
+            } catch (e) {
+                console.warn('Gagal menyimpan kredensial login:', e);
+            }
+        }
 
         function saveToLocalBackup() {
             try {
@@ -1509,6 +1557,15 @@
             return bukuIndukRecords[key];
         }
 
+        function normalizeStudentsBiRecordsLight() {
+            for (let i = 0; i < studentsData.length; i++) {
+                const key = String(studentsData[i].id);
+                if (!bukuIndukRecords[key]) {
+                    bukuIndukRecords[key] = createDefaultBiRecord(studentsData[i]);
+                }
+            }
+        }
+
         function setSyncStatus(state) {
             const badge = document.getElementById('cloudSyncBadge');
             const icon = document.getElementById('cloudSyncIcon');
@@ -1580,7 +1637,7 @@
             if (Array.isArray(parsed.nilaiData)) nilaiData = parsed.nilaiData;
             if (parsed.bukuIndukRecords) bukuIndukRecords = parsed.bukuIndukRecords;
             if (Array.isArray(parsed.auditLogs)) auditLogs = parsed.auditLogs;
-            studentsData.forEach(s => ensureBiRecord(s.id));
+            normalizeStudentsBiRecordsLight();
             saveToLocalBackup();
 
             // Jika gerbang login masih terbuka, tunda render DOM berat agar input email & password tidak membeku
@@ -1589,10 +1646,19 @@
                 return;
             }
             isPendingDeferredRender = false;
-            refreshAllViews();
+            scheduleRefreshAllViews();
+        }
+
+        function scheduleRefreshAllViews() {
+            if (refreshDebounceTimer) clearTimeout(refreshDebounceTimer);
+            refreshDebounceTimer = setTimeout(() => {
+                refreshAllViews();
+            }, 30);
         }
 
         async function initFirebaseAndAutoSync() {
+            // Isi otomatis Email & Password yang tersimpan di perangkat sejak awal
+            loadSavedLoginCredentials();
             // Sembunyikan overlay loading sejak awal jika gerbang login tampil agar tidak menghalangi klik/ketikan
             hideInitialLoadingOverlay();
             setSyncStatus('loading');
@@ -1616,10 +1682,10 @@
                         const gate = document.getElementById('fullScreenLoginGate');
                         if (gate && !gate.classList.contains('hidden')) {
                             gate.classList.add('hidden');
-                            if (isPendingDeferredRender) {
-                                isPendingDeferredRender = false;
-                                setTimeout(() => refreshAllViews(), 20);
-                            }
+                        }
+                        if (isPendingDeferredRender) {
+                            isPendingDeferredRender = false;
+                            scheduleRefreshAllViews();
                         }
                     }
                 });
@@ -1683,6 +1749,33 @@
         // ==========================================
         // FITUR SMART IMPORTER e-RAPOR KEMENDIKBUD
         // ==========================================
+        function normalizeKelasToRoman(rawKelas) {
+            const str = String(rawKelas || '').trim();
+            const mapNumToRoman = { '1': 'Kelas I', '2': 'Kelas II', '3': 'Kelas III', '4': 'Kelas IV', '5': 'Kelas V', '6': 'Kelas VI', 'I': 'Kelas I', 'II': 'Kelas II', 'III': 'Kelas III', 'IV': 'Kelas IV', 'V': 'Kelas V', 'VI': 'Kelas VI' };
+            const match = str.match(/(?:kelas\s*)?([1-6]|VI|IV|V|III|II|I)\b/i);
+            if (match) {
+                const key = match[1].toUpperCase();
+                if (mapNumToRoman[key]) return mapNumToRoman[key];
+            }
+            return 'Kelas V';
+        }
+
+        function resolveMapelToAppName(rawName, kamusMapel) {
+            const clean = String(rawName || '').trim();
+            if (!clean) return null;
+            const upper = clean.toUpperCase();
+            const mappedFromKamus = kamusMapel[upper] || clean;
+            const exact = mapelData.find(m => m.nama.trim().toLowerCase() === mappedFromKamus.toLowerCase() || m.nama.trim().toLowerCase() === clean.toLowerCase());
+            if (exact) return exact.nama;
+            const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const targetNorm = norm(mappedFromKamus);
+            const partial = mapelData.find(m => {
+                const mNorm = norm(m.nama);
+                return (mNorm && targetNorm && (mNorm.includes(targetNorm) || targetNorm.includes(mNorm)));
+            });
+            return partial ? partial.nama : mappedFromKamus;
+        }
+
         async function handleSmartImportERapor(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1693,24 +1786,16 @@
                 const sheet = workbook.Sheets[workbook.SheetNames[0]];
                 const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
 
-                // 1. Baca Metadata (Tahun Pelajaran, Semester, Kelas)
                 const judulBaris1 = String(rows[0]?.[0] || "");
                 const tpMatch = judulBaris1.match(/(\d{4}\/\d{4})/);
                 const semesterMatch = judulBaris1.match(/(GANJIL|GENAP)/i);
-                const kelasRaw = String(rows[2]?.[2] || rows[2]?.[1] || rows[1]?.[2] || "");
-                const kelasMatch = kelasRaw.match(/(\d+|VI|IV|V|III|II|I)/i);
+                const kelasRaw = String(rows[2]?.[2] || rows[1]?.[2] || judulBaris1 || "");
 
                 const detectedTp = tpMatch ? tpMatch[1] : (schoolIdentity.activeTp || '2025/2026');
                 const detectedSemText = semesterMatch ? semesterMatch[1].toUpperCase() : 'GENAP';
                 const semesterNum = detectedSemText.includes('GANJIL') ? '1' : '2';
+                const targetKelasStr = normalizeKelasToRoman(kelasRaw);
 
-                // Konversi angka Arab (1-6) ke Romawi (I-VI) agar cocok 100% dengan kolom Buku Induk
-                const romanMap = { '1': 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V', '6': 'VI', 'I': 'I', 'II': 'II', 'III': 'III', 'IV': 'IV', 'V': 'V', 'VI': 'VI' };
-                const rawKelasToken = kelasMatch ? kelasMatch[1].toUpperCase() : '5';
-                const kelasRoman = romanMap[rawKelasToken] || 'V';
-                const targetKelasStr = `Kelas ${kelasRoman}`;
-
-                // Kamus konversi singkatan/header mapel e-Rapor ke nama mapel di aplikasi
                 const kamusMapel = {
                     "PAIDBP": "Pendidikan Agama Islam dan Budi Pekerti",
                     "PAI": "Pendidikan Agama Islam dan Budi Pekerti",
@@ -1723,85 +1808,76 @@
                     "IPADSI": "Ilmu Pengetahuan Alam dan Sosial (IPAS)",
                     "IPAS": "Ilmu Pengetahuan Alam dan Sosial (IPAS)",
                     "SR": "Seni Rupa",
-                    "SBDP": "Seni Rupa",
+                    "SENI": "Seni Rupa",
                     "PJODK": "Pendidikan Jasmani, Olahraga, dan Kesehatan",
                     "PJOK": "Pendidikan Jasmani, Olahraga, dan Kesehatan",
                     "B.ING": "Bahasa Inggris",
                     "BING": "Bahasa Inggris",
                     "MLBD": "Bahasa Jawa",
-                    "B.JAWA": "Bahasa Jawa",
+                    "BJW": "Bahasa Jawa",
                     "B.ARB": "Bahasa Arab",
-                    "BARB": "Bahasa Arab",
-                    "KDKA": "Koding dan Kecerdasan Artifisial",
-                    "KKA": "Koding dan Kecerdasan Artifisial"
+                    "KDKA": "Koding dan Kecerdasan Artifisial"
                 };
 
-                function resolveMapelToAppName(rawName) {
-                    const clean = String(rawName || '').trim();
-                    const upper = clean.toUpperCase();
-                    const mappedCandidate = kamusMapel[upper] || clean;
-                    // 1. Cocok persis (case-insensitive)
-                    let found = mapelData.find(m => m.nama.trim().toLowerCase() === mappedCandidate.toLowerCase());
-                    if (found) return found.nama;
-                    // 2. Cocok parsial (misal "Seni Rupa" <-> "Seni" atau "IPAS" <-> "Ilmu Pengetahuan Alam dan Sosial (IPAS)")
-                    found = mapelData.find(m =>
-                        m.nama.toLowerCase().includes(mappedCandidate.toLowerCase()) ||
-                        mappedCandidate.toLowerCase().includes(m.nama.toLowerCase())
-                    );
-                    return found ? found.nama : mappedCandidate;
-                }
-
-                // Baca KETERANGAN MAPEL di bawah tabel atau baris header tabel untuk akurasi pemetaan kolom
                 const idxKeterangan = rows.findIndex(r => r && String(r[0] || '').trim().toUpperCase().startsWith("KETERANGAN MAPEL"));
                 const kolomMapelMap = [];
-                if (idxKeterangan !== -1) {
-                    let colIndex = 4; // Kolom E (indeks 4) awal nilai
+
+                const headerRow = rows[5] || rows[6] || [];
+                for (let c = 4; c < 18; c++) {
+                    const cellHeader = String(headerRow[c] || '').trim();
+                    if (!cellHeader) continue;
+                    const upperH = cellHeader.toUpperCase();
+                    if (['JUMLAH', 'RATA-RATA', 'RATA', 'SAKIT', 'IZIN', 'ALPA', 'EKSKUL', 'KETIDAKHADIRAN', 'S', 'I', 'A'].includes(upperH)) break;
+                    if (kamusMapel[upperH] || mapelData.some(m => m.nama.toLowerCase() === cellHeader.toLowerCase())) {
+                        const resolved = resolveMapelToAppName(cellHeader, kamusMapel);
+                        if (resolved && !kolomMapelMap.some(k => k.colIndex === c)) {
+                            kolomMapelMap.push({ colIndex: c, mapelName: resolved });
+                        }
+                    }
+                }
+
+                if (kolomMapelMap.length === 0 && idxKeterangan !== -1) {
+                    let colIndex = 4;
                     for (let i = idxKeterangan + 1; i < rows.length; i++) {
                         const teksKeterangan = rows[i]?.[1] || rows[i]?.[0];
                         if (!teksKeterangan) continue;
                         const parts = String(teksKeterangan).split(":");
                         if (parts.length >= 2) {
+                            const kodeSingkat = parts[0].trim().toUpperCase();
                             const namaLengkap = parts.slice(1).join(":").trim();
-                            const finalMapelName = resolveMapelToAppName(namaLengkap);
+                            const finalMapelName = resolveMapelToAppName(namaLengkap, kamusMapel) || resolveMapelToAppName(kodeSingkat, kamusMapel);
                             const sudahAda = kolomMapelMap.some(item => item.mapelName.toLowerCase() === finalMapelName.toLowerCase());
-                            if (!sudahAda) {
+                            if (finalMapelName && !sudahAda) {
                                 kolomMapelMap.push({ colIndex, mapelName: finalMapelName });
                             }
                             colIndex++;
                         }
                     }
-                } else {
-                    // Fallback: baca dari baris header tabel (baris indeks 5 atau 6)
-                    const headerRow = rows[6] || rows[5] || [];
-                    for (let c = 4; c < headerRow.length; c++) {
-                        const hVal = String(headerRow[c] || '').trim();
-                        if (!hVal || /^(JUMLAH|RATA|SAKIT|IZIN|ALPA|EKSKUL|CATATAN|NO|NAMA|NIS)/i.test(hVal)) break;
-                        const finalMapelName = resolveMapelToAppName(hVal);
-                        kolomMapelMap.push({ colIndex: c, mapelName: finalMapelName });
-                    }
                 }
 
-                // 2. Ekstraksi Nilai Siswa per baris
                 const batasAkhir = idxKeterangan !== -1 ? idxKeterangan : rows.length;
                 const parsedRows = [];
 
-                for (let r = 7; r < batasAkhir; r++) {
+                for (let r = 6; r < batasAkhir; r++) {
                     const row = rows[r];
-                    if (!row || row[0] === null || isNaN(Number(row[0]))) continue;
+                    if (!row || row[0] === null || String(row[0]).trim() === '' || isNaN(Number(row[0]))) continue;
 
                     const nisn = String(row[2] || "").trim();
                     const nis = String(row[3] || "").trim();
                     const nama = String(row[1] || "").trim();
+                    if (!nama) continue;
 
                     const nilaiMapelObj = {};
                     kolomMapelMap.forEach(km => {
-                        const val = row[km.colIndex];
-                        if (val !== null && val !== "" && !isNaN(Number(val))) {
-                            nilaiMapelObj[km.mapelName] = Number(val);
+                        const rawVal = row[km.colIndex];
+                        if (rawVal !== null && rawVal !== undefined && String(rawVal).trim() !== "") {
+                            const numVal = Number(String(rawVal).replace(',', '.'));
+                            if (!isNaN(numVal) && numVal >= 0 && numVal <= 100) {
+                                nilaiMapelObj[km.mapelName] = numVal;
+                            }
                         }
                     });
 
-                    // Ketidakhadiran (Sakit=18, Izin=19, Alpa=20) & Ekskul (21)
                     const absensi = {
                         sakit: Number(row[18] || 0),
                         izin: Number(row[19] || 0),
@@ -1809,24 +1885,23 @@
                     };
                     const ekskul = row[21] ? String(row[21]).trim() : "-";
 
-                    // Cek kecocokan dengan database siswa lokal berdasarkan NISN (termasuk toleransi nol di depan) atau NIS
-                    const normNisn = nisn.replace(/^0+/, '');
-                    const matchedStudent = studentsData.find(s =>
-                        String(s.nisn || '').trim() === nisn ||
-                        (normNisn && String(s.nisn || '').trim().replace(/^0+/, '') === normNisn) ||
-                        (nis && String(s.nis || '').trim() === nis)
-                    );
+                    const cleanNisn = nisn.replace(/^0+/, '');
+                    const matchedStudent = studentsData.find(s => {
+                        const sNisn = String(s.nisn || '').trim();
+                        const sNis = String(s.nis || '').trim();
+                        const sNama = String(s.nama || '').trim().toLowerCase();
+                        return (nisn && (sNisn === nisn || sNisn.replace(/^0+/, '') === cleanNisn)) ||
+                               (nis && sNis === nis) ||
+                               (nama && sNama === nama.toLowerCase());
+                    });
 
                     parsedRows.push({
-                        nisn,
-                        nis,
-                        nama,
+                        nisn, nis, nama,
                         kelas: targetKelasStr,
                         tp: detectedTp,
                         semester: semesterNum,
                         nilaiMapel: nilaiMapelObj,
-                        absensi,
-                        ekskul,
+                        absensi, ekskul,
                         matchedStudentId: matchedStudent ? matchedStudent.id : null,
                         matchedStudentName: matchedStudent ? matchedStudent.nama : null
                     });
@@ -1834,10 +1909,9 @@
 
                 parsedERaporCache = { tp: detectedTp, semester: semesterNum, kelas: targetKelasStr, rows: parsedRows };
 
-                // Tampilkan Modal Pratinjau
-                document.getElementById('eRaporMetaInfo').innerText = `T.P. ${detectedTp} • Semester ${detectedSemText} • ${targetKelasStr} • Ditemukan ${parsedRows.length} data siswa`;
+                document.getElementById('eRaporMetaInfo').innerText = `T.P. ${detectedTp} • Semester ${detectedSemText} (Sem ${semesterNum}) • ${targetKelasStr} • Ditemukan ${parsedRows.length} data siswa`;
                 const tbody = document.getElementById('eRaporPreviewTableBody');
-                tbody.innerHTML = '';
+                let previewHtml = '';
 
                 parsedRows.forEach(pr => {
                     const isMatched = Boolean(pr.matchedStudentId);
@@ -1845,7 +1919,7 @@
                         ? `<span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold text-[10px]"><i class="fa-solid fa-check mr-1"></i>Cocok: ${pr.matchedStudentName}</span>`
                         : `<span class="bg-rose-100 text-rose-800 px-2.5 py-1 rounded-full font-bold text-[10px]"><i class="fa-solid fa-triangle-exclamation mr-1"></i>NISN Belum Terdaftar</span>`;
 
-                    tbody.innerHTML += `
+                    previewHtml += `
                         <tr class="${isMatched ? 'hover:bg-slate-50' : 'bg-rose-50/50'}">
                             <td class="p-3">${statusBadge}</td>
                             <td class="p-3 font-bold text-indigo-600">${pr.nisn}</td>
@@ -1857,6 +1931,7 @@
                         </tr>
                     `;
                 });
+                tbody.innerHTML = previewHtml;
 
                 document.getElementById('eRaporPreviewModal').classList.remove('hidden');
             } catch (err) {
@@ -1875,25 +1950,35 @@
         async function confirmCommitERaporImport() {
             if (!parsedERaporCache || !Array.isArray(parsedERaporCache.rows)) return;
             const { tp, semester, kelas, rows } = parsedERaporCache;
+            const normalizedKelas = normalizeKelasToRoman(kelas);
             let insertedCount = 0;
-            let firstMatchedStudentId = null;
+            let firstMatchedId = null;
 
             rows.forEach(pr => {
-                if (!pr.matchedStudentId) return; // Lewatkan siswa yang belum terdaftar di Buku Induk
+                if (!pr.matchedStudentId) return;
                 const stId = pr.matchedStudentId;
                 const stName = pr.matchedStudentName;
-                if (!firstMatchedStudentId) firstMatchedStudentId = stId;
+                if (!firstMatchedId) firstMatchedId = stId;
 
-                // 1. Masukkan Nilai per Mapel ke array nilaiData
                 Object.entries(pr.nilaiMapel).forEach(([mapelName, score]) => {
+                    if (!mapelData.some(m => m.nama.trim().toLowerCase() === mapelName.trim().toLowerCase())) {
+                        mapelData.push({
+                            id: 'm_' + Date.now() + Math.random().toString(36).substring(2, 5),
+                            nama: mapelName.trim(),
+                            kelompok: 'Wajib Kurikulum Merdeka',
+                            tp: ''
+                        });
+                    }
+
                     const existingIdx = nilaiData.findIndex(n =>
                         String(n.studentId) === String(stId) &&
-                        String(n.kelas).trim() === String(kelas).trim() &&
+                        normalizeKelasToRoman(n.kelas) === normalizedKelas &&
                         String(n.semester).trim() === String(semester).trim() &&
                         String(n.mapel).trim().toLowerCase() === String(mapelName).trim().toLowerCase()
                     );
                     if (existingIdx >= 0) {
                         nilaiData[existingIdx].nilai = score;
+                        nilaiData[existingIdx].kelas = normalizedKelas;
                         nilaiData[existingIdx].tp = tp;
                     } else {
                         nilaiData.push({
@@ -1901,17 +1986,15 @@
                             studentId: stId,
                             siswaNama: stName,
                             tp,
-                            kelas,
-                            semester,
-                            mapel: mapelName,
+                            kelas: normalizedKelas,
+                            semester: String(semester).trim(),
+                            mapel: mapelName.trim(),
                             nilai: score
                         });
                     }
                 });
 
-                // 2. Perbarui Rekap Absensi & Ekskul di Buku Induk Siswa (Bagian F)
                 const rec = ensureBiRecord(stId);
-                // Update absensi semester ini
                 const absIdx = rec.absensi.findIndex(a => String(a.tp) === String(tp) && String(a.semester) === String(semester));
                 if (absIdx >= 0) {
                     rec.absensi[absIdx].sakit = pr.absensi.sakit;
@@ -1921,7 +2004,6 @@
                     rec.absensi.push({ tp, semester, sakit: pr.absensi.sakit, izin: pr.absensi.izin, alpa: pr.absensi.alpa, catatan: 'Impor e-Rapor' });
                 }
 
-                // Update Ekskul Pramuka
                 const eksIdx = rec.ekskul.findIndex(e => e.nama.toLowerCase().includes('pramuka'));
                 if (eksIdx >= 0) {
                     rec.ekskul[eksIdx].keterangan = pr.ekskul;
@@ -1932,12 +2014,12 @@
                 insertedCount++;
             });
 
-            if (firstMatchedStudentId) {
-                activeStudentId = String(firstMatchedStudentId);
+            if (firstMatchedId) {
+                activeStudentId = String(firstMatchedId);
             }
 
             try {
-                await saveToStorage(`Impor Leger e-Rapor ${kelas} Sem ${semester} (${insertedCount} siswa)`);
+                await saveToStorage(`Impor Leger e-Rapor ${normalizedKelas} Sem ${semester} (${insertedCount} siswa)`);
                 closeERaporModal();
                 refreshAllViews();
                 showNotification(`Berhasil menyuntikkan nilai e-Rapor untuk ${insertedCount} peserta didik ke Buku Induk!`, 'success');
@@ -1947,31 +2029,51 @@
         }
 
         // ==========================================
-        // FUNGSI STANDAR APLIKASI
+        // FUNGSI STANDAR APLIKASI (OPTIMAL TANPA BEKU)
         // ==========================================
         function refreshAllViews() {
             if (document.getElementById('globalAcademicYearSelect')) document.getElementById('globalAcademicYearSelect').value = schoolIdentity.activeTp || '2025/2026';
             if (document.getElementById('dashActiveTpBadge')) document.getElementById('dashActiveTpBadge').innerText = schoolIdentity.activeTp || '2025/2026';
-            renderDashboardStats();
-            renderCharts();
-            renderBukuIndukMasterTable();
-            renderFullStudentsTable();
-            renderGuruTable();
-            renderMapelTable();
-            renderNilaiTable();
-            renderMutasiTable();
-            populateAllDropdowns();
-            loadSchoolSettingsForm();
 
-            if (activeStudentId && studentsData.some(s => String(s.id) === String(activeStudentId))) {
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
-            } else if (studentsData.length > 0) {
-                activeStudentId = studentsData[0].id;
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
+            if (!activeStudentId || !studentsData.some(s => String(s.id) === String(activeStudentId))) {
+                if (studentsData.length > 0) activeStudentId = studentsData[0].id;
+            }
+
+            populateAllDropdowns();
+
+            // Render hanya menu/tab yang sedang aktif agar UI selalu instan dan tidak pernah membeku
+            renderActiveTabOnly(currentActiveTab);
+        }
+
+        function renderActiveTabOnly(tabId) {
+            if (tabId === 'dashboard') {
+                renderDashboardStats();
+                requestAnimationFrame(() => renderCharts());
+            } else if (tabId === 'buku-induk' || tabId === 'pratinjau') {
+                if (currentBiSubView === 'list') {
+                    renderBukuIndukMasterTable();
+                } else if (currentBiSubView === 'editor') {
+                    if (activeStudentId) loadStudentIntoBiEditorOnly(activeStudentId);
+                } else if (currentBiSubView === 'preview') {
+                    if (activeStudentId) loadStudentIntoBiPreviewOnly(activeStudentId);
+                }
+            } else if (tabId === 'data-siswa') {
+                renderFullStudentsTable();
+            } else if (tabId === 'data-guru') {
+                renderGuruTable();
+            } else if (tabId === 'mata-pelajaran') {
+                renderMapelTable();
+            } else if (tabId === 'nilai-rapor') {
+                renderNilaiTable();
+            } else if (tabId === 'mutasi') {
+                renderMutasiTable();
+            } else if (tabId === 'pengaturan') {
+                loadSchoolSettingsForm();
             }
         }
 
         function switchTab(tabId, highlightMenuId = null) {
+            currentActiveTab = highlightMenuId === 'pratinjau' ? 'pratinjau' : tabId;
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId)?.classList.remove('hidden');
 
@@ -1991,11 +2093,12 @@
                 else btn.classList.remove('text-indigo-400', 'font-bold');
             });
 
-            if (tabId === 'dashboard') setTimeout(() => renderCharts(), 60);
+            renderActiveTabOnly(currentActiveTab);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function openMenuPratinjau() {
+            currentBiSubView = 'preview';
             switchTab('buku-induk', 'pratinjau');
             showBukuIndukSubView('preview');
         }
@@ -2008,8 +2111,10 @@
                 : studentsData.filter(s => String(s.kelas).trim() === filterKelas);
             if (filtered.length > 0 && !filtered.some(s => String(s.id) === String(activeStudentId))) {
                 activeStudentId = String(filtered[0].id);
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
-            } else if (filtered.length === 0) {
+                loadStudentIntoBiPreviewOnly(activeStudentId);
+            } else if (filtered.length > 0) {
+                loadStudentIntoBiPreviewOnly(activeStudentId);
+            } else {
                 const container = document.getElementById('printableArea');
                 if (container) {
                     container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs font-medium">Tidak ada peserta didik pada ${filterKelas}.</div>`;
@@ -2029,6 +2134,7 @@
         }
 
         function showBukuIndukSubView(viewName) {
+            currentBiSubView = viewName;
             document.getElementById('biSubViewList').classList.add('hidden');
             document.getElementById('biSubViewEditor').classList.add('hidden');
             document.getElementById('biSubViewPreview').classList.add('hidden');
@@ -2045,11 +2151,11 @@
             } else if (viewName === 'editor') {
                 document.getElementById('biSubViewEditor').classList.remove('hidden');
                 document.getElementById('btnBiViewEditor').className = 'bg-indigo-600 text-white font-semibold px-3.5 py-2 rounded-xl text-xs transition shadow-xs flex items-center space-x-1.5 cursor-pointer';
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
+                loadStudentIntoBiEditorOnly(activeStudentId);
             } else if (viewName === 'preview') {
                 document.getElementById('biSubViewPreview').classList.remove('hidden');
                 document.getElementById('btnBiViewPreview').className = 'bg-indigo-600 text-white font-semibold px-3.5 py-2 rounded-xl text-xs transition shadow-xs flex items-center space-x-1.5 cursor-pointer';
-                loadStudentIntoBiEditorAndPreview(activeStudentId);
+                loadStudentIntoBiPreviewOnly(activeStudentId);
             }
         }
 
@@ -2085,7 +2191,6 @@
             const fKelas = document.getElementById('biFilterKelas')?.value || 'ALL';
             const fStatus = document.getElementById('biFilterStatus')?.value || 'ALL';
 
-            tbody.innerHTML = '';
             const filtered = studentsData.filter(s => {
                 const matchQ = s.nama.toLowerCase().includes(q) || s.nis.toLowerCase().includes(q) || s.nisn.toLowerCase().includes(q);
                 const matchK = fKelas === 'ALL' || s.kelas === fKelas;
@@ -2098,13 +2203,14 @@
                 return;
             }
 
+            let html = '';
             filtered.forEach((s, idx) => {
                 const comp = calculateStudentCompleteness(s);
                 const badgesHtml = Object.entries(comp.secStatus).map(([k, ok]) =>
                     `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold ${ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${k}</span>`
                 ).join(' ');
 
-                tbody.innerHTML += `
+                html += `
                     <tr class="hover:bg-slate-50 transition">
                         <td class="p-3 font-medium">${idx + 1}</td>
                         <td class="p-3 font-bold text-indigo-600">${s.nis} / ${s.nisn}</td>
@@ -2127,23 +2233,40 @@
                     </tr>
                 `;
             });
+            tbody.innerHTML = html;
         }
 
         function openBiPreviewForStudent(id) { activeStudentId = String(id); switchTab('buku-induk'); showBukuIndukSubView('preview'); }
         function openBiEditorForStudent(id) { activeStudentId = String(id); switchTab('buku-induk'); showBukuIndukSubView('editor'); }
-        function selectStudentForBukuInduk(id) { activeStudentId = String(id); loadStudentIntoBiEditorAndPreview(activeStudentId); }
+        function selectStudentForBukuInduk(id) {
+            activeStudentId = String(id);
+            if (currentBiSubView === 'preview') {
+                loadStudentIntoBiPreviewOnly(activeStudentId);
+            } else {
+                loadStudentIntoBiEditorOnly(activeStudentId);
+            }
+        }
 
-        function loadStudentIntoBiEditorAndPreview(studentId) {
+        function loadStudentIntoBiPreviewOnly(studentId) {
             const s = studentsData.find(item => String(item.id) === String(studentId));
             if (!s) return;
-            const rec = ensureBiRecord(s.id);
-
-            if (document.getElementById('editorSelectStudent')) document.getElementById('editorSelectStudent').value = s.id;
+            ensureBiRecord(s.id);
             const previewFilterEl = document.getElementById('previewFilterKelas');
             if (previewFilterEl && previewFilterEl.value !== 'ALL' && previewFilterEl.value !== s.kelas) {
                 previewFilterEl.value = s.kelas || 'ALL';
                 populateAllDropdowns();
             }
+            if (document.getElementById('previewSelectStudent')) document.getElementById('previewSelectStudent').value = s.id;
+            if (document.getElementById('editorSelectStudent')) document.getElementById('editorSelectStudent').value = s.id;
+            renderPrintableBukuInduk([s]);
+        }
+
+        function loadStudentIntoBiEditorOnly(studentId) {
+            const s = studentsData.find(item => String(item.id) === String(studentId));
+            if (!s) return;
+            const rec = ensureBiRecord(s.id);
+
+            if (document.getElementById('editorSelectStudent')) document.getElementById('editorSelectStudent').value = s.id;
             if (document.getElementById('previewSelectStudent')) document.getElementById('previewSelectStudent').value = s.id;
 
             document.getElementById('biInputSchNama').value = schoolIdentity.nama;
@@ -2178,9 +2301,9 @@
             renderBiGradesMatrixEditor(s.id);
 
             const habitsBody = document.getElementById('biEditorHabitsBody');
-            habitsBody.innerHTML = '';
+            let habitsHtml = '';
             rec.habits.forEach((h, i) => {
-                habitsBody.innerHTML += `
+                habitsHtml += `
                     <tr>
                         <td class="p-2 font-bold text-center border">${h.no}</td>
                         <td class="p-2 font-bold text-slate-800 border">${h.nama}</td>
@@ -2191,11 +2314,12 @@
                     </tr>
                 `;
             });
+            habitsBody.innerHTML = habitsHtml;
 
             const profBody = document.getElementById('biEditorProfilesBody');
-            profBody.innerHTML = '';
+            let profHtml = '';
             rec.profiles.forEach((p, i) => {
-                profBody.innerHTML += `
+                profHtml += `
                     <tr>
                         <td class="p-2 font-bold text-center border">${p.no}</td>
                         <td class="p-2 font-bold text-slate-800 border">${p.dimensi}</td>
@@ -2206,14 +2330,15 @@
                     </tr>
                 `;
             });
+            profBody.innerHTML = profHtml;
 
             renderSectionFLists(s.id);
 
             const promBody = document.getElementById('biEditorPromotionsBody');
-            promBody.innerHTML = '';
+            let promHtml = '';
             rec.promotions.forEach((pr, i) => {
                 const isLulusRow = pr.jenjang.includes('VI');
-                promBody.innerHTML += `
+                promHtml += `
                     <tr>
                         <td class="p-2.5 font-bold text-indigo-900 border">${pr.jenjang}</td>
                         <td class="p-2.5 border">
@@ -2227,6 +2352,7 @@
                     </tr>
                 `;
             });
+            promBody.innerHTML = promHtml;
 
             document.getElementById('biSignTempat').value = rec.sign.tempat || 'Gedongboyountung';
             document.getElementById('biSignTanggal').value = rec.sign.tanggal || '29 Juni 2026';
@@ -2234,14 +2360,18 @@
             document.getElementById('biSignKepsekNip').value = schoolIdentity.nipKepsek;
 
             const waliSelect = document.getElementById('biSignWaliSelect');
-            waliSelect.innerHTML = '';
+            let waliOpts = '';
             guruData.forEach(g => {
                 const selected = g.nama === rec.sign.waliNama ? 'selected' : '';
-                waliSelect.innerHTML += `<option value="${g.nama}" ${selected}>${g.nama}</option>`;
+                waliOpts += `<option value="${g.nama}" ${selected}>${g.nama}</option>`;
             });
+            waliSelect.innerHTML = waliOpts;
             document.getElementById('biSignWaliNip').value = rec.sign.waliNip || '';
+        }
 
-            renderPrintableBukuInduk([s]);
+        function loadStudentIntoBiEditorAndPreview(studentId) {
+            loadStudentIntoBiEditorOnly(studentId);
+            loadStudentIntoBiPreviewOnly(studentId);
         }
 
         function findStudentGradeRecord(studentId, kelas, sem, mapelNama) {
@@ -2800,7 +2930,6 @@
             const fKelas = document.getElementById('filterSiswaKelas')?.value || 'ALL';
             const fStatus = document.getElementById('filterSiswaStatus')?.value || 'ALL';
 
-            tbody.innerHTML = '';
             const filtered = studentsData.filter(s => {
                 const matchQ = s.nama.toLowerCase().includes(q) || s.nis.toLowerCase().includes(q) || s.nisn.toLowerCase().includes(q);
                 const matchK = fKelas === 'ALL' || s.kelas === fKelas;
@@ -2814,8 +2943,9 @@
                 return;
             }
 
+            let html = '';
             filtered.forEach((s, idx) => {
-                tbody.innerHTML += `
+                html += `
                     <tr class="hover:bg-slate-50 transition">
                         <td class="p-3">${idx + 1}</td>
                         <td class="p-3 font-bold text-indigo-600">${s.nis} / ${s.nisn}</td>
@@ -2835,6 +2965,7 @@
                     </tr>
                 `;
             });
+            tbody.innerHTML = html;
         }
 
         function openAddStudentModal() {
@@ -2974,10 +3105,11 @@
         function renderNilaiTable() {
             const tbody = document.getElementById('nilaiTableBody');
             if (!tbody) return;
-            tbody.innerHTML = '';
+            let html = '';
             nilaiData.forEach((n, idx) => {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${n.siswaNama}</td><td class="p-3 font-semibold text-indigo-700">${n.tp}</td><td class="p-3">${n.kelas}</td><td class="p-3">Sem ${n.semester}</td><td class="p-3">${n.mapel}</td><td class="p-3 font-extrabold text-purple-700">${n.nilai}</td><td class="p-3 text-center"><button type="button" onclick="deleteNilai('${n.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                html += `<tr class="hover:bg-slate-50"><td class="p-3">${idx+1}</td><td class="p-3 font-bold">${n.siswaNama}</td><td class="p-3 font-semibold text-indigo-700">${n.tp}</td><td class="p-3">${n.kelas}</td><td class="p-3">Sem ${n.semester}</td><td class="p-3">${n.mapel}</td><td class="p-3 font-extrabold text-purple-700">${n.nilai}</td><td class="p-3 text-center"><button type="button" onclick="deleteNilai('${n.id}')" class="text-rose-600 cursor-pointer"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
+            tbody.innerHTML = html;
         }
         function openInputNilaiModal() { document.getElementById('nilaiModal').classList.remove('hidden'); }
         function closeNilaiModal() { document.getElementById('nilaiModal').classList.add('hidden'); }
@@ -3000,12 +3132,13 @@
         function renderMutasiTable() {
             const tbody = document.getElementById('mutasiTableBody');
             if (!tbody) return;
-            tbody.innerHTML = '';
+            let html = '';
             studentsData.forEach(s => {
                 const rec = ensureBiRecord(s.id);
                 const lastProm = rec.promotions.slice().reverse().find(p => p.keputusan !== '-') || { keputusan: 'Aktif', keterangan: '-' };
-                tbody.innerHTML += `<tr class="hover:bg-slate-50"><td class="p-3 font-bold text-indigo-600">${s.nis} / ${s.nisn}</td><td class="p-3 font-bold">${s.nama}</td><td class="p-3">${s.kelas}</td><td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">${s.status}</span></td><td class="p-3">${lastProm.keputusan}: ${lastProm.keterangan || '-'}</td><td class="p-3 text-center"><button type="button" onclick="openBiEditorForStudent('${s.id}'); switchBiSection('G');" class="bg-cyan-600 text-white px-3 py-1 rounded-lg text-xs cursor-pointer">Kelola</button></td></tr>`;
+                html += `<tr class="hover:bg-slate-50"><td class="p-3 font-bold text-indigo-600">${s.nis} / ${s.nisn}</td><td class="p-3 font-bold">${s.nama}</td><td class="p-3">${s.kelas}</td><td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">${s.status}</span></td><td class="p-3">${lastProm.keputusan}: ${lastProm.keterangan || '-'}</td><td class="p-3 text-center"><button type="button" onclick="openBiEditorForStudent('${s.id}'); switchBiSection('G');" class="bg-cyan-600 text-white px-3 py-1 rounded-lg text-xs cursor-pointer">Kelola</button></td></tr>`;
             });
+            tbody.innerHTML = html;
         }
 
         function populateAllDropdowns() {
@@ -3014,27 +3147,25 @@
             const nilaiSiswaSel = document.getElementById('inputNilaiSiswa');
             const previewFilterKelas = document.getElementById('previewFilterKelas')?.value || 'ALL';
 
-            if (editorSel) editorSel.innerHTML = '';
-            if (previewSel) previewSel.innerHTML = '';
-            if (nilaiSiswaSel) nilaiSiswaSel.innerHTML = '';
-
+            let allOpts = '';
+            let previewOpts = '';
             studentsData.forEach(s => {
                 const opt = `<option value="${s.id}" ${String(s.id) === String(activeStudentId) ? 'selected' : ''}>${s.nis} - ${s.nama} (${s.kelas})</option>`;
-                if (editorSel) editorSel.innerHTML += opt;
-                if (nilaiSiswaSel) nilaiSiswaSel.innerHTML += opt;
-                if (previewSel && (previewFilterKelas === 'ALL' || String(s.kelas).trim() === previewFilterKelas)) {
-                    previewSel.innerHTML += opt;
+                allOpts += opt;
+                if (previewFilterKelas === 'ALL' || String(s.kelas).trim() === previewFilterKelas) {
+                    previewOpts += opt;
                 }
             });
 
-            if (previewSel && previewSel.options.length === 0) {
-                previewSel.innerHTML = `<option value="">-- Tidak ada siswa di kelas ini --</option>`;
+            if (editorSel) editorSel.innerHTML = allOpts;
+            if (nilaiSiswaSel) nilaiSiswaSel.innerHTML = allOpts;
+            if (previewSel) {
+                previewSel.innerHTML = previewOpts || `<option value="">-- Tidak ada siswa di kelas ini --</option>`;
             }
 
             const selectMapel = document.getElementById('inputNilaiMapel');
             if (selectMapel) {
-                selectMapel.innerHTML = '';
-                mapelData.forEach(m => { selectMapel.innerHTML += `<option value="${m.nama}">${m.nama}</option>`; });
+                selectMapel.innerHTML = mapelData.map(m => `<option value="${m.nama}">${m.nama}</option>`).join('');
             }
         }
 
@@ -3322,14 +3453,19 @@
             pendingDeleteAction = onConfirmCallback;
             document.getElementById('confirmDeleteModal').classList.remove('hidden');
         }
-        function closeConfirmDeleteModal() { pendingDeleteAction = null; document.getElementById('confirmDeleteModal').classList.add('hidden'); }
+        function closeConfirmDeleteModal() {
+            pendingDeleteAction = null;
+            document.getElementById('confirmDeleteModal')?.classList.add('hidden');
+        }
         async function executeConfirmedDelete() {
             const action = pendingDeleteAction;
             closeConfirmDeleteModal();
             if (typeof action === 'function') await action();
         }
-
-        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function openLoginModal() {
+            loadSavedLoginCredentials();
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
         function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
         async function executeFirebaseLogin() {
             const email = document.getElementById('loginEmailInput').value.trim();
@@ -3338,15 +3474,17 @@
             try {
                 const cred = await signInWithEmailAndPassword(auth, email, password);
                 currentUser = cred.user;
+                saveLoginCredentials(email, password, true);
                 closeLoginModal();
                 document.getElementById('fullScreenLoginGate')?.classList.add('hidden');
-                refreshAllViews();
+                scheduleRefreshAllViews();
                 showNotification('Berhasil login!', 'success');
             } catch (err) { showNotification('Gagal login: ' + err.message, 'error'); }
         }
         async function executeGateLogin() {
             const email = document.getElementById('gateEmailInput').value.trim();
             const password = document.getElementById('gatePasswordInput').value.trim();
+            const remember = document.getElementById('gateRememberMe')?.checked !== false;
             if (!email || !password) {
                 showNotification('Mohon isi Email dan Password terlebih dahulu!', 'error');
                 return;
@@ -3359,9 +3497,11 @@
             try {
                 const cred = await signInWithEmailAndPassword(auth, email, password);
                 currentUser = cred.user;
+                saveLoginCredentials(email, password, remember);
                 document.getElementById('fullScreenLoginGate').classList.add('hidden');
+                isPendingDeferredRender = false;
                 showNotification('Selamat datang!', 'success');
-                setTimeout(() => refreshAllViews(), 15);
+                scheduleRefreshAllViews();
             } catch (err) {
                 showNotification('Gagal masuk: ' + err.message, 'error');
             } finally {
