@@ -12,9 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- SheetJS untuk Excel Import/Export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Chart.js untuk Grafik Dashboard -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -1308,15 +1308,17 @@
                 <h1 class="font-extrabold text-lg tracking-tight text-white">BUKU INDUK DIGITAL</h1>
                 <p class="text-xs text-indigo-200">SDN Gedongboyountung - Kec. Turi, Kab. Lamongan</p>
             </div>
-            <div class="p-8 space-y-4 text-xs">
+            <form onsubmit="event.preventDefault(); executeGateLogin();" class="p-8 space-y-4 text-xs">
                 <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-2xl text-indigo-900 flex items-start space-x-2.5">
                     <i class="fa-solid fa-shield-halved text-indigo-600 text-base mt-0.5"></i>
                     <p class="text-[11px] leading-relaxed">Silakan masukkan akun Email dan Password Admin / Operator yang terdaftar di Firebase untuk masuk ke sistem.</p>
                 </div>
-                <div><label class="block font-bold text-slate-700 mb-1.5">Email / Username</label><input type="email" id="gateEmailInput" placeholder="operator@sdngedongboyountung.sch.id" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl"></div>
-                <div><label class="block font-bold text-slate-700 mb-1.5">Password</label><input type="password" id="gatePasswordInput" placeholder="••••••••" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl"></div>
-                <button type="button" onclick="executeGateLogin()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg cursor-pointer">Masuk ke Sistem Buku Induk</button>
-            </div>
+                <div><label class="block font-bold text-slate-700 mb-1.5">Email / Username</label><input type="email" id="gateEmailInput" autocomplete="username" autofocus placeholder="operator@sdngedongboyountung.sch.id" class="w-full p-2.5 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+                <div><label class="block font-bold text-slate-700 mb-1.5">Password</label><input type="password" id="gatePasswordInput" autocomplete="current-password" placeholder="••••••••" class="w-full p-2.5 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+                <button type="submit" id="btnGateLoginSubmit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-lg cursor-pointer transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-right-to-bracket"></i><span>Masuk ke Sistem Buku Induk</span>
+                </button>
+            </form>
             <div class="bg-slate-50 p-4 border-t text-center text-[11px] text-slate-500">Penyimpanan Permanen Terintegrasi Firebase Cloud Firestore</div>
         </div>
     </div>
@@ -1562,7 +1564,14 @@
             return doc(db, 'artifacts', appId, 'public', 'data', 'app_cloud_store', 'main_state');
         }
 
-        function applyRemoteState(parsed) {
+        let isPendingDeferredRender = false;
+
+        function isLoginGateVisible() {
+            const gate = document.getElementById('fullScreenLoginGate');
+            return gate && !gate.classList.contains('hidden');
+        }
+
+        function applyRemoteState(parsed, forceImmediateRender = false) {
             if (!parsed || typeof parsed !== 'object') return;
             if (parsed.schoolIdentity) schoolIdentity = { ...schoolIdentity, ...parsed.schoolIdentity };
             if (Array.isArray(parsed.studentsData)) studentsData = parsed.studentsData;
@@ -1573,10 +1582,19 @@
             if (Array.isArray(parsed.auditLogs)) auditLogs = parsed.auditLogs;
             studentsData.forEach(s => ensureBiRecord(s.id));
             saveToLocalBackup();
+
+            // Jika gerbang login masih terbuka, tunda render DOM berat agar input email & password tidak membeku
+            if (isLoginGateVisible() && !forceImmediateRender) {
+                isPendingDeferredRender = true;
+                return;
+            }
+            isPendingDeferredRender = false;
             refreshAllViews();
         }
 
         async function initFirebaseAndAutoSync() {
+            // Sembunyikan overlay loading sejak awal jika gerbang login tampil agar tidak menghalangi klik/ketikan
+            hideInitialLoadingOverlay();
             setSyncStatus('loading');
             try {
                 let config = defaultFirebaseConfig;
@@ -1587,28 +1605,52 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                try { await signInAnonymously(auth); } catch (e) {}
+                // Pantau sesi login tanpa memblokir input form login
+                onAuthStateChanged(auth, (u) => {
+                    currentUser = u;
+                    const btnLabel = document.getElementById('authStatusLabel');
+                    if (btnLabel) {
+                        btnLabel.innerText = (u && !u.isAnonymous) ? (u.email || 'Admin') : 'Login Admin';
+                    }
+                    if (u && !u.isAnonymous) {
+                        const gate = document.getElementById('fullScreenLoginGate');
+                        if (gate && !gate.classList.contains('hidden')) {
+                            gate.classList.add('hidden');
+                            if (isPendingDeferredRender) {
+                                isPendingDeferredRender = false;
+                                setTimeout(() => refreshAllViews(), 20);
+                            }
+                        }
+                    }
+                });
+
+                // Muat cadangan lokal secara ringan di memori tanpa merender seluruh tabel berat selama layar login masih aktif
+                const localSaved = loadFromLocalBackup();
+                if (localSaved && Array.isArray(localSaved.studentsData) && localSaved.studentsData.length > 0) {
+                    applyRemoteState(localSaved, false);
+                    isInitialLoadDone = true;
+                }
 
                 const docRef = getMainDatabaseDocRef();
-                const snap = await getDoc(docRef);
-                if (snap.exists()) {
-                    const docData = snap.data();
-                    const parsed = typeof docData.payload === 'string' ? JSON.parse(docData.payload) : docData;
-                    applyRemoteState(parsed);
-                } else {
-                    ensureFallbackDataLoaded();
-                    await pushStateToFirestore();
-                }
-                hideInitialLoadingOverlay();
-
-                onSnapshot(docRef, (docSnap) => {
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
+                unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
                     if (isSavingInProgress) return;
                     if (docSnap.exists()) {
-                        const parsed = typeof docSnap.data().payload === 'string' ? JSON.parse(docSnap.data().payload) : docSnap.data();
+                        const rawData = docSnap.data();
+                        const parsed = typeof rawData.payload === 'string' ? JSON.parse(rawData.payload) : rawData;
                         isApplyingRemoteSnapshot = true;
-                        applyRemoteState(parsed);
+                        isInitialLoadDone = true;
+                        applyRemoteState(parsed, false);
                         isApplyingRemoteSnapshot = false;
+                        setSyncStatus('synced');
+                    } else if (!isInitialLoadDone) {
+                        ensureFallbackDataLoaded();
+                        pushStateToFirestore();
                     }
+                }, (err) => {
+                    console.warn("Realtime listener notice:", err.message);
+                    if (!isInitialLoadDone) ensureFallbackDataLoaded();
+                    setSyncStatus('synced');
                 });
             } catch (e) {
                 ensureFallbackDataLoaded();
@@ -3292,22 +3334,42 @@
         async function executeFirebaseLogin() {
             const email = document.getElementById('loginEmailInput').value.trim();
             const password = document.getElementById('loginPasswordInput').value.trim();
+            if (!email || !password) { showNotification('Email dan Password wajib diisi!', 'error'); return; }
             try {
                 const cred = await signInWithEmailAndPassword(auth, email, password);
                 currentUser = cred.user;
                 closeLoginModal();
+                document.getElementById('fullScreenLoginGate')?.classList.add('hidden');
+                refreshAllViews();
                 showNotification('Berhasil login!', 'success');
             } catch (err) { showNotification('Gagal login: ' + err.message, 'error'); }
         }
         async function executeGateLogin() {
             const email = document.getElementById('gateEmailInput').value.trim();
             const password = document.getElementById('gatePasswordInput').value.trim();
+            if (!email || !password) {
+                showNotification('Mohon isi Email dan Password terlebih dahulu!', 'error');
+                return;
+            }
+            const btn = document.getElementById('btnGateLoginSubmit');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i><span>Memverifikasi Akun...</span>`;
+            }
             try {
                 const cred = await signInWithEmailAndPassword(auth, email, password);
                 currentUser = cred.user;
                 document.getElementById('fullScreenLoginGate').classList.add('hidden');
                 showNotification('Selamat datang!', 'success');
-            } catch (err) { showNotification('Gagal masuk: ' + err.message, 'error'); }
+                setTimeout(() => refreshAllViews(), 15);
+            } catch (err) {
+                showNotification('Gagal masuk: ' + err.message, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span>Masuk ke Sistem Buku Induk</span>`;
+                }
+            }
         }
 
         function showNotification(msg, type = 'success') {
