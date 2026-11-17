@@ -602,6 +602,9 @@
                                     <i class="fa-solid fa-list-ul"></i><span>Daftar Rincian Mapel</span>
                                 </button>
                             </div>
+                            <button type="button" onclick="resetNilaiFilters()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-2 rounded-xl text-xs cursor-pointer transition flex items-center gap-1.5" title="Tampilkan Semua Data Nilai">
+                                <i class="fa-solid fa-rotate-left"></i><span>Reset Filter</span>
+                            </button>
                             <button type="button" onclick="openInputNilaiModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs cursor-pointer shadow-xs flex items-center gap-1.5">
                                 <i class="fa-solid fa-plus"></i><span>Input Nilai Manual</span>
                             </button>
@@ -612,28 +615,28 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 text-xs">
                         <div class="lg:col-span-2 relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="filterNilaiSearch" oninput="renderNilaiTable()" placeholder="Cari nama siswa, NIS, atau NISN..." class="w-full pl-8 pr-3 py-2 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl font-medium focus:outline-none focus:border-indigo-500">
+                            <input type="text" id="filterNilaiSearch" oninput="handleNilaiFilterChange('search')" placeholder="Cari nama siswa, NIS, atau NISN..." class="w-full pl-8 pr-3 py-2 bg-slate-50 focus:bg-white border border-slate-300 rounded-xl font-medium focus:outline-none focus:border-indigo-500">
                         </div>
                         <div>
-                            <select id="filterNilaiKelas" onchange="renderNilaiTable()" class="w-full border border-slate-300 bg-slate-50 rounded-xl px-3 py-2 font-bold text-slate-800 cursor-pointer">
-                                <option value="ALL">Semua Kelas</option>
+                            <select id="filterNilaiKelas" onchange="handleNilaiFilterChange('kelas')" class="w-full border border-slate-300 bg-slate-50 rounded-xl px-3 py-2 font-bold text-slate-800 cursor-pointer">
+                                <option value="ALL" selected>Semua Kelas</option>
                                 <option value="Kelas I">Kelas I</option>
                                 <option value="Kelas II">Kelas II</option>
                                 <option value="Kelas III">Kelas III</option>
                                 <option value="Kelas IV">Kelas IV</option>
-                                <option value="Kelas V" selected>Kelas V</option>
+                                <option value="Kelas V">Kelas V</option>
                                 <option value="Kelas VI">Kelas VI</option>
                             </select>
                         </div>
                         <div>
-                            <select id="filterNilaiSemester" onchange="renderNilaiTable()" class="w-full border border-slate-300 bg-slate-50 rounded-xl px-3 py-2 font-bold text-slate-800 cursor-pointer">
-                                <option value="ALL">Semua Semester</option>
+                            <select id="filterNilaiSemester" onchange="handleNilaiFilterChange('semester')" class="w-full border border-slate-300 bg-slate-50 rounded-xl px-3 py-2 font-bold text-slate-800 cursor-pointer">
+                                <option value="ALL" selected>Semua Semester</option>
                                 <option value="1">Semester 1 (Ganjil)</option>
-                                <option value="2" selected>Semester 2 (Genap)</option>
+                                <option value="2">Semester 2 (Genap)</option>
                             </select>
                         </div>
                         <div>
-                            <select id="filterNilaiSiswaSingle" onchange="renderNilaiTable()" class="w-full border border-slate-300 bg-slate-50 rounded-xl px-3 py-2 font-bold text-indigo-950 cursor-pointer">
+                            <select id="filterNilaiSiswaSingle" onchange="handleNilaiFilterChange('siswa')" class="w-full border border-slate-300 bg-slate-50 rounded-xl px-3 py-2 font-bold text-indigo-950 cursor-pointer">
                                 <option value="ALL">Semua Siswa</option>
                             </select>
                         </div>
@@ -3932,6 +3935,61 @@
             renderNilaiTable();
         }
 
+        function normalizeSemesterValue(rawSem) {
+            const s = String(rawSem || '').trim().toLowerCase();
+            if (s === '1' || s === 'i' || s.includes('ganjil') || s.includes('satu') || s === 'sem 1') return '1';
+            if (s === '2' || s === 'ii' || s.includes('genap') || s.includes('dua') || s === 'sem 2') return '2';
+            return s;
+        }
+
+        function handleNilaiFilterChange(source) {
+            const kelasSel = document.getElementById('filterNilaiKelas');
+            const semSel = document.getElementById('filterNilaiSemester');
+            const siswaSel = document.getElementById('filterNilaiSiswaSingle');
+
+            // Jika pengguna mengganti Filter Kelas, otomatis reset pilihan Siswa Spesifik ke "ALL" agar daftar kelas yang baru langsung tampil
+            if (source === 'kelas' && siswaSel) {
+                siswaSel.value = 'ALL';
+            }
+
+            // Jika pengguna memilih 1 Siswa Spesifik, cek apakah siswa tersebut punya nilai di kelas/semester yang sedang dipilih.
+            // Jika tidak ada di kelas/semester tersebut namun punya nilai di kelas/semester lain, otomatis sesuaikan ke "ALL" agar nilainya langsung muncul!
+            if (source === 'siswa' && siswaSel && siswaSel.value !== 'ALL') {
+                const targetId = String(siswaSel.value);
+                const curKls = kelasSel ? kelasSel.value : 'ALL';
+                const curSem = semSel ? semSel.value : 'ALL';
+                const studentRecords = nilaiData.filter(n => String(n.studentId) === targetId);
+
+                if (studentRecords.length > 0) {
+                    const hasMatchInCurrent = studentRecords.some(n => {
+                        const mKls = (curKls === 'ALL') || (normalizeKelasToRoman(n.kelas) === curKls);
+                        const mSem = (curSem === 'ALL') || (normalizeSemesterValue(n.semester) === curSem);
+                        return mKls && mSem;
+                    });
+                    if (!hasMatchInCurrent) {
+                        if (kelasSel) kelasSel.value = 'ALL';
+                        if (semSel) semSel.value = 'ALL';
+                    }
+                }
+            }
+
+            expandedStudentNilaiId = null;
+            renderNilaiTable();
+        }
+
+        function resetNilaiFilters() {
+            const searchEl = document.getElementById('filterNilaiSearch');
+            const kelasEl = document.getElementById('filterNilaiKelas');
+            const semEl = document.getElementById('filterNilaiSemester');
+            const siswaEl = document.getElementById('filterNilaiSiswaSingle');
+            if (searchEl) searchEl.value = '';
+            if (kelasEl) kelasEl.value = 'ALL';
+            if (semEl) semEl.value = 'ALL';
+            if (siswaEl) siswaEl.value = 'ALL';
+            expandedStudentNilaiId = null;
+            renderNilaiTable();
+        }
+
         function getShortMapelCode(nama, idx) {
             const lower = String(nama || '').toLowerCase();
             if (lower.includes('agama')) return 'PAI';
@@ -3957,43 +4015,67 @@
             const q = (document.getElementById('filterNilaiSearch')?.value || '').toLowerCase().trim();
             const fKelas = document.getElementById('filterNilaiKelas')?.value || 'ALL';
             const fSem = document.getElementById('filterNilaiSemester')?.value || 'ALL';
-            const fStudent = document.getElementById('filterNilaiSiswaSingle')?.value || 'ALL';
+            let fStudent = document.getElementById('filterNilaiSiswaSingle')?.value || 'ALL';
 
-            // Update opsi dropdown filter siswa sesuai kelas yang dipilih
+            // Kumpulkan daftar siswa kandidat untuk dropdown Filter Siswa:
+            // Gabungan dari siswa yang saat ini duduk di kelas fKelas ATAU memiliki nilai rapor di kelas fKelas
             const studentFilterSel = document.getElementById('filterNilaiSiswaSingle');
             if (studentFilterSel) {
-                const candidateStudents = fKelas === 'ALL'
-                    ? studentsData
-                    : studentsData.filter(s => normalizeKelasToRoman(s.kelas) === normalizeKelasToRoman(fKelas));
-                const prevVal = studentFilterSel.value || 'ALL';
+                const studentIdsWithGradesInClass = new Set();
+                nilaiData.forEach(n => {
+                    if (fKelas === 'ALL' || normalizeKelasToRoman(n.kelas) === fKelas) {
+                        studentIdsWithGradesInClass.add(String(n.studentId));
+                    }
+                });
+
+                const candidateStudents = studentsData.filter(s => {
+                    if (fKelas === 'ALL') return true;
+                    return normalizeKelasToRoman(s.kelas) === fKelas || studentIdsWithGradesInClass.has(String(s.id));
+                });
+
+                if (fStudent !== 'ALL' && !candidateStudents.some(s => String(s.id) === String(fStudent))) {
+                    fStudent = 'ALL';
+                }
+
                 let opts = `<option value="ALL">Semua Siswa (${candidateStudents.length})</option>`;
                 candidateStudents.forEach(s => {
-                    opts += `<option value="${s.id}" ${String(s.id) === String(prevVal) ? 'selected' : ''}>${s.nis} - ${s.nama}</option>`;
+                    opts += `<option value="${s.id}" ${String(s.id) === String(fStudent) ? 'selected' : ''}>${s.nis} - ${s.nama} (${s.kelas})</option>`;
                 });
                 studentFilterSel.innerHTML = opts;
             }
 
-            // Filter data nilai yang sesuai
+            // Filter data nilai yang sesuai dengan Kelas Rapor, Semester, Nama Siswa, atau Pencarian
             const filteredNilai = nilaiData.filter(n => {
-                const normKls = normalizeKelasToRoman(n.kelas);
-                if (fKelas !== 'ALL' && normKls !== fKelas) return false;
-                if (fSem !== 'ALL' && String(n.semester).trim() !== fSem) return false;
+                const st = studentsData.find(s => String(s.id) === String(n.studentId));
+                const normNilaiKls = normalizeKelasToRoman(n.kelas);
+                const normSiswaKls = st ? normalizeKelasToRoman(st.kelas) : normNilaiKls;
+                const normSem = normalizeSemesterValue(n.semester);
+
+                // Cocokkan kelas: cocok jika Kelas di Nilai Rapor == fKelas ATAU (jika pengguna memfilter kelas aktif siswa dan belum ada nilai di kelas tsb)
+                if (fKelas !== 'ALL' && normNilaiKls !== fKelas && normSiswaKls !== fKelas) return false;
+                if (fSem !== 'ALL' && normSem !== fSem) return false;
                 if (fStudent !== 'ALL' && String(n.studentId) !== String(fStudent)) return false;
+
                 if (q) {
-                    const st = studentsData.find(s => String(s.id) === String(n.studentId));
                     const matchName = String(n.siswaNama || '').toLowerCase().includes(q) ||
-                                      (st && (String(st.nis).toLowerCase().includes(q) || String(st.nisn).toLowerCase().includes(q))) ||
+                                      (st && (String(st.nama).toLowerCase().includes(q) || String(st.nis).toLowerCase().includes(q) || String(st.nisn).toLowerCase().includes(q))) ||
                                       String(n.mapel || '').toLowerCase().includes(q);
                     if (!matchName) return false;
                 }
                 return true;
             });
 
-            // Kelompokkan nilai per (Siswa + Kelas + Semester) agar 1 baris = 1 siswa
+            // Jika ada nilai dengan normNilaiKls === fKelas, prioritaskan hanya menampilkan nilai dari kelas rapor tersebut
+            const hasExactClassGrade = fKelas !== 'ALL' && filteredNilai.some(n => normalizeKelasToRoman(n.kelas) === fKelas);
+            const finalFilteredNilai = (fKelas !== 'ALL' && hasExactClassGrade)
+                ? filteredNilai.filter(n => normalizeKelasToRoman(n.kelas) === fKelas)
+                : filteredNilai;
+
+            // Kelompokkan nilai per (Siswa + Kelas Rapor + Semester) agar 1 baris = 1 siswa
             const groupMap = new Map();
-            filteredNilai.forEach(n => {
+            finalFilteredNilai.forEach(n => {
                 const normKls = normalizeKelasToRoman(n.kelas);
-                const semStr = String(n.semester).trim();
+                const semStr = normalizeSemesterValue(n.semester);
                 const gKey = `${n.studentId}_${normKls}_${semStr}`;
                 if (!groupMap.has(gKey)) {
                     const st = studentsData.find(s => String(s.id) === String(n.studentId));
@@ -4001,6 +4083,7 @@
                         key: gKey,
                         studentId: n.studentId,
                         siswaNama: st ? st.nama : n.siswaNama,
+                        siswaKelasAktif: st ? normalizeKelasToRoman(st.kelas) : normKls,
                         nis: st ? st.nis : '-',
                         nisn: st ? st.nisn : '-',
                         tp: n.tp || schoolIdentity.activeTp || '2025/2026',
@@ -4011,9 +4094,46 @@
                     });
                 }
                 const grp = groupMap.get(gKey);
-                grp.scoresByMapel[n.mapel.trim().toLowerCase()] = n;
+                const resolvedMapel = resolveMapelToAppName(n.mapel, {}) || n.mapel;
+                grp.scoresByMapel[String(resolvedMapel).trim().toLowerCase()] = n;
+                grp.scoresByMapel[String(n.mapel).trim().toLowerCase()] = n;
                 grp.rawItems.push(n);
             });
+
+            // Jika pengguna memilih Kelas tertentu (misal Kelas VI) atau memilih 1 Siswa, pastikan siswa di kelas tersebut tetap tampil meskipun belum ada nilai yang diinput (agar mudah diinput/dilihat)
+            if (currentNilaiViewMode === 'leger' && (fKelas !== 'ALL' || fStudent !== 'ALL')) {
+                const targetStudents = studentsData.filter(s => {
+                    if (fStudent !== 'ALL' && String(s.id) !== String(fStudent)) return false;
+                    if (fKelas !== 'ALL' && normalizeKelasToRoman(s.kelas) !== fKelas) return false;
+                    if (q) {
+                        const mq = s.nama.toLowerCase().includes(q) || String(s.nis).toLowerCase().includes(q) || String(s.nisn).toLowerCase().includes(q);
+                        if (!mq) return false;
+                    }
+                    return true;
+                });
+
+                targetStudents.forEach(st => {
+                    const alreadyInGroup = Array.from(groupMap.values()).some(g => String(g.studentId) === String(st.id));
+                    if (!alreadyInGroup) {
+                        const defaultKls = fKelas !== 'ALL' ? fKelas : normalizeKelasToRoman(st.kelas);
+                        const defaultSem = fSem !== 'ALL' ? fSem : '1';
+                        const gKey = `${st.id}_${defaultKls}_${defaultSem}`;
+                        groupMap.set(gKey, {
+                            key: gKey,
+                            studentId: st.id,
+                            siswaNama: st.nama,
+                            siswaKelasAktif: normalizeKelasToRoman(st.kelas),
+                            nis: st.nis || '-',
+                            nisn: st.nisn || '-',
+                            tp: schoolIdentity.activeTp || '2025/2026',
+                            kelas: defaultKls,
+                            semester: defaultSem,
+                            scoresByMapel: {},
+                            rawItems: []
+                        });
+                    }
+                });
+            }
 
             const groupedList = Array.from(groupMap.values());
 
@@ -4032,14 +4152,14 @@
                 statsBar.innerHTML = `
                     <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl px-3 py-2 flex items-center justify-between">
                         <span class="text-slate-600 font-semibold">Siswa Terdata:</span>
-                        <span class="font-extrabold text-indigo-700 text-sm">${groupedList.length} Siswa</span>
+                        <span class="font-extrabold text-indigo-700 text-sm">${groupedList.length} Baris</span>
                     </div>
                     <div class="bg-emerald-50/70 border border-emerald-100 rounded-xl px-3 py-2 flex items-center justify-between">
                         <span class="text-slate-600 font-semibold">Total Entri Nilai:</span>
                         <span class="font-extrabold text-emerald-700 text-sm">${totalAllCount} Mapel</span>
                     </div>
                     <div class="bg-purple-50/70 border border-purple-100 rounded-xl px-3 py-2 flex items-center justify-between">
-                        <span class="text-slate-600 font-semibold">Rata-rata Kelas:</span>
+                        <span class="text-slate-600 font-semibold">Rata-rata Nilai:</span>
                         <span class="font-extrabold text-purple-700 text-sm">${overallAvg}</span>
                     </div>
                     <div class="bg-amber-50/70 border border-amber-100 rounded-xl px-3 py-2 flex items-center justify-between">
@@ -4059,7 +4179,7 @@
                     <tr>
                         <th class="p-3 text-center w-10">No</th>
                         <th class="p-3 text-left min-w-[180px]">Nama Peserta Didik</th>
-                        <th class="p-3 text-center">Kelas / Sem</th>
+                        <th class="p-3 text-center">Kelas Rapor / Sem</th>
                         ${mapelHeaders}
                         <th class="p-2.5 text-center bg-indigo-50/80 text-indigo-900">Jml</th>
                         <th class="p-2.5 text-center bg-emerald-50/80 text-emerald-900">Rata2</th>
@@ -4070,9 +4190,12 @@
                 if (groupedList.length === 0) {
                     tbody.innerHTML = `
                         <tr>
-                            <td colspan="${mapelData.length + 6}" class="p-8 text-center text-slate-400">
-                                <i class="fa-solid fa-folder-open text-2xl mb-2 block text-slate-300"></i>
-                                Belum ada data nilai pada filter <b>${fKelas === 'ALL' ? 'Semua Kelas' : fKelas}</b> (${fSem === 'ALL' ? 'Semua Semester' : 'Semester ' + fSem}).
+                            <td colspan="${mapelData.length + 6}" class="p-8 text-center text-slate-400 space-y-2">
+                                <i class="fa-solid fa-folder-open text-2xl mb-1 block text-slate-300"></i>
+                                <p>Belum ada data nilai pada filter <b>${fKelas === 'ALL' ? 'Semua Kelas' : fKelas}</b> (${fSem === 'ALL' ? 'Semua Semester' : 'Semester ' + fSem}).</p>
+                                <button type="button" onclick="resetNilaiFilters()" class="mt-2 inline-flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-3 py-1.5 rounded-xl text-xs cursor-pointer">
+                                    <i class="fa-solid fa-rotate-left"></i><span>Tampilkan Semua Kelas & Semester</span>
+                                </button>
                             </td>
                         </tr>
                     `;
@@ -4096,6 +4219,9 @@
 
                     const avgStr = cnt > 0 ? (sum / cnt).toFixed(1) : '-';
                     const isExpanded = expandedStudentNilaiId === grp.key;
+                    const kelasSubInfo = (grp.siswaKelasAktif && grp.siswaKelasAktif !== grp.kelas)
+                        ? `<div class="text-[9px] text-amber-700 font-semibold mt-0.5">Siswa Aktif: ${grp.siswaKelasAktif}</div>`
+                        : '';
 
                     html += `
                         <tr class="hover:bg-slate-50/90 transition ${isExpanded ? 'bg-indigo-50/40' : ''}">
@@ -4106,6 +4232,7 @@
                             </td>
                             <td class="p-3 text-center">
                                 <span class="inline-block bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-lg font-bold text-[11px]">${grp.kelas} • Sem ${grp.semester}</span>
+                                ${kelasSubInfo}
                             </td>
                             ${mapelCells}
                             <td class="p-2.5 text-center font-extrabold text-indigo-700 bg-indigo-50/30">${cnt > 0 ? sum : '-'}</td>
@@ -4125,7 +4252,7 @@
 
                     // Baris Accordion Rincian (Hanya muncul jika tombol "Rincian" pada siswa tersebut diklik)
                     if (isExpanded) {
-                        const detailCards = grp.rawItems.map(item => `
+                        const detailCards = grp.rawItems.length > 0 ? grp.rawItems.map(item => `
                             <div class="bg-white border border-slate-200 rounded-xl p-2.5 flex items-center justify-between gap-2 shadow-2xs">
                                 <div class="min-w-0">
                                     <p class="font-bold text-slate-800 text-[11px] truncate">${item.mapel}</p>
@@ -4138,16 +4265,17 @@
                                     </button>
                                 </div>
                             </div>
-                        `).join('');
+                        `).join('') : `<div class="col-span-3 text-center text-slate-400 py-3">Belum ada nilai yang diinput untuk ${grp.siswaNama} pada ${grp.kelas} Semester ${grp.semester}. Klik tombol Kuning (Edit Matriks) untuk mengisi nilai.</div>`;
 
                         html += `
                             <tr class="bg-slate-50/90">
                                 <td colspan="${mapelData.length + 6}" class="p-4 border-b border-indigo-100">
                                     <div class="flex items-center justify-between mb-2.5">
                                         <span class="font-extrabold text-xs text-indigo-950"><i class="fa-solid fa-list-check text-indigo-600 mr-1.5"></i>Rincian Nilai Mata Pelajaran — ${grp.siswaNama} (${grp.kelas}, Semester ${grp.semester})</span>
+                                        ${grp.rawItems.length > 0 ? `
                                         <button type="button" onclick="deleteStudentSemesterGrades('${grp.studentId}', '${grp.kelas}', '${grp.semester}')" class="text-[11px] font-bold text-rose-600 hover:underline cursor-pointer">
                                             <i class="fa-solid fa-trash mr-1"></i>Hapus Semua Nilai Semester Ini
-                                        </button>
+                                        </button>` : ''}
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                                         ${detailCards}
@@ -4173,19 +4301,19 @@
                     </tr>
                 `;
 
-                if (filteredNilai.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">Tidak ada rincian nilai pada filter ini.</td></tr>`;
+                if (finalFilteredNilai.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">Tidak ada rincian nilai pada filter ini. <button type="button" onclick="resetNilaiFilters()" class="text-indigo-600 font-bold underline ml-1 cursor-pointer">Reset Filter</button></td></tr>`;
                     return;
                 }
 
                 let html = '';
-                filteredNilai.forEach((n, idx) => {
+                finalFilteredNilai.forEach((n, idx) => {
                     html += `
                         <tr class="hover:bg-slate-50">
                             <td class="p-3 text-slate-500">${idx + 1}</td>
                             <td class="p-3 font-bold text-slate-900">${n.siswaNama}</td>
                             <td class="p-3 font-semibold text-indigo-700">${n.tp}</td>
-                            <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-bold text-[11px]">${normalizeKelasToRoman(n.kelas)} • Sem ${n.semester}</span></td>
+                            <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-bold text-[11px]">${normalizeKelasToRoman(n.kelas)} • Sem ${normalizeSemesterValue(n.semester)}</span></td>
                             <td class="p-3 font-medium">${n.mapel}</td>
                             <td class="p-3 text-center font-extrabold text-purple-700">${n.nilai}</td>
                             <td class="p-3 text-center">
@@ -5190,7 +5318,7 @@
             triggerFlexiblePrintSingle, printSingleStudentById, printMassalBukuInduk, renderFullStudentsTable, openAddStudentModal,
             openEditStudentModal, closeStudentModal, saveStudentData, deleteStudent, openAddGuruModal, closeGuruModal, saveGuruData, deleteGuru,
             openAddMapelModal, closeMapelModal, saveMapelData, deleteMapel, openInputNilaiModal, closeNilaiModal, saveNilaiData, deleteNilai,
-            switchNilaiViewMode, toggleExpandStudentNilai, deleteStudentSemesterGrades,
+            switchNilaiViewMode, toggleExpandStudentNilai, deleteStudentSemesterGrades, handleNilaiFilterChange, resetNilaiFilters,
             downloadTemplateSiswa, downloadTemplateNilai, downloadTemplateGuru, handleImportSiswa, handleImportNilai, handleImportGuru,
             cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel, saveGlobalSchoolSettings, handleGlobalSearch,
             handleChangeAcademicYear, openAuditLogModal, closeAuditLogModal, openPrintScanGuideModal, closePrintScanGuideModal,
