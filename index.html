@@ -841,15 +841,49 @@
                             <h2 class="text-xl md:text-2xl font-extrabold tracking-tight">e-Rapor Kekhasan SDN Gedongboyountung</h2>
                             <p class="text-xs text-teal-100 leading-relaxed">Penilaian holistik capaian Keagamaan & Tahfidz Al-Qur'an, Pembiasaan Ibadah, Karakter & Budaya Lokal Lamongan, serta Literasi-Digital peserta didik.</p>
                         </div>
-                        <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
-                            <button type="button" id="btnErkModeInput" onclick="switchEraporKhasSubView('input')" class="flex-1 lg:flex-initial justify-center bg-white text-emerald-950 font-extrabold px-4 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition">
+                        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                            <button type="button" id="btnErkModeInput" onclick="switchEraporKhasSubView('input')" class="flex-1 lg:flex-initial justify-center bg-white text-emerald-950 font-extrabold px-3.5 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition">
                                 <i class="fa-solid fa-pen-to-square text-emerald-600"></i><span>Input & Edit Capaian</span>
                             </button>
-                            <button type="button" id="btnErkModePreview" onclick="switchEraporKhasSubView('preview')" class="flex-1 lg:flex-initial justify-center bg-emerald-700/60 hover:bg-emerald-700 text-white border border-emerald-400/30 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition">
+                            <button type="button" id="btnErkModePreview" onclick="switchEraporKhasSubView('preview')" class="flex-1 lg:flex-initial justify-center bg-emerald-700/60 hover:bg-emerald-700 text-white border border-emerald-400/30 font-bold px-3.5 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition">
                                 <i class="fa-solid fa-file-invoice"></i><span>Pratinjau & Cetak Rapor Khas</span>
                             </button>
+                            <button type="button" onclick="downloadTemplateEraporKhas()" class="flex-1 lg:flex-initial justify-center bg-slate-900/70 hover:bg-slate-900 text-amber-200 border border-amber-400/30 font-bold px-3.5 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition" title="Unduh Template Excel e-Rapor Kekhasan">
+                                <i class="fa-solid fa-download"></i><span>Template Excel</span>
+                            </button>
+                            <label class="flex-1 lg:flex-initial justify-center bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold px-3.5 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition" title="Impor Nilai e-Rapor Kekhasan dari Excel">
+                                <i class="fa-solid fa-file-import"></i><span>Impor Excel Khas</span>
+                                <input type="file" accept=".xlsx, .xls" onchange="handleImportEraporKhasExcel(event)" class="hidden">
+                            </label>
                             <button type="button" onclick="printCurrentEraporKhas()" class="flex-1 lg:flex-initial justify-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-md cursor-pointer flex items-center space-x-1.5 transition">
                                 <i class="fa-solid fa-print"></i><span>Cetak Langsung</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bar Pengaturan Logo Kop Resmi Rapor (Logo Pemkab/Dinas & Logo Sekolah) -->
+                    <div class="bg-white px-4 py-3 rounded-2xl shadow-xs border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center -space-x-1">
+                                <img id="erkMiniPreviewLogoKiri" src="" alt="Logo Kab" class="w-9 h-9 object-contain rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+                                <img id="erkMiniPreviewLogoKanan" src="" alt="Logo Sekolah" class="w-9 h-9 object-contain rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800 text-xs">Logo Kop Resmi Rapor Kekhasan (Dinas Kabupaten & Sekolah)</p>
+                                <p class="text-[11px] text-slate-500">Logo Kabupaten Lamongan (Kiri) & Logo Sekolah/Pendidikan (Kanan) otomatis tampil di Kop Rapor. Anda juga dapat menggantinya dengan foto logo sendiri.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <label class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-3 py-1.5 rounded-xl text-[11px] cursor-pointer flex items-center space-x-1.5 transition">
+                                <i class="fa-solid fa-building-columns text-indigo-600"></i><span>Ganti Logo Dinas/Kab (Kiri)</span>
+                                <input type="file" accept="image/*" onchange="handleUploadCustomLogo(event, 'kiri')" class="hidden">
+                            </label>
+                            <label class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-3 py-1.5 rounded-xl text-[11px] cursor-pointer flex items-center space-x-1.5 transition">
+                                <i class="fa-solid fa-school text-emerald-600"></i><span>Ganti Logo Sekolah (Kanan)</span>
+                                <input type="file" accept="image/*" onchange="handleUploadCustomLogo(event, 'kanan')" class="hidden">
+                            </label>
+                            <button type="button" onclick="resetDefaultRaporLogos()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold px-2.5 py-1.5 rounded-xl text-[11px] cursor-pointer transition" title="Kembalikan ke Logo Bawaan">
+                                <i class="fa-solid fa-rotate-left"></i>
                             </button>
                         </div>
                     </div>
@@ -897,7 +931,7 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Pilar 1: Keagamaan, Tahfidz & Ibadah Praktis -->
                             <div class="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden flex flex-col">
-                                <div class="bg-gradient-to-r from-emerald-800 to-teal-800 text-white px-5 py-3.5 flex items-center justify-between">
+                                <div class="bg-gradient-to-r from-emerald-800 to-teal-800 text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
                                     <div class="flex items-center space-x-2.5">
                                         <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center text-amber-300"><i class="fa-solid fa-book-quran"></i></div>
                                         <div>
@@ -905,10 +939,14 @@
                                             <p class="text-[10px] text-emerald-100">Hafalan Juz 'Amma, Tartil/Tajwid & Praktik Ibadah Harian</p>
                                         </div>
                                     </div>
-                                    <span class="bg-white/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Pilar Utama</span>
+                                    <div class="flex items-center space-x-1.5">
+                                        <button type="button" onclick="addErkAspekRow('agama')" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-2.5 py-1 rounded-lg text-[10px] shadow cursor-pointer flex items-center space-x-1 transition">
+                                            <i class="fa-solid fa-plus"></i><span>Tambah Aspek Manual</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="p-5 space-y-4 text-xs flex-1">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div>
                                             <label class="block font-bold text-slate-700 mb-1">Target / Capaian Surah Juz 30</label>
                                             <input type="text" id="erkInputSurah" placeholder="Contoh: An-Naas s.d. Ad-Dhuha" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold text-emerald-950">
@@ -917,25 +955,39 @@
                                             <label class="block font-bold text-slate-700 mb-1">Jilid Mengaji / Al-Qur'an</label>
                                             <input type="text" id="erkInputJilid" placeholder="Contoh: Al-Qur'an Juz 5 / Tilawati 6" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-semibold">
                                         </div>
+                                        <div>
+                                            <label class="block font-bold text-slate-700 mb-1">Capaian Tambahan / Catatan</label>
+                                            <input type="text" id="erkInputAgamaLain" placeholder="Contoh: Hafal Bacaan Sholat & Dzikir" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-semibold text-teal-900">
+                                        </div>
                                     </div>
                                     <div class="overflow-x-auto border border-slate-200 rounded-xl">
                                         <table class="w-full text-left text-xs border-collapse">
                                             <thead>
                                                 <tr class="bg-slate-100 text-slate-700 font-bold border-b">
                                                     <th class="p-2.5">Aspek Penilaian Keagamaan</th>
-                                                    <th class="p-2.5 w-24 text-center">Nilai (0-100)</th>
-                                                    <th class="p-2.5 w-28 text-center">Predikat</th>
+                                                    <th class="p-2.5">Capaian / Detail Materi</th>
+                                                    <th class="p-2.5 w-20 text-center">Nilai</th>
+                                                    <th class="p-2.5 w-24 text-center">Predikat</th>
+                                                    <th class="p-2.5 w-10 text-center">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="erkTableAgamaBody" class="divide-y divide-slate-100"></tbody>
                                         </table>
+                                    </div>
+                                    <div class="flex flex-wrap justify-between items-center gap-2 pt-1">
+                                        <button type="button" onclick="addErkAspekRow('agama')" class="text-emerald-700 hover:text-emerald-900 font-extrabold text-[11px] flex items-center space-x-1 cursor-pointer">
+                                            <i class="fa-solid fa-circle-plus"></i><span>+ Tambah Baris Aspek Keagamaan Baru</span>
+                                        </button>
+                                        <button type="button" onclick="applyCurrentAspekTemplateToClass('agama')" class="text-slate-500 hover:text-indigo-700 font-semibold text-[10px] underline cursor-pointer" title="Samakan daftar nama aspek keagamaan ini ke seluruh siswa di kelas ini">
+                                            Terapkan Daftar Aspek ke Seluruh Kelas
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Pilar 2: Budaya Lokal Lamongan, Adab & Kecakapan Abad 21 -->
                             <div class="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden flex flex-col">
-                                <div class="bg-gradient-to-r from-indigo-900 to-blue-800 text-white px-5 py-3.5 flex items-center justify-between">
+                                <div class="bg-gradient-to-r from-indigo-900 to-blue-800 text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-2">
                                     <div class="flex items-center space-x-2.5">
                                         <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center text-amber-300"><i class="fa-solid fa-hands-holding-child"></i></div>
                                         <div>
@@ -943,7 +995,11 @@
                                             <p class="text-[10px] text-indigo-100">Unggah-Ungguh Basa Jawa, Adiwiyata & Kecakapan Abad 21</p>
                                         </div>
                                     </div>
-                                    <span class="bg-white/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Karakter Khas</span>
+                                    <div class="flex items-center space-x-1.5">
+                                        <button type="button" onclick="addErkAspekRow('karakter')" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-2.5 py-1 rounded-lg text-[10px] shadow cursor-pointer flex items-center space-x-1 transition">
+                                            <i class="fa-solid fa-plus"></i><span>Tambah Aspek Manual</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="p-5 space-y-4 text-xs flex-1">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -952,7 +1008,7 @@
                                             <input type="text" id="erkInputProyek" placeholder="Contoh: Karya Kriya Daur Ulang & Bercerita Jawa" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold text-indigo-950">
                                         </div>
                                         <div>
-                                            <label class="block font-bold text-slate-700 mb-1">pembiasaan Pagi & Sholat Dhuha</label>
+                                            <label class="block font-bold text-slate-700 mb-1">Pembiasaan Pagi & Sholat Dhuha</label>
                                             <select id="erkInputDhuha" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-xl font-bold text-emerald-800">
                                                 <option value="Sangat Disiplin & Mandiri (A)">Sangat Disiplin & Mandiri (A)</option>
                                                 <option value="Tertib & Terbiasa Baik (B)">Tertib & Terbiasa Baik (B)</option>
@@ -965,12 +1021,22 @@
                                             <thead>
                                                 <tr class="bg-slate-100 text-slate-700 font-bold border-b">
                                                     <th class="p-2.5">Aspek Karakter & Literasi Khas</th>
-                                                    <th class="p-2.5 w-24 text-center">Nilai (0-100)</th>
-                                                    <th class="p-2.5 w-28 text-center">Predikat</th>
+                                                    <th class="p-2.5">Capaian / Detail Materi</th>
+                                                    <th class="p-2.5 w-20 text-center">Nilai</th>
+                                                    <th class="p-2.5 w-24 text-center">Predikat</th>
+                                                    <th class="p-2.5 w-10 text-center">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="erkTableKarakterBody" class="divide-y divide-slate-100"></tbody>
                                         </table>
+                                    </div>
+                                    <div class="flex flex-wrap justify-between items-center gap-2 pt-1">
+                                        <button type="button" onclick="addErkAspekRow('karakter')" class="text-indigo-700 hover:text-indigo-900 font-extrabold text-[11px] flex items-center space-x-1 cursor-pointer">
+                                            <i class="fa-solid fa-circle-plus"></i><span>+ Tambah Baris Aspek Karakter Baru</span>
+                                        </button>
+                                        <button type="button" onclick="applyCurrentAspekTemplateToClass('karakter')" class="text-slate-500 hover:text-indigo-700 font-semibold text-[10px] underline cursor-pointer" title="Samakan daftar nama aspek karakter ini ke seluruh siswa di kelas ini">
+                                            Terapkan Daftar Aspek ke Seluruh Kelas
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1800,18 +1866,56 @@
         ];
 
         const DEFAULT_ERAPOR_KHAS_AGAMA = [
-            { kode: 'ag1', aspek: "Tahfidz Al-Qur'an (Juz 30 / Juz 'Amma)", nilai: 90 },
-            { kode: 'ag2', aspek: 'Tartil, Tajwid & Fashahah Bacaan', nilai: 88 },
-            { kode: 'ag3', aspek: 'Praktik Wudhu & Sholat Fardhu / Dhuha', nilai: 92 },
-            { kode: 'ag4', aspek: 'Hafalan Doa Harian & Hadits Pilihan', nilai: 90 }
+            { kode: 'ag1', aspek: "Tahfidz Al-Qur'an (Juz 30 / Juz 'Amma)", keterangan: "Surah An-Naas s.d. Al-A'la", nilai: 90 },
+            { kode: 'ag2', aspek: 'Tartil, Tajwid & Fashahah Bacaan', keterangan: 'Makharijul huruf & mad tepat', nilai: 88 },
+            { kode: 'ag3', aspek: 'Praktik Wudhu & Sholat Fardhu / Dhuha', keterangan: 'Gerakan & bacaan sholat tertib', nilai: 92 },
+            { kode: 'ag4', aspek: 'Hafalan Doa Harian & Hadits Pilihan', keterangan: '15 Doa harian & hadits adab', nilai: 90 }
         ];
 
         const DEFAULT_ERAPOR_KHAS_KARAKTER = [
-            { kode: 'kr1', aspek: 'Unggah-Ungguh Basa Jawa & Budaya Lamongan', nilai: 89 },
-            { kode: 'kr2', aspek: 'Adab Sopan Santun terhadap Guru & Orang Tua', nilai: 94 },
-            { kode: 'kr3', aspek: 'Kepedulian Lingkungan & Budaya Adiwiyata', nilai: 90 },
-            { kode: 'kr4', aspek: 'Literasi, Numerasi & Kecakapan Digital Dasar', nilai: 88 }
+            { kode: 'kr1', aspek: 'Unggah-Ungguh Basa Jawa & Budaya Lamongan', keterangan: 'Basa Krama Alus kepada guru/orang tua', nilai: 89 },
+            { kode: 'kr2', aspek: 'Adab Sopan Santun terhadap Guru & Orang Tua', keterangan: '5S (Senyum, Salam, Sapa, Sopan, Santun)', nilai: 94 },
+            { kode: 'kr3', aspek: 'Kepedulian Lingkungan & Budaya Adiwiyata', keterangan: 'Disiplin kebersihan & pilah sampah', nilai: 90 },
+            { kode: 'kr4', aspek: 'Literasi, Numerasi & Kecakapan Digital Dasar', keterangan: 'Membaca kritis & koding dasar', nilai: 88 }
         ];
+
+        const DEFAULT_LOGO_KAB_SVG = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+                <defs>
+                    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#0284c7"/>
+                        <stop offset="65%" stop-color="#0369a1"/>
+                        <stop offset="100%" stop-color="#0f766e"/>
+                    </linearGradient>
+                </defs>
+                <path d="M60 6 L110 22 L110 72 C110 105 86 126 60 135 C34 126 10 105 10 72 L10 22 Z" fill="url(#shieldGrad)" stroke="#f59e0b" stroke-width="5"/>
+                <path d="M60 14 L102 27 L102 70 C102 98 81 116 60 125 C39 116 18 98 18 70 L18 27 Z" fill="none" stroke="#fef08a" stroke-width="1.5"/>
+                <polygon points="60,22 65,34 78,34 67,41 71,53 60,45 49,53 53,41 42,34 55,34" fill="#facc15"/>
+                <path d="M35 78 Q60 64 85 78" fill="none" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round"/>
+                <path d="M30 90 Q60 76 90 90" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="48" cy="68" r="5" fill="#fde047"/>
+                <circle cx="72" cy="68" r="5" fill="#4ade80"/>
+                <rect x="26" y="102" width="68" height="14" rx="4" fill="#f59e0b"/>
+                <text x="60" y="112" font-family="Arial, sans-serif" font-size="8.5" font-weight="bold" fill="#0f172a" text-anchor="middle">LAMONGAN</text>
+            </svg>
+        `);
+
+        const DEFAULT_LOGO_SEKOLAH_SVG = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130">
+                <defs>
+                    <linearGradient id="pentGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#1d4ed8"/>
+                        <stop offset="100%" stop-color="#1e3a8a"/>
+                    </linearGradient>
+                </defs>
+                <polygon points="65,6 122,46 100,116 30,116 8,46" fill="url(#pentGrad)" stroke="#facc15" stroke-width="5" stroke-linejoin="round"/>
+                <polygon points="65,14 114,49 95,109 35,109 16,49" fill="none" stroke="#93c5fd" stroke-width="1.5" stroke-linejoin="round"/>
+                <circle cx="65" cy="42" r="9" fill="#fde047"/>
+                <path d="M40 75 Q65 62 90 75 L86 88 Q65 77 44 88 Z" fill="#ffffff"/>
+                <path d="M45 64 L65 48 L85 64" fill="none" stroke="#facc15" stroke-width="4" stroke-linecap="round"/>
+                <text x="65" y="103" font-family="Arial, sans-serif" font-size="7.5" font-weight="bold" fill="#fef08a" text-anchor="middle">TUT WURI HANDAYANI</text>
+            </svg>
+        `);
 
         const DEFAULT_PROMOTIONS_TEMPLATE = [
             { jenjang: 'I → II', keputusan: 'Naik', tanggal: '26 Jun 2023', keterangan: 'Naik ke Kelas II' },
@@ -1833,8 +1937,71 @@
             tahunBerdiri: '2008',
             kepsek: 'Siti Rahayu, S.Pd.',
             nipKepsek: '19681231 199003 2 001',
-            activeTp: '2025/2026'
+            activeTp: '2025/2026',
+            logoKiri: '',
+            logoKanan: ''
         };
+
+        function getActiveLogoKiri() {
+            return (schoolIdentity.logoKiri && schoolIdentity.logoKiri.length > 20) ? schoolIdentity.logoKiri : DEFAULT_LOGO_KAB_SVG;
+        }
+
+        function getActiveLogoKanan() {
+            return (schoolIdentity.logoKanan && schoolIdentity.logoKanan.length > 20) ? schoolIdentity.logoKanan : DEFAULT_LOGO_SEKOLAH_SVG;
+        }
+
+        function updateMiniLogoPreviews() {
+            const imgKiri = document.getElementById('erkMiniPreviewLogoKiri');
+            const imgKanan = document.getElementById('erkMiniPreviewLogoKanan');
+            if (imgKiri) imgKiri.src = getActiveLogoKiri();
+            if (imgKanan) imgKanan.src = getActiveLogoKanan();
+        }
+
+        function handleUploadCustomLogo(event, side) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = async () => {
+                    const canvas = document.createElement('canvas');
+                    const maxDim = 220;
+                    let w = img.width || 160;
+                    let h = img.height || 160;
+                    if (w > maxDim || h > maxDim) {
+                        const scale = maxDim / Math.max(w, h);
+                        w = Math.round(w * scale);
+                        h = Math.round(h * scale);
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const dataUrl = canvas.toDataURL('image/png', 0.9);
+                    if (side === 'kiri') {
+                        schoolIdentity.logoKiri = dataUrl;
+                    } else {
+                        schoolIdentity.logoKanan = dataUrl;
+                    }
+                    updateMiniLogoPreviews();
+                    if (currentErkSubView === 'preview') renderEraporKhasPrintableSheet();
+                    await saveToStorage(`Perbarui Logo ${side === 'kiri' ? 'Dinas/Kabupaten' : 'Sekolah'} pada Rapor`);
+                    showNotification(`Logo ${side === 'kiri' ? 'Dinas/Kabupaten' : 'Sekolah'} berhasil diperbarui!`, 'success');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        async function resetDefaultRaporLogos() {
+            schoolIdentity.logoKiri = '';
+            schoolIdentity.logoKanan = '';
+            updateMiniLogoPreviews();
+            if (currentErkSubView === 'preview') renderEraporKhasPrintableSheet();
+            await saveToStorage('Reset Logo Rapor ke Default');
+            showNotification('Logo Rapor dikembalikan ke logo resmi bawaan!', 'success');
+        }
 
         let studentsData = [];
         let guruData = [];
@@ -1960,12 +2127,19 @@
                 rec.eraporKhas[entryKey] = {
                     surah: "An-Naas s.d. Al-A'la",
                     jilid: "Al-Qur'an / Tilawati Jilid 5",
+                    agamaLain: "Hafal Bacaan Sholat & Doa Setelah Sholat",
                     proyek: 'Karya Kreatif Kearifan Lokal & Adiwiyata',
                     dhuha: 'Sangat Disiplin & Mandiri (A)',
                     agama: JSON.parse(JSON.stringify(DEFAULT_ERAPOR_KHAS_AGAMA)),
                     karakter: JSON.parse(JSON.stringify(DEFAULT_ERAPOR_KHAS_KARAKTER)),
                     catatan: `Ananda ${st ? st.nama : ''} menunjukkan perkembangan yang sangat membanggakan dalam hafalan Juz 'Amma, ketaatan beribadah sholat Dhuha berjamaah, serta memiliki unggah-ungguh dan adab sopan santun yang sangat baik di lingkungan sekolah.`
                 };
+            }
+            if (!Array.isArray(rec.eraporKhas[entryKey].agama)) {
+                rec.eraporKhas[entryKey].agama = JSON.parse(JSON.stringify(DEFAULT_ERAPOR_KHAS_AGAMA));
+            }
+            if (!Array.isArray(rec.eraporKhas[entryKey].karakter)) {
+                rec.eraporKhas[entryKey].karakter = JSON.parse(JSON.stringify(DEFAULT_ERAPOR_KHAS_KARAKTER));
             }
             return rec.eraporKhas[entryKey];
         }
@@ -2552,6 +2726,7 @@
         }
 
         function renderEraporKhasTab() {
+            updateMiniLogoPreviews();
             populateEraporKhasStudentDropdown();
             const st = studentsData.find(s => String(s.id) === String(activeStudentId));
             if (st && document.getElementById('erkTargetKelas')) {
@@ -2572,6 +2747,7 @@
 
             if (document.getElementById('erkInputSurah')) document.getElementById('erkInputSurah').value = entry.surah || '';
             if (document.getElementById('erkInputJilid')) document.getElementById('erkInputJilid').value = entry.jilid || '';
+            if (document.getElementById('erkInputAgamaLain')) document.getElementById('erkInputAgamaLain').value = entry.agamaLain || '';
             if (document.getElementById('erkInputProyek')) document.getElementById('erkInputProyek').value = entry.proyek || '';
             if (document.getElementById('erkInputDhuha')) document.getElementById('erkInputDhuha').value = entry.dhuha || 'Sangat Disiplin & Mandiri (A)';
             if (document.getElementById('erkInputCatatanWali')) document.getElementById('erkInputCatatanWali').value = entry.catatan || '';
@@ -2580,16 +2756,24 @@
             if (agamaTbody) {
                 agamaTbody.innerHTML = entry.agama.map((item, idx) => {
                     const pred = getScorePredikatInfo(item.nilai);
+                    const safeAspek = String(item.aspek || '').replace(/"/g, '&quot;');
+                    const safeKet = String(item.keterangan || '').replace(/"/g, '&quot;');
                     return `
                         <tr class="hover:bg-slate-50">
-                            <td class="p-2.5">
-                                <input type="text" id="erkAgamaAspek_${idx}" value="${item.aspek}" class="w-full bg-transparent font-semibold text-slate-800 focus:bg-white focus:border focus:px-2 py-0.5 rounded">
+                            <td class="p-2">
+                                <input type="text" id="erkAgamaAspek_${idx}" value="${safeAspek}" placeholder="Nama aspek keagamaan..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 px-2 py-1 rounded-lg font-semibold text-slate-800">
                             </td>
-                            <td class="p-2.5 text-center">
+                            <td class="p-2">
+                                <input type="text" id="erkAgamaKet_${idx}" value="${safeKet}" placeholder="Detail materi / capaian..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 px-2 py-1 rounded-lg text-slate-600">
+                            </td>
+                            <td class="p-2 text-center">
                                 <input type="number" min="0" max="100" id="erkAgamaNilai_${idx}" value="${item.nilai}" oninput="updateErkRowPredikatBadge('Agama', ${idx}, this.value)" class="w-16 text-center bg-slate-50 border border-slate-300 rounded-lg py-1 font-extrabold text-emerald-950">
                             </td>
-                            <td class="p-2.5 text-center">
+                            <td class="p-2 text-center">
                                 <span id="erkAgamaPred_${idx}" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border ${pred.badgeClass}">${pred.huruf} (${pred.label})</span>
+                            </td>
+                            <td class="p-2 text-center">
+                                <button type="button" onclick="removeErkAspekRow('agama', ${idx})" class="text-rose-500 hover:text-rose-700 p-1 cursor-pointer" title="Hapus baris aspek ini"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                     `;
@@ -2600,16 +2784,24 @@
             if (karakterTbody) {
                 karakterTbody.innerHTML = entry.karakter.map((item, idx) => {
                     const pred = getScorePredikatInfo(item.nilai);
+                    const safeAspek = String(item.aspek || '').replace(/"/g, '&quot;');
+                    const safeKet = String(item.keterangan || '').replace(/"/g, '&quot;');
                     return `
                         <tr class="hover:bg-slate-50">
-                            <td class="p-2.5">
-                                <input type="text" id="erkKarakterAspek_${idx}" value="${item.aspek}" class="w-full bg-transparent font-semibold text-slate-800 focus:bg-white focus:border focus:px-2 py-0.5 rounded">
+                            <td class="p-2">
+                                <input type="text" id="erkKarakterAspek_${idx}" value="${safeAspek}" placeholder="Nama aspek karakter..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 px-2 py-1 rounded-lg font-semibold text-slate-800">
                             </td>
-                            <td class="p-2.5 text-center">
+                            <td class="p-2">
+                                <input type="text" id="erkKarakterKet_${idx}" value="${safeKet}" placeholder="Detail capaian / sikap..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 px-2 py-1 rounded-lg text-slate-600">
+                            </td>
+                            <td class="p-2 text-center">
                                 <input type="number" min="0" max="100" id="erkKarakterNilai_${idx}" value="${item.nilai}" oninput="updateErkRowPredikatBadge('Karakter', ${idx}, this.value)" class="w-16 text-center bg-slate-50 border border-slate-300 rounded-lg py-1 font-extrabold text-indigo-950">
                             </td>
-                            <td class="p-2.5 text-center">
+                            <td class="p-2 text-center">
                                 <span id="erkKarakterPred_${idx}" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border ${pred.badgeClass}">${pred.huruf} (${pred.label})</span>
+                            </td>
+                            <td class="p-2 text-center">
+                                <button type="button" onclick="removeErkAspekRow('karakter', ${idx})" class="text-rose-500 hover:text-rose-700 p-1 cursor-pointer" title="Hapus baris aspek ini"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                     `;
@@ -2638,25 +2830,217 @@
 
             if (document.getElementById('erkInputSurah')) entry.surah = document.getElementById('erkInputSurah').value.trim();
             if (document.getElementById('erkInputJilid')) entry.jilid = document.getElementById('erkInputJilid').value.trim();
+            if (document.getElementById('erkInputAgamaLain')) entry.agamaLain = document.getElementById('erkInputAgamaLain').value.trim();
             if (document.getElementById('erkInputProyek')) entry.proyek = document.getElementById('erkInputProyek').value.trim();
             if (document.getElementById('erkInputDhuha')) entry.dhuha = document.getElementById('erkInputDhuha').value;
             if (document.getElementById('erkInputCatatanWali')) entry.catatan = document.getElementById('erkInputCatatanWali').value.trim();
 
             entry.agama.forEach((item, idx) => {
                 const aspEl = document.getElementById(`erkAgamaAspek_${idx}`);
+                const ketEl = document.getElementById(`erkAgamaKet_${idx}`);
                 const nilEl = document.getElementById(`erkAgamaNilai_${idx}`);
                 if (aspEl) item.aspek = aspEl.value.trim();
+                if (ketEl) item.keterangan = ketEl.value.trim();
                 if (nilEl) item.nilai = Math.min(100, Math.max(0, Number(nilEl.value) || 0));
             });
 
             entry.karakter.forEach((item, idx) => {
                 const aspEl = document.getElementById(`erkKarakterAspek_${idx}`);
+                const ketEl = document.getElementById(`erkKarakterKet_${idx}`);
                 const nilEl = document.getElementById(`erkKarakterNilai_${idx}`);
                 if (aspEl) item.aspek = aspEl.value.trim();
+                if (ketEl) item.keterangan = ketEl.value.trim();
                 if (nilEl) item.nilai = Math.min(100, Math.max(0, Number(nilEl.value) || 0));
             });
 
             return { studentId, kelas, sem, entry };
+        }
+
+        function addErkAspekRow(group) {
+            const synced = syncEraporKhasInputsToMemory();
+            if (!synced) return;
+            if (group === 'agama') {
+                synced.entry.agama.push({
+                    kode: 'ag_' + Date.now(),
+                    aspek: 'Aspek Keagamaan Tambahan',
+                    keterangan: 'Tuntas dengan baik',
+                    nilai: 90
+                });
+            } else {
+                synced.entry.karakter.push({
+                    kode: 'kr_' + Date.now(),
+                    aspek: 'Aspek Karakter / Kekhasan Baru',
+                    keterangan: 'Membudaya dengan baik',
+                    nilai: 90
+                });
+            }
+            loadEraporKhasForCurrentSelection();
+            showNotification('Baris aspek penilaian baru berhasil ditambahkan! Silakan ubah nama aspek & nilainya.', 'success');
+        }
+
+        function removeErkAspekRow(group, idx) {
+            const synced = syncEraporKhasInputsToMemory();
+            if (!synced) return;
+            const list = group === 'agama' ? synced.entry.agama : synced.entry.karakter;
+            if (list.length <= 1) {
+                showNotification('Minimal harus ada 1 aspek penilaian pada tabel ini!', 'error');
+                return;
+            }
+            list.splice(idx, 1);
+            loadEraporKhasForCurrentSelection();
+        }
+
+        async function applyCurrentAspekTemplateToClass(group) {
+            const synced = syncEraporKhasInputsToMemory();
+            if (!synced) return;
+            const targetKelas = synced.kelas;
+            const targetSem = synced.sem;
+            const sourceList = group === 'agama' ? synced.entry.agama : synced.entry.karakter;
+
+            let count = 0;
+            studentsData.forEach(s => {
+                if (String(s.id) === String(synced.studentId)) return;
+                if (String(s.kelas).trim() === targetKelas) {
+                    const stEntry = getOrCreateEraporKhasEntry(s.id, targetKelas, targetSem);
+                    const destList = group === 'agama' ? stEntry.agama : stEntry.karakter;
+                    const updatedList = sourceList.map((srcItem, idx) => {
+                        const existingMatch = destList.find(d => d.aspek.toLowerCase() === srcItem.aspek.toLowerCase()) || destList[idx];
+                        return {
+                            kode: srcItem.kode || ('as_' + idx),
+                            aspek: srcItem.aspek,
+                            keterangan: existingMatch && existingMatch.keterangan ? existingMatch.keterangan : srcItem.keterangan,
+                            nilai: existingMatch && existingMatch.nilai !== undefined ? existingMatch.nilai : 90
+                        };
+                    });
+                    if (group === 'agama') stEntry.agama = updatedList;
+                    else stEntry.karakter = updatedList;
+                    count++;
+                }
+            });
+
+            await saveToStorage(`Terapkan template aspek ${group} e-Rapor Kekhasan ke ${targetKelas}`);
+            showNotification(`Daftar aspek berhasil diterapkan ke ${count} siswa lainnya di ${targetKelas}!`, 'success');
+        }
+
+        function downloadTemplateEraporKhas() {
+            const synced = syncEraporKhasInputsToMemory();
+            const kelas = document.getElementById('erkTargetKelas')?.value || 'Kelas V';
+            const sem = document.getElementById('erkTargetSemester')?.value || '2';
+            const sampleEntry = synced ? synced.entry : getOrCreateEraporKhasEntry(activeStudentId, kelas, sem);
+
+            const headers = [
+                "NIS", "NISN", "Nama Siswa", "Kelas", "Semester",
+                "Capaian Surah Juz 30", "Jilid Mengaji", "Capaian Keagamaan Lain",
+                "Proyek Unggulan", "Kedisiplinan Sholat Dhuha"
+            ];
+            sampleEntry.agama.forEach(a => headers.push(`[Agama] ${a.aspek}`));
+            sampleEntry.karakter.forEach(k => headers.push(`[Karakter] ${k.aspek}`));
+            headers.push("Catatan Wali Kelas");
+
+            const fKelas = document.getElementById('erkFilterKelas')?.value || 'ALL';
+            const listSiswa = fKelas === 'ALL' ? studentsData : studentsData.filter(s => s.kelas === fKelas);
+
+            const rows = [headers];
+            listSiswa.forEach(s => {
+                const ent = getOrCreateEraporKhasEntry(s.id, kelas, sem);
+                const row = [
+                    s.nis, s.nisn, s.nama, kelas, sem,
+                    ent.surah || "An-Naas s.d. Al-A'la",
+                    ent.jilid || "Tilawati Jilid 5",
+                    ent.agamaLain || "Hafal Bacaan Sholat",
+                    ent.proyek || "Karya Kearifan Lokal",
+                    ent.dhuha || "Sangat Disiplin & Mandiri (A)"
+                ];
+                sampleEntry.agama.forEach((a, idx) => {
+                    const found = ent.agama.find(x => x.aspek === a.aspek) || ent.agama[idx];
+                    row.push(found ? found.nilai : 90);
+                });
+                sampleEntry.karakter.forEach((k, idx) => {
+                    const found = ent.karakter.find(x => x.aspek === k.aspek) || ent.karakter[idx];
+                    row.push(found ? found.nilai : 90);
+                });
+                row.push(ent.catatan || '');
+                rows.push(row);
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            XLSX.utils.book_append_sheet(wb, ws, "eRapor_Kekhasan");
+            XLSX.writeFile(wb, `Template_eRapor_Kekhasan_${kelas.replace(/\s+/g, '_')}_Sem${sem}.xlsx`);
+            showNotification('Template Excel e-Rapor Kekhasan berhasil diunduh!', 'success');
+        }
+
+        async function handleImportEraporKhasExcel(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            try {
+                const buffer = await file.arrayBuffer();
+                const workbook = XLSX.read(new Uint8Array(buffer), { type: 'array' });
+                const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+                let importedCount = 0;
+
+                rows.forEach(r => {
+                    const nisn = String(r['NISN'] || '').trim();
+                    const nis = String(r['NIS'] || '').trim();
+                    const nama = String(r['Nama Siswa'] || r['Nama Lengkap'] || '').trim();
+                    const st = studentsData.find(s =>
+                        (nisn && String(s.nisn).trim() === nisn) ||
+                        (nis && String(s.nis).trim() === nis) ||
+                        (nama && s.nama.toLowerCase() === nama.toLowerCase())
+                    );
+                    if (!st) return;
+
+                    const kelas = normalizeKelasToRoman(r['Kelas'] || document.getElementById('erkTargetKelas')?.value || st.kelas);
+                    const sem = String(r['Semester'] || document.getElementById('erkTargetSemester')?.value || '2').trim();
+                    const ent = getOrCreateEraporKhasEntry(st.id, kelas, sem);
+
+                    if (r['Capaian Surah Juz 30']) ent.surah = String(r['Capaian Surah Juz 30']);
+                    if (r['Jilid Mengaji']) ent.jilid = String(r['Jilid Mengaji']);
+                    if (r['Capaian Keagamaan Lain']) ent.agamaLain = String(r['Capaian Keagamaan Lain']);
+                    if (r['Proyek Unggulan']) ent.proyek = String(r['Proyek Unggulan']);
+                    if (r['Kedisiplinan Sholat Dhuha']) ent.dhuha = String(r['Kedisiplinan Sholat Dhuha']);
+                    if (r['Catatan Wali Kelas']) ent.catatan = String(r['Catatan Wali Kelas']);
+
+                    const newAgama = [];
+                    const newKarakter = [];
+                    Object.keys(r).forEach(colKey => {
+                        if (colKey.startsWith('[Agama]')) {
+                            const aspekName = colKey.replace('[Agama]', '').trim();
+                            const val = Math.min(100, Math.max(0, Number(r[colKey]) || 0));
+                            const oldItem = ent.agama.find(a => a.aspek.toLowerCase() === aspekName.toLowerCase());
+                            newAgama.push({
+                                kode: oldItem ? oldItem.kode : ('ag_' + Date.now() + Math.random().toString(36).substring(2, 5)),
+                                aspek: aspekName,
+                                keterangan: oldItem && oldItem.keterangan ? oldItem.keterangan : 'Tuntas dengan baik',
+                                nilai: val
+                            });
+                        } else if (colKey.startsWith('[Karakter]')) {
+                            const aspekName = colKey.replace('[Karakter]', '').trim();
+                            const val = Math.min(100, Math.max(0, Number(r[colKey]) || 0));
+                            const oldItem = ent.karakter.find(k => k.aspek.toLowerCase() === aspekName.toLowerCase());
+                            newKarakter.push({
+                                kode: oldItem ? oldItem.kode : ('kr_' + Date.now() + Math.random().toString(36).substring(2, 5)),
+                                aspek: aspekName,
+                                keterangan: oldItem && oldItem.keterangan ? oldItem.keterangan : 'Membudaya dengan baik',
+                                nilai: val
+                            });
+                        }
+                    });
+
+                    if (newAgama.length > 0) ent.agama = newAgama;
+                    if (newKarakter.length > 0) ent.karakter = newKarakter;
+                    importedCount++;
+                });
+
+                await saveToStorage(`Impor Excel e-Rapor Kekhasan (${importedCount} siswa)`);
+                loadEraporKhasForCurrentSelection();
+                showNotification(`Berhasil mengimpor data e-Rapor Kekhasan untuk ${importedCount} peserta didik!`, 'success');
+            } catch (err) {
+                console.error('Gagal impor Excel Kekhasan:', err);
+                showNotification('Gagal mengimpor file Excel e-Rapor Kekhasan: ' + err.message, 'error');
+            } finally {
+                event.target.value = '';
+            }
         }
 
         function generateAutoErkNarrative() {
@@ -2665,10 +3049,10 @@
             const st = studentsData.find(s => String(s.id) === String(synced.studentId));
             const surah = synced.entry.surah || "Juz 'Amma";
             const jilid = synced.entry.jilid || "Al-Qur'an";
-            const avgScore = Math.round(
-                [...synced.entry.agama, ...synced.entry.karakter].reduce((acc, c) => acc + (Number(c.nilai) || 0), 0) /
-                (synced.entry.agama.length + synced.entry.karakter.length)
-            );
+            const totalItems = synced.entry.agama.length + synced.entry.karakter.length;
+            const avgScore = totalItems > 0 ? Math.round(
+                [...synced.entry.agama, ...synced.entry.karakter].reduce((acc, c) => acc + (Number(c.nilai) || 0), 0) / totalItems
+            ) : 90;
             const kualitas = avgScore >= 90 ? 'sangat membanggakan dan konsisten' : 'baik dan terus berkembang positif';
             const narasi = `Alhamdulillah, pada semester ini Ananda ${st ? st.nama : ''} menunjukkan capaian kekhasan sekolah yang ${kualitas} (Rata-rata: ${avgScore}). Hafalan ${surah} serta bacaan ${jilid} berjalan lancar. Pembiasaan ibadah harian, unggah-ungguh basa Jawa, dan adab sopan santun di SDN Gedongboyountung sangat baik. Teruslah menjadi anak shalih/shalihah kebanggaan orang tua!`;
             const txtEl = document.getElementById('erkInputCatatanWali');
@@ -2700,13 +3084,14 @@
                 const sc = Number(item.nilai) || 0;
                 totalSum += sc; totalCount++;
                 const pred = getScorePredikatInfo(sc);
+                const detailKet = item.keterangan ? `${pred.label} — ${item.keterangan}` : pred.label;
                 return `
                     <tr>
                         <td class="border border-slate-800 p-1.5 text-center font-semibold">${i + 1}</td>
                         <td class="border border-slate-800 p-1.5 font-medium">${item.aspek}</td>
                         <td class="border border-slate-800 p-1.5 text-center font-bold">${sc}</td>
                         <td class="border border-slate-800 p-1.5 text-center font-bold">${pred.huruf}</td>
-                        <td class="border border-slate-800 p-1.5 text-center">${pred.label}</td>
+                        <td class="border border-slate-800 p-1.5 text-left">${detailKet}</td>
                     </tr>
                 `;
             }).join('');
@@ -2715,27 +3100,45 @@
                 const sc = Number(item.nilai) || 0;
                 totalSum += sc; totalCount++;
                 const pred = getScorePredikatInfo(sc);
+                const detailKet = item.keterangan ? `${pred.label} — ${item.keterangan}` : pred.label;
                 return `
                     <tr>
                         <td class="border border-slate-800 p-1.5 text-center font-semibold">${i + 1}</td>
                         <td class="border border-slate-800 p-1.5 font-medium">${item.aspek}</td>
                         <td class="border border-slate-800 p-1.5 text-center font-bold">${sc}</td>
                         <td class="border border-slate-800 p-1.5 text-center font-bold">${pred.huruf}</td>
-                        <td class="border border-slate-800 p-1.5 text-center">${pred.label}</td>
+                        <td class="border border-slate-800 p-1.5 text-left">${detailKet}</td>
                     </tr>
                 `;
             }).join('');
 
             const avgVal = totalCount > 0 ? (totalSum / totalCount).toFixed(2).replace('.', ',') : '-';
 
+            const logoKiriSrc = getActiveLogoKiri();
+            const logoKananSrc = getActiveLogoKanan();
+
             return `
                 <div class="buku-induk-sheet space-y-4 text-xs leading-snug text-slate-900">
-                    <div class="text-center border-b-4 border-double border-slate-900 pb-3">
-                        <p class="text-[11px] font-bold uppercase tracking-widest text-slate-700">PEMERINTAH KABUPATEN ${schoolIdentity.kabupaten.toUpperCase()} • DINAS PENDIDIKAN</p>
-                        <h2 class="text-base font-extrabold uppercase mt-0.5">${schoolIdentity.nama}</h2>
-                        <p class="text-[10px] text-slate-600">${schoolIdentity.alamat}, Kec. ${schoolIdentity.kecamatan}, Kab. ${schoolIdentity.kabupaten}</p>
-                        <div class="mt-2 inline-block bg-slate-100 print-header-bg border border-slate-800 px-4 py-1 font-extrabold text-xs uppercase tracking-wider">
-                            LAPORAN CAPAIAN PROGRAM KEKHASAN SEKOLAH (e-RAPOR KEKHASAN)
+                    <!-- KOP SURAT RESMI DENGAN LOGO PEMKAB/DINAS (KIRI) & LOGO SEKOLAH (KANAN) -->
+                    <div class="border-b-4 border-double border-slate-900 pb-3">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="w-20 h-20 flex items-center justify-center shrink-0">
+                                <img src="${logoKiriSrc}" alt="Logo Kabupaten" class="max-w-full max-h-20 object-contain">
+                            </div>
+                            <div class="flex-1 text-center space-y-0.5">
+                                <p class="text-[11px] font-bold uppercase tracking-widest text-slate-800">PEMERINTAH KABUPATEN ${schoolIdentity.kabupaten.toUpperCase()}</p>
+                                <p class="text-xs font-extrabold uppercase tracking-wider text-slate-900">DINAS PENDIDIKAN</p>
+                                <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-tight text-slate-950">${schoolIdentity.nama}</h2>
+                                <p class="text-[10px] text-slate-700">NPSN: ${schoolIdentity.npsn} • ${schoolIdentity.alamat}, Kec. ${schoolIdentity.kecamatan}, Kab. ${schoolIdentity.kabupaten}</p>
+                            </div>
+                            <div class="w-20 h-20 flex items-center justify-center shrink-0">
+                                <img src="${logoKananSrc}" alt="Logo Sekolah" class="max-w-full max-h-20 object-contain">
+                            </div>
+                        </div>
+                        <div class="text-center mt-2.5">
+                            <div class="inline-block bg-slate-100 print-header-bg border border-slate-800 px-5 py-1 font-extrabold text-xs uppercase tracking-wider">
+                                LAPORAN CAPAIAN PROGRAM KEKHASAN SEKOLAH (e-RAPOR KEKHASAN)
+                            </div>
                         </div>
                     </div>
 
@@ -2758,10 +3161,14 @@
                         <h4 class="font-bold uppercase text-[11px] mb-1 print-header-bg bg-slate-100 px-2.5 py-1 border border-slate-800">I. CAPAIAN KEAGAMAAN, TAHFIDZ AL-QUR'AN & PRAKTIK IBADAH</h4>
                         <table class="w-full border-collapse border border-slate-800 text-[10.5px] mb-2">
                             <tr>
-                                <td class="border border-slate-800 p-1.5 font-semibold w-1/4">Capaian Surah Juz 'Amma</td>
-                                <td class="border border-slate-800 p-1.5 font-bold w-1/4">${entry.surah || '-'}</td>
-                                <td class="border border-slate-800 p-1.5 font-semibold w-1/4">Tingkat / Jilid Bacaan</td>
-                                <td class="border border-slate-800 p-1.5 font-bold w-1/4">${entry.jilid || '-'}</td>
+                                <td class="border border-slate-800 p-1.5 font-semibold w-1/5">Capaian Surah Juz 'Amma</td>
+                                <td class="border border-slate-800 p-1.5 font-bold w-3/10">${entry.surah || '-'}</td>
+                                <td class="border border-slate-800 p-1.5 font-semibold w-1/5">Tingkat / Jilid Bacaan</td>
+                                <td class="border border-slate-800 p-1.5 font-bold w-3/10">${entry.jilid || '-'}</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-slate-800 p-1.5 font-semibold">Capaian Keagamaan Lain</td>
+                                <td colspan="3" class="border border-slate-800 p-1.5 font-semibold">${entry.agamaLain || '-'}</td>
                             </tr>
                         </table>
                         <table class="w-full border-collapse border border-slate-800 text-[10.5px]">
@@ -2769,9 +3176,9 @@
                                 <tr class="print-header-bg bg-slate-100 font-bold text-center">
                                     <th class="border border-slate-800 p-1.5 w-10">No</th>
                                     <th class="border border-slate-800 p-1.5 text-left">Aspek Penilaian Keagamaan & Tahfidz</th>
-                                    <th class="border border-slate-800 p-1.5 w-20">Nilai</th>
-                                    <th class="border border-slate-800 p-1.5 w-20">Predikat</th>
-                                    <th class="border border-slate-800 p-1.5 w-32">Keterangan</th>
+                                    <th class="border border-slate-800 p-1.5 w-16">Nilai</th>
+                                    <th class="border border-slate-800 p-1.5 w-16">Predikat</th>
+                                    <th class="border border-slate-800 p-1.5 text-left">Capaian / Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody>${agamaRows}</tbody>
@@ -2793,9 +3200,9 @@
                                 <tr class="print-header-bg bg-slate-100 font-bold text-center">
                                     <th class="border border-slate-800 p-1.5 w-10">No</th>
                                     <th class="border border-slate-800 p-1.5 text-left">Aspek Karakter, Adab & Literasi Khas</th>
-                                    <th class="border border-slate-800 p-1.5 w-20">Nilai</th>
-                                    <th class="border border-slate-800 p-1.5 w-20">Predikat</th>
-                                    <th class="border border-slate-800 p-1.5 w-32">Keterangan</th>
+                                    <th class="border border-slate-800 p-1.5 w-16">Nilai</th>
+                                    <th class="border border-slate-800 p-1.5 w-16">Predikat</th>
+                                    <th class="border border-slate-800 p-1.5 text-left">Capaian / Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody>${karakterRows}</tbody>
@@ -4857,7 +5264,10 @@
             handleSmartImportERapor, closeERaporModal, confirmCommitERaporImport,
             handleErkFilterKelasChange, handleErkSelectStudentChange, switchEraporKhasSubView,
             loadEraporKhasForCurrentSelection, updateErkRowPredikatBadge, generateAutoErkNarrative,
-            saveEraporKhasCurrentStudent, printCurrentEraporKhas
+            saveEraporKhasCurrentStudent, printCurrentEraporKhas,
+            addErkAspekRow, removeErkAspekRow, applyCurrentAspekTemplateToClass,
+            downloadTemplateEraporKhas, handleImportEraporKhasExcel,
+            handleUploadCustomLogo, resetDefaultRaporLogos
         });
 
         initFirebaseAndAutoSync();
