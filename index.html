@@ -851,12 +851,15 @@
                             <button type="button" onclick="downloadTemplateEraporKhas()" class="flex-1 lg:flex-initial justify-center bg-slate-900/70 hover:bg-slate-900 text-amber-200 border border-amber-400/30 font-bold px-3.5 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition" title="Unduh Template Excel e-Rapor Kekhasan">
                                 <i class="fa-solid fa-download"></i><span>Template Excel</span>
                             </button>
-                            <label class="flex-1 lg:flex-initial justify-center bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold px-3.5 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition" title="Impor Nilai e-Rapor Kekhasan dari Excel">
+                            <button type="button" onclick="document.getElementById('inputImportErkExcelFile').click()" class="flex-1 lg:flex-initial justify-center bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold px-3.5 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition" title="Impor Nilai e-Rapor Kekhasan dari Excel">
                                 <i class="fa-solid fa-file-import"></i><span>Impor Excel Khas</span>
-                                <input type="file" accept=".xlsx, .xls" onchange="handleImportEraporKhasExcel(event)" class="hidden">
-                            </label>
+                            </button>
+                            <input type="file" id="inputImportErkExcelFile" accept=".xlsx, .xls" onchange="handleImportEraporKhasExcel(event)" class="hidden">
                             <button type="button" onclick="printCurrentEraporKhas()" class="flex-1 lg:flex-initial justify-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-md cursor-pointer flex items-center space-x-1.5 transition">
-                                <i class="fa-solid fa-print"></i><span>Cetak Langsung</span>
+                                <i class="fa-solid fa-print"></i><span>Cetak Siswa Ini</span>
+                            </button>
+                            <button type="button" onclick="printMassalEraporKhasKelas()" class="flex-1 lg:flex-initial justify-center bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold px-3.5 py-2.5 rounded-xl text-xs shadow-md cursor-pointer flex items-center space-x-1.5 transition" title="Cetak Seluruh Siswa pada Kelas Ini">
+                                <i class="fa-solid fa-layer-group"></i><span>Cetak Satu Kelas</span>
                             </button>
                         </div>
                     </div>
@@ -874,16 +877,16 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <label class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-3 py-1.5 rounded-xl text-[11px] cursor-pointer flex items-center space-x-1.5 transition">
+                            <button type="button" onclick="document.getElementById('inputLogoKiriFile').click()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-3 py-1.5 rounded-xl text-[11px] cursor-pointer flex items-center space-x-1.5 transition">
                                 <i class="fa-solid fa-building-columns text-indigo-600"></i><span>Ganti Logo Dinas/Kab (Kiri)</span>
-                                <input type="file" accept="image/*" onchange="handleUploadCustomLogo(event, 'kiri')" class="hidden">
-                            </label>
-                            <label class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-3 py-1.5 rounded-xl text-[11px] cursor-pointer flex items-center space-x-1.5 transition">
+                            </button>
+                            <input type="file" id="inputLogoKiriFile" accept="image/*" onchange="handleUploadCustomLogo(event, 'kiri')" class="hidden">
+                            <button type="button" onclick="document.getElementById('inputLogoKananFile').click()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-3 py-1.5 rounded-xl text-[11px] cursor-pointer flex items-center space-x-1.5 transition">
                                 <i class="fa-solid fa-school text-emerald-600"></i><span>Ganti Logo Sekolah (Kanan)</span>
-                                <input type="file" accept="image/*" onchange="handleUploadCustomLogo(event, 'kanan')" class="hidden">
-                            </label>
+                            </button>
+                            <input type="file" id="inputLogoKananFile" accept="image/*" onchange="handleUploadCustomLogo(event, 'kanan')" class="hidden">
                             <button type="button" onclick="resetDefaultRaporLogos()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold px-2.5 py-1.5 rounded-xl text-[11px] cursor-pointer transition" title="Kembalikan ke Logo Bawaan">
-                                <i class="fa-solid fa-rotate-left"></i>
+                                <i class="fa-solid fa-rotate-left mr-1"></i><span>Reset Logo</span>
                             </button>
                         </div>
                     </div>
@@ -1075,12 +1078,15 @@
                                 <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-extrabold text-[11px]"><i class="fa-solid fa-circle-check mr-1"></i>Siap Cetak A4 / F4</span>
                                 <span class="text-slate-600 font-medium">Lembar Resmi Rapor Kekhasan Sekolah Dasar</span>
                             </div>
-                            <div class="flex items-center space-x-2">
+                            <div class="flex flex-wrap items-center gap-2">
                                 <button type="button" onclick="switchEraporKhasSubView('input')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5">
                                     <i class="fa-solid fa-pen-to-square"></i><span>Kembali ke Editor</span>
                                 </button>
                                 <button type="button" onclick="printCurrentEraporKhas()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-5 py-2 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5">
-                                    <i class="fa-solid fa-print"></i><span>Cetak / Simpan PDF</span>
+                                    <i class="fa-solid fa-print"></i><span>Cetak Siswa Ini / PDF</span>
+                                </button>
+                                <button type="button" onclick="printMassalEraporKhasKelas()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold px-4 py-2 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-layer-group"></i><span>Cetak Seluruh Siswa Kelas Ini</span>
                                 </button>
                             </div>
                         </div>
@@ -2665,6 +2671,7 @@
         // FITUR MENU e-RAPOR KEKHASAN SEKOLAH
         // ==========================================
         let currentErkSubView = 'input';
+        let loadedErkContext = { studentId: null, kelas: null, sem: null };
 
         function populateEraporKhasStudentDropdown() {
             const filterKelas = document.getElementById('erkFilterKelas')?.value || 'ALL';
@@ -2685,22 +2692,24 @@
         }
 
         function handleErkFilterKelasChange() {
+            syncEraporKhasInputsToMemory();
             const filterKelas = document.getElementById('erkFilterKelas')?.value || 'ALL';
             populateEraporKhasStudentDropdown();
             if (filterKelas !== 'ALL' && document.getElementById('erkTargetKelas')) {
                 document.getElementById('erkTargetKelas').value = filterKelas;
             }
-            loadEraporKhasForCurrentSelection();
+            loadEraporKhasForCurrentSelection(true);
         }
 
         function handleErkSelectStudentChange(studentId) {
             if (!studentId) return;
+            syncEraporKhasInputsToMemory();
             activeStudentId = String(studentId);
             const st = studentsData.find(s => String(s.id) === String(activeStudentId));
             if (st && document.getElementById('erkTargetKelas')) {
                 document.getElementById('erkTargetKelas').value = st.kelas || 'Kelas V';
             }
-            loadEraporKhasForCurrentSelection();
+            loadEraporKhasForCurrentSelection(true);
         }
 
         function switchEraporKhasSubView(mode) {
@@ -2714,14 +2723,14 @@
                 syncEraporKhasInputsToMemory();
                 inputPane?.classList.add('hidden');
                 previewPane?.classList.remove('hidden');
-                if (btnPreview) btnPreview.className = 'flex-1 lg:flex-initial justify-center bg-white text-emerald-950 font-extrabold px-4 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition';
-                if (btnInput) btnInput.className = 'flex-1 lg:flex-initial justify-center bg-emerald-700/60 hover:bg-emerald-700 text-white border border-emerald-400/30 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition';
+                if (btnPreview) btnPreview.className = 'flex-1 lg:flex-initial justify-center bg-white text-emerald-950 font-extrabold px-3.5 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition';
+                if (btnInput) btnInput.className = 'flex-1 lg:flex-initial justify-center bg-emerald-700/60 hover:bg-emerald-700 text-white border border-emerald-400/30 font-bold px-3.5 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition';
                 renderEraporKhasPrintableSheet();
             } else {
                 previewPane?.classList.add('hidden');
                 inputPane?.classList.remove('hidden');
-                if (btnInput) btnInput.className = 'flex-1 lg:flex-initial justify-center bg-white text-emerald-950 font-extrabold px-4 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition';
-                if (btnPreview) btnPreview.className = 'flex-1 lg:flex-initial justify-center bg-emerald-700/60 hover:bg-emerald-700 text-white border border-emerald-400/30 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition';
+                if (btnInput) btnInput.className = 'flex-1 lg:flex-initial justify-center bg-white text-emerald-950 font-extrabold px-3.5 py-2.5 rounded-xl text-xs shadow cursor-pointer flex items-center space-x-1.5 transition';
+                if (btnPreview) btnPreview.className = 'flex-1 lg:flex-initial justify-center bg-emerald-700/60 hover:bg-emerald-700 text-white border border-emerald-400/30 font-bold px-3.5 py-2.5 rounded-xl text-xs cursor-pointer flex items-center space-x-1.5 transition';
             }
         }
 
@@ -2731,18 +2740,24 @@
             const st = studentsData.find(s => String(s.id) === String(activeStudentId));
             if (st && document.getElementById('erkTargetKelas')) {
                 const fKls = document.getElementById('erkFilterKelas')?.value || 'ALL';
-                if (fKls === 'ALL') document.getElementById('erkTargetKelas').value = st.kelas || 'Kelas V';
+                if (fKls === 'ALL' && !loadedErkContext.kelas) {
+                    document.getElementById('erkTargetKelas').value = st.kelas || 'Kelas V';
+                }
             }
-            loadEraporKhasForCurrentSelection();
+            loadEraporKhasForCurrentSelection(true);
         }
 
-        function loadEraporKhasForCurrentSelection() {
+        function loadEraporKhasForCurrentSelection(skipPreSync = false) {
+            if (!skipPreSync && loadedErkContext.studentId) {
+                syncEraporKhasInputsToMemory();
+            }
             const studentId = document.getElementById('erkSelectStudent')?.value || activeStudentId;
             if (!studentId) return;
             activeStudentId = String(studentId);
             const kelas = document.getElementById('erkTargetKelas')?.value || 'Kelas V';
             const sem = document.getElementById('erkTargetSemester')?.value || '2';
 
+            loadedErkContext = { studentId: String(studentId), kelas, sem };
             const entry = getOrCreateEraporKhasEntry(studentId, kelas, sem);
 
             if (document.getElementById('erkInputSurah')) document.getElementById('erkInputSurah').value = entry.surah || '';
@@ -2761,13 +2776,13 @@
                     return `
                         <tr class="hover:bg-slate-50">
                             <td class="p-2">
-                                <input type="text" id="erkAgamaAspek_${idx}" value="${safeAspek}" placeholder="Nama aspek keagamaan..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 px-2 py-1 rounded-lg font-semibold text-slate-800">
+                                <input type="text" id="erkAgamaAspek_${idx}" value="${safeAspek}" oninput="syncEraporKhasInputsToMemory()" placeholder="Nama aspek keagamaan..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 px-2 py-1 rounded-lg font-semibold text-slate-800">
                             </td>
                             <td class="p-2">
-                                <input type="text" id="erkAgamaKet_${idx}" value="${safeKet}" placeholder="Detail materi / capaian..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 px-2 py-1 rounded-lg text-slate-600">
+                                <input type="text" id="erkAgamaKet_${idx}" value="${safeKet}" oninput="syncEraporKhasInputsToMemory()" placeholder="Detail materi / capaian..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 px-2 py-1 rounded-lg text-slate-600">
                             </td>
                             <td class="p-2 text-center">
-                                <input type="number" min="0" max="100" id="erkAgamaNilai_${idx}" value="${item.nilai}" oninput="updateErkRowPredikatBadge('Agama', ${idx}, this.value)" class="w-16 text-center bg-slate-50 border border-slate-300 rounded-lg py-1 font-extrabold text-emerald-950">
+                                <input type="number" min="0" max="100" id="erkAgamaNilai_${idx}" value="${item.nilai}" oninput="updateErkRowPredikatBadge('Agama', ${idx}, this.value); syncEraporKhasInputsToMemory();" class="w-16 text-center bg-slate-50 border border-slate-300 rounded-lg py-1 font-extrabold text-emerald-950">
                             </td>
                             <td class="p-2 text-center">
                                 <span id="erkAgamaPred_${idx}" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border ${pred.badgeClass}">${pred.huruf} (${pred.label})</span>
@@ -2789,13 +2804,13 @@
                     return `
                         <tr class="hover:bg-slate-50">
                             <td class="p-2">
-                                <input type="text" id="erkKarakterAspek_${idx}" value="${safeAspek}" placeholder="Nama aspek karakter..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 px-2 py-1 rounded-lg font-semibold text-slate-800">
+                                <input type="text" id="erkKarakterAspek_${idx}" value="${safeAspek}" oninput="syncEraporKhasInputsToMemory()" placeholder="Nama aspek karakter..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 px-2 py-1 rounded-lg font-semibold text-slate-800">
                             </td>
                             <td class="p-2">
-                                <input type="text" id="erkKarakterKet_${idx}" value="${safeKet}" placeholder="Detail capaian / sikap..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 px-2 py-1 rounded-lg text-slate-600">
+                                <input type="text" id="erkKarakterKet_${idx}" value="${safeKet}" oninput="syncEraporKhasInputsToMemory()" placeholder="Detail capaian / sikap..." class="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-indigo-500 px-2 py-1 rounded-lg text-slate-600">
                             </td>
                             <td class="p-2 text-center">
-                                <input type="number" min="0" max="100" id="erkKarakterNilai_${idx}" value="${item.nilai}" oninput="updateErkRowPredikatBadge('Karakter', ${idx}, this.value)" class="w-16 text-center bg-slate-50 border border-slate-300 rounded-lg py-1 font-extrabold text-indigo-950">
+                                <input type="number" min="0" max="100" id="erkKarakterNilai_${idx}" value="${item.nilai}" oninput="updateErkRowPredikatBadge('Karakter', ${idx}, this.value); syncEraporKhasInputsToMemory();" class="w-16 text-center bg-slate-50 border border-slate-300 rounded-lg py-1 font-extrabold text-indigo-950">
                             </td>
                             <td class="p-2 text-center">
                                 <span id="erkKarakterPred_${idx}" class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border ${pred.badgeClass}">${pred.huruf} (${pred.label})</span>
@@ -2822,10 +2837,10 @@
         }
 
         function syncEraporKhasInputsToMemory() {
-            const studentId = document.getElementById('erkSelectStudent')?.value || activeStudentId;
+            const studentId = loadedErkContext.studentId || document.getElementById('erkSelectStudent')?.value || activeStudentId;
             if (!studentId) return null;
-            const kelas = document.getElementById('erkTargetKelas')?.value || 'Kelas V';
-            const sem = document.getElementById('erkTargetSemester')?.value || '2';
+            const kelas = loadedErkContext.kelas || document.getElementById('erkTargetKelas')?.value || 'Kelas V';
+            const sem = loadedErkContext.sem || document.getElementById('erkTargetSemester')?.value || '2';
             const entry = getOrCreateEraporKhasEntry(studentId, kelas, sem);
 
             if (document.getElementById('erkInputSurah')) entry.surah = document.getElementById('erkInputSurah').value.trim();
@@ -2874,8 +2889,9 @@
                     nilai: 90
                 });
             }
-            loadEraporKhasForCurrentSelection();
-            showNotification('Baris aspek penilaian baru berhasil ditambahkan! Silakan ubah nama aspek & nilainya.', 'success');
+            loadEraporKhasForCurrentSelection(true);
+            saveToLocalBackup();
+            showNotification('Baris aspek penilaian baru berhasil ditambahkan!', 'success');
         }
 
         function removeErkAspekRow(group, idx) {
@@ -2887,7 +2903,9 @@
                 return;
             }
             list.splice(idx, 1);
-            loadEraporKhasForCurrentSelection();
+            loadEraporKhasForCurrentSelection(true);
+            saveToLocalBackup();
+            showNotification('Baris aspek berhasil dihapus.', 'success');
         }
 
         async function applyCurrentAspekTemplateToClass(group) {
@@ -2923,6 +2941,10 @@
         }
 
         function downloadTemplateEraporKhas() {
+            if (typeof window.XLSX === 'undefined') {
+                showNotification('Pustaka Excel sedang dimuat, silakan coba sesaat lagi.', 'error');
+                return;
+            }
             const synced = syncEraporKhasInputsToMemory();
             const kelas = document.getElementById('erkTargetKelas')?.value || 'Kelas V';
             const sem = document.getElementById('erkTargetSemester')?.value || '2';
@@ -3033,7 +3055,7 @@
                 });
 
                 await saveToStorage(`Impor Excel e-Rapor Kekhasan (${importedCount} siswa)`);
-                loadEraporKhasForCurrentSelection();
+                loadEraporKhasForCurrentSelection(true);
                 showNotification(`Berhasil mengimpor data e-Rapor Kekhasan untuk ${importedCount} peserta didik!`, 'success');
             } catch (err) {
                 console.error('Gagal impor Excel Kekhasan:', err);
@@ -3041,212 +3063,6 @@
             } finally {
                 event.target.value = '';
             }
-        }
-
-        function generateAutoErkNarrative() {
-            const synced = syncEraporKhasInputsToMemory();
-            if (!synced) return;
-            const st = studentsData.find(s => String(s.id) === String(synced.studentId));
-            const surah = synced.entry.surah || "Juz 'Amma";
-            const jilid = synced.entry.jilid || "Al-Qur'an";
-            const totalItems = synced.entry.agama.length + synced.entry.karakter.length;
-            const avgScore = totalItems > 0 ? Math.round(
-                [...synced.entry.agama, ...synced.entry.karakter].reduce((acc, c) => acc + (Number(c.nilai) || 0), 0) / totalItems
-            ) : 90;
-            const kualitas = avgScore >= 90 ? 'sangat membanggakan dan konsisten' : 'baik dan terus berkembang positif';
-            const narasi = `Alhamdulillah, pada semester ini Ananda ${st ? st.nama : ''} menunjukkan capaian kekhasan sekolah yang ${kualitas} (Rata-rata: ${avgScore}). Hafalan ${surah} serta bacaan ${jilid} berjalan lancar. Pembiasaan ibadah harian, unggah-ungguh basa Jawa, dan adab sopan santun di SDN Gedongboyountung sangat baik. Teruslah menjadi anak shalih/shalihah kebanggaan orang tua!`;
-            const txtEl = document.getElementById('erkInputCatatanWali');
-            if (txtEl) txtEl.value = narasi;
-            synced.entry.catatan = narasi;
-            showNotification('Narasi apresiasi otomatis berhasil disusun!', 'success');
-        }
-
-        async function saveEraporKhasCurrentStudent(openPreviewAfter = false) {
-            const synced = syncEraporKhasInputsToMemory();
-            if (!synced) return;
-            const st = studentsData.find(s => String(s.id) === String(synced.studentId));
-            await saveToStorage(`Simpan e-Rapor Kekhasan: ${st ? st.nama : synced.studentId} (${synced.kelas} Sem ${synced.sem})`);
-            showNotification(`Data e-Rapor Kekhasan ${st ? st.nama : ''} berhasil disimpan!`, 'success');
-            if (openPreviewAfter) {
-                switchEraporKhasSubView('preview');
-            }
-        }
-
-        function buildEraporKhasHtml(st, kelas, sem, entry) {
-            const rec = ensureBiRecord(st.id);
-            const activeTp = schoolIdentity.activeTp || '2025/2026';
-            const semLabel = String(sem) === '1' ? 'I (Satu / Ganjil)' : 'II (Dua / Genap)';
-
-            let totalSum = 0;
-            let totalCount = 0;
-
-            const agamaRows = entry.agama.map((item, i) => {
-                const sc = Number(item.nilai) || 0;
-                totalSum += sc; totalCount++;
-                const pred = getScorePredikatInfo(sc);
-                const detailKet = item.keterangan ? `${pred.label} — ${item.keterangan}` : pred.label;
-                return `
-                    <tr>
-                        <td class="border border-slate-800 p-1.5 text-center font-semibold">${i + 1}</td>
-                        <td class="border border-slate-800 p-1.5 font-medium">${item.aspek}</td>
-                        <td class="border border-slate-800 p-1.5 text-center font-bold">${sc}</td>
-                        <td class="border border-slate-800 p-1.5 text-center font-bold">${pred.huruf}</td>
-                        <td class="border border-slate-800 p-1.5 text-left">${detailKet}</td>
-                    </tr>
-                `;
-            }).join('');
-
-            const karakterRows = entry.karakter.map((item, i) => {
-                const sc = Number(item.nilai) || 0;
-                totalSum += sc; totalCount++;
-                const pred = getScorePredikatInfo(sc);
-                const detailKet = item.keterangan ? `${pred.label} — ${item.keterangan}` : pred.label;
-                return `
-                    <tr>
-                        <td class="border border-slate-800 p-1.5 text-center font-semibold">${i + 1}</td>
-                        <td class="border border-slate-800 p-1.5 font-medium">${item.aspek}</td>
-                        <td class="border border-slate-800 p-1.5 text-center font-bold">${sc}</td>
-                        <td class="border border-slate-800 p-1.5 text-center font-bold">${pred.huruf}</td>
-                        <td class="border border-slate-800 p-1.5 text-left">${detailKet}</td>
-                    </tr>
-                `;
-            }).join('');
-
-            const avgVal = totalCount > 0 ? (totalSum / totalCount).toFixed(2).replace('.', ',') : '-';
-
-            const logoKiriSrc = getActiveLogoKiri();
-            const logoKananSrc = getActiveLogoKanan();
-
-            return `
-                <div class="buku-induk-sheet space-y-4 text-xs leading-snug text-slate-900">
-                    <!-- KOP SURAT RESMI DENGAN LOGO PEMKAB/DINAS (KIRI) & LOGO SEKOLAH (KANAN) -->
-                    <div class="border-b-4 border-double border-slate-900 pb-3">
-                        <div class="flex items-center justify-between gap-3">
-                            <div class="w-20 h-20 flex items-center justify-center shrink-0">
-                                <img src="${logoKiriSrc}" alt="Logo Kabupaten" class="max-w-full max-h-20 object-contain">
-                            </div>
-                            <div class="flex-1 text-center space-y-0.5">
-                                <p class="text-[11px] font-bold uppercase tracking-widest text-slate-800">PEMERINTAH KABUPATEN ${schoolIdentity.kabupaten.toUpperCase()}</p>
-                                <p class="text-xs font-extrabold uppercase tracking-wider text-slate-900">DINAS PENDIDIKAN</p>
-                                <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-tight text-slate-950">${schoolIdentity.nama}</h2>
-                                <p class="text-[10px] text-slate-700">NPSN: ${schoolIdentity.npsn} • ${schoolIdentity.alamat}, Kec. ${schoolIdentity.kecamatan}, Kab. ${schoolIdentity.kabupaten}</p>
-                            </div>
-                            <div class="w-20 h-20 flex items-center justify-center shrink-0">
-                                <img src="${logoKananSrc}" alt="Logo Sekolah" class="max-w-full max-h-20 object-contain">
-                            </div>
-                        </div>
-                        <div class="text-center mt-2.5">
-                            <div class="inline-block bg-slate-100 print-header-bg border border-slate-800 px-5 py-1 font-extrabold text-xs uppercase tracking-wider">
-                                LAPORAN CAPAIAN PROGRAM KEKHASAN SEKOLAH (e-RAPOR KEKHASAN)
-                            </div>
-                        </div>
-                    </div>
-
-                    <table class="w-full border-collapse border border-slate-800 text-[11px]">
-                        <tr>
-                            <td class="border border-slate-800 p-1.5 font-semibold w-1/5">Nama Peserta Didik</td>
-                            <td class="border border-slate-800 p-1.5 font-extrabold w-3/10">${st.nama}</td>
-                            <td class="border border-slate-800 p-1.5 font-semibold w-1/5">Kelas / Semester</td>
-                            <td class="border border-slate-800 p-1.5 font-bold w-3/10">${kelas} / ${semLabel}</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-800 p-1.5 font-semibold">NIS / NISN</td>
-                            <td class="border border-slate-800 p-1.5 font-bold">${st.nis} / ${st.nisn}</td>
-                            <td class="border border-slate-800 p-1.5 font-semibold">Tahun Pelajaran</td>
-                            <td class="border border-slate-800 p-1.5 font-bold">${activeTp}</td>
-                        </tr>
-                    </table>
-
-                    <div>
-                        <h4 class="font-bold uppercase text-[11px] mb-1 print-header-bg bg-slate-100 px-2.5 py-1 border border-slate-800">I. CAPAIAN KEAGAMAAN, TAHFIDZ AL-QUR'AN & PRAKTIK IBADAH</h4>
-                        <table class="w-full border-collapse border border-slate-800 text-[10.5px] mb-2">
-                            <tr>
-                                <td class="border border-slate-800 p-1.5 font-semibold w-1/5">Capaian Surah Juz 'Amma</td>
-                                <td class="border border-slate-800 p-1.5 font-bold w-3/10">${entry.surah || '-'}</td>
-                                <td class="border border-slate-800 p-1.5 font-semibold w-1/5">Tingkat / Jilid Bacaan</td>
-                                <td class="border border-slate-800 p-1.5 font-bold w-3/10">${entry.jilid || '-'}</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-slate-800 p-1.5 font-semibold">Capaian Keagamaan Lain</td>
-                                <td colspan="3" class="border border-slate-800 p-1.5 font-semibold">${entry.agamaLain || '-'}</td>
-                            </tr>
-                        </table>
-                        <table class="w-full border-collapse border border-slate-800 text-[10.5px]">
-                            <thead>
-                                <tr class="print-header-bg bg-slate-100 font-bold text-center">
-                                    <th class="border border-slate-800 p-1.5 w-10">No</th>
-                                    <th class="border border-slate-800 p-1.5 text-left">Aspek Penilaian Keagamaan & Tahfidz</th>
-                                    <th class="border border-slate-800 p-1.5 w-16">Nilai</th>
-                                    <th class="border border-slate-800 p-1.5 w-16">Predikat</th>
-                                    <th class="border border-slate-800 p-1.5 text-left">Capaian / Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>${agamaRows}</tbody>
-                        </table>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold uppercase text-[11px] mb-1 print-header-bg bg-slate-100 px-2.5 py-1 border border-slate-800">II. BUDAYA LOKAL LAMONGAN, ADAB & KECAKAPAN ABAD 21</h4>
-                        <table class="w-full border-collapse border border-slate-800 text-[10.5px] mb-2">
-                            <tr>
-                                <td class="border border-slate-800 p-1.5 font-semibold w-1/4">Karya / Proyek Unggulan</td>
-                                <td class="border border-slate-800 p-1.5 font-bold w-1/4">${entry.proyek || '-'}</td>
-                                <td class="border border-slate-800 p-1.5 font-semibold w-1/4">Kedisiplinan Sholat Dhuha</td>
-                                <td class="border border-slate-800 p-1.5 font-bold w-1/4">${entry.dhuha || '-'}</td>
-                            </tr>
-                        </table>
-                        <table class="w-full border-collapse border border-slate-800 text-[10.5px]">
-                            <thead>
-                                <tr class="print-header-bg bg-slate-100 font-bold text-center">
-                                    <th class="border border-slate-800 p-1.5 w-10">No</th>
-                                    <th class="border border-slate-800 p-1.5 text-left">Aspek Karakter, Adab & Literasi Khas</th>
-                                    <th class="border border-slate-800 p-1.5 w-16">Nilai</th>
-                                    <th class="border border-slate-800 p-1.5 w-16">Predikat</th>
-                                    <th class="border border-slate-800 p-1.5 text-left">Capaian / Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>${karakterRows}</tbody>
-                            <tfoot>
-                                <tr class="print-header-bg bg-slate-100 font-extrabold">
-                                    <td colspan="2" class="border border-slate-800 p-1.5 text-right uppercase">JUMLAH / RATA-RATA CAPAIAN KEKHASAN</td>
-                                    <td class="border border-slate-800 p-1.5 text-center">${totalSum}</td>
-                                    <td colspan="2" class="border border-slate-800 p-1.5 text-center">Rata-rata: ${avgVal}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold uppercase text-[11px] mb-1 print-header-bg bg-slate-100 px-2.5 py-1 border border-slate-800">III. CATATAN APRESIASI & MOTIVASI WALI KELAS</h4>
-                        <div class="border border-slate-800 p-3 text-[11px] leading-relaxed italic">
-                            "${entry.catatan || '-'}"
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 text-center text-xs pt-4">
-                        <div>
-                            <p>Mengetahui,</p>
-                            <p class="font-bold">Orang Tua / Wali,</p>
-                            <div class="h-16"></div>
-                            <p class="font-bold underline">(${st.ayah && st.ayah !== '-' ? st.ayah : '............................'})</p>
-                        </div>
-                        <div>
-                            <p>Mengetahui,</p>
-                            <p class="font-bold">Kepala Sekolah,</p>
-                            <div class="h-16"></div>
-                            <p class="font-bold underline">(${rec.sign.kepsekNama || schoolIdentity.kepsek})</p>
-                            <p>NIP. ${rec.sign.kepsekNip || schoolIdentity.nipKepsek}</p>
-                        </div>
-                        <div>
-                            <p>${rec.sign.tempat || 'Gedongboyountung'}, ${rec.sign.tanggal || '29 Juni 2026'}</p>
-                            <p class="font-bold">Wali Kelas,</p>
-                            <div class="h-16"></div>
-                            <p class="font-bold underline">(${rec.sign.waliNama || '-'})</p>
-                            <p>NIP. ${rec.sign.waliNip || '-'}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
         }
 
         function renderEraporKhasPrintableSheet() {
@@ -3261,10 +3077,52 @@
             if (mainPrintEl) mainPrintEl.innerHTML = sheetHtml;
         }
 
+        function openPrintWindowWithHtml(htmlContent, docTitle = 'Cetak e-Rapor Kekhasan') {
+            const mainPrintEl = document.getElementById('printableArea');
+            if (mainPrintEl) mainPrintEl.innerHTML = htmlContent;
+
+            const printWin = window.open('', '_blank', 'width=960,height=820');
+            if (printWin) {
+                printWin.document.write(`<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>${docTitle}</title><script src="https://cdn.tailwindcss.com"><\/script><style>@page { size: 215mm 330mm portrait; margin: 10mm 12mm; } body { font-family: Arial, sans-serif; color: #000; background: #fff; font-size: 10pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #000 !important; padding: 4px 6px; } .page-break { page-break-after: always; break-after: page; } .print-header-bg { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }</style></head><body class="p-4">${htmlContent}<script>window.onload=function(){setTimeout(function(){window.focus();window.print();},450);};<\/script></body></html>`);
+                printWin.document.close();
+            } else {
+                switchEraporKhasSubView('preview');
+                setTimeout(() => window.print(), 250);
+            }
+        }
+
         async function printCurrentEraporKhas() {
             await saveEraporKhasCurrentStudent(false);
             renderEraporKhasPrintableSheet();
-            setTimeout(() => window.print(), 250);
+            const sheetEl = document.getElementById('erkPrintableSheet');
+            if (sheetEl && sheetEl.innerHTML.trim()) {
+                openPrintWindowWithHtml(sheetEl.innerHTML, 'Cetak e-Rapor Kekhasan Siswa');
+            }
+        }
+
+        async function printMassalEraporKhasKelas() {
+            syncEraporKhasInputsToMemory();
+            const targetKelas = document.getElementById('erkTargetKelas')?.value || 'Kelas V';
+            const targetSem = document.getElementById('erkTargetSemester')?.value || '2';
+            const fKelas = document.getElementById('erkFilterKelas')?.value || 'ALL';
+            const filterKls = fKelas !== 'ALL' ? fKelas : targetKelas;
+
+            const list = studentsData.filter(s => String(s.kelas).trim() === filterKls);
+            const finalStudents = list.length > 0 ? list : studentsData;
+            if (finalStudents.length === 0) {
+                showNotification('Tidak ada data peserta didik untuk dicetak!', 'error');
+                return;
+            }
+
+            await saveToStorage(`Cetak Massal e-Rapor Kekhasan ${filterKls} Sem ${targetSem}`);
+            const combinedHtml = finalStudents.map((s, idx) => {
+                const ent = getOrCreateEraporKhasEntry(s.id, s.kelas || targetKelas, targetSem);
+                return `<div class="${idx < finalStudents.length - 1 ? 'page-break mb-10 pb-10 border-b-4 border-dashed border-slate-300' : ''}">${buildEraporKhasHtml(s, s.kelas || targetKelas, targetSem, ent)}</div>`;
+            }).join('');
+
+            const targetEl = document.getElementById('erkPrintableSheet');
+            if (targetEl) targetEl.innerHTML = combinedHtml;
+            openPrintWindowWithHtml(combinedHtml, `Cetak e-Rapor Kekhasan ${filterKls}`);
         }
 
         function switchTab(tabId, highlightMenuId = null) {
@@ -5264,10 +5122,10 @@
             handleSmartImportERapor, closeERaporModal, confirmCommitERaporImport,
             handleErkFilterKelasChange, handleErkSelectStudentChange, switchEraporKhasSubView,
             loadEraporKhasForCurrentSelection, updateErkRowPredikatBadge, generateAutoErkNarrative,
-            saveEraporKhasCurrentStudent, printCurrentEraporKhas,
+            saveEraporKhasCurrentStudent, printCurrentEraporKhas, printMassalEraporKhasKelas,
             addErkAspekRow, removeErkAspekRow, applyCurrentAspekTemplateToClass,
             downloadTemplateEraporKhas, handleImportEraporKhasExcel,
-            handleUploadCustomLogo, resetDefaultRaporLogos
+            handleUploadCustomLogo, resetDefaultRaporLogos, syncEraporKhasInputsToMemory
         });
 
         initFirebaseAndAutoSync();
