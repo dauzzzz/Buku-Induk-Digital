@@ -850,56 +850,61 @@
                 </section>
 
                 <!-- TAB 8: IMPOR & EKSPOR EXCEL (TERMASUK SMART IMPORTER E-RAPOR KEMENDIKBUD) -->
-                <section id="tab-import-ekspor" class="tab-content hidden space-y-6">
-                    <!-- FITUR UTAMA BARU: SMART IMPORTER E-RAPOR KEMENDIKBUD -->
-                    <div class="bg-gradient-to-r from-teal-900 via-teal-800 to-emerald-900 rounded-3xl p-5 md:p-7 text-white shadow-xl">
-                        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                            <div class="space-y-1.5 max-w-2xl">
-                                <span class="inline-block bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">FITUR BARU KHUSUS e-RAPOR KEMDIKBUD</span>
-                                <h3 class="text-base md:text-xl font-extrabold tracking-tight">Smart Importer Leger e-Rapor (.xlsx)</h3>
-                                <p class="text-xs text-teal-100 leading-relaxed">Unggah file Excel Leger e-Rapor resmi dari sekolah Anda. Sistem akan secara otomatis mencocokkan NISN siswa dan menyuntikkan nilai lengkap dengan rekapitulasi kehadiran dan ekstrakurikuler ke Buku Induk Digital!</p>
+                <section id="tab-import-ekspor" class="tab-content hidden space-y-5 w-full max-w-full overflow-x-hidden">
+                    <!-- KARTU 1: SMART IMPORTER E-RAPOR KEMENDIKBUD -->
+                    <div class="w-full bg-gradient-to-br from-teal-900 via-teal-800 to-emerald-900 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-7 text-white shadow-lg border border-teal-700/50">
+                        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+                            <div class="space-y-1.5 flex-1 min-w-0">
+                                <span class="inline-block bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">FITUR KHUSUS e-RAPOR KEMDIKBUD</span>
+                                <h3 class="text-base sm:text-lg md:text-xl font-extrabold tracking-tight leading-snug">Smart Importer Leger e-Rapor (.xlsx)</h3>
+                                <p class="text-xs text-teal-100 leading-relaxed">Unggah file Excel Leger e-Rapor resmi dari sekolah Anda. Sistem otomatis mencocokkan NISN siswa dan menyuntikkan nilai lengkap dengan kehadiran & ekstrakurikuler ke Buku Induk!</p>
                             </div>
-                            <label class="w-full sm:w-auto justify-center bg-white text-teal-900 hover:bg-teal-50 font-extrabold px-5 py-3 rounded-2xl text-xs transition shadow-lg cursor-pointer flex items-center space-x-2 shrink-0">
-                                <i class="fa-solid fa-file-excel text-emerald-600 text-base"></i>
-                                <span>Pilih File Leger e-Rapor (.xlsx)</span>
-                                <input type="file" accept=".xlsx, .xls" onchange="handleSmartImportERapor(event)" class="hidden">
-                            </label>
+                            <div class="shrink-0 w-full md:w-auto">
+                                <label class="w-full md:w-auto justify-center bg-white text-teal-900 hover:bg-teal-50 font-extrabold px-4 py-3 rounded-xl text-xs transition shadow-md cursor-pointer flex items-center space-x-2">
+                                    <i class="fa-solid fa-file-excel text-emerald-600 text-base shrink-0"></i>
+                                    <span>Pilih File Leger e-Rapor (.xlsx)</span>
+                                    <input type="file" accept=".xlsx, .xls" onchange="handleSmartImportERapor(event)" class="hidden">
+                                </label>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- FITUR BARU: KAMERA SCANNER, UPLOAD PDF & ANALISIS AI DARI PRINT OUT KERTAS -->
-                    <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 rounded-3xl p-5 md:p-7 text-white shadow-xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                        <div class="space-y-1.5 max-w-2xl">
-                            <span class="inline-block bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"><i class="fa-solid fa-camera mr-1"></i>PEMINDAI KAMERA, UPLOAD PDF & AI ANALYZER</span>
-                            <h3 class="text-base md:text-lg font-extrabold tracking-tight">Hanya Punya Hasil Print Out Kertas Fisik atau File PDF?</h3>
-                            <p class="text-xs text-indigo-100 leading-relaxed">Potret lembar rapor/leger cetak langsung dari kamera HP/laptop atau unggah file <b>PDF / Foto</b>. Sistem AI & OCR akan mengekstrak daftar nilai dan menyuntikkannya otomatis ke Buku Induk tanpa mengetik ulang!</p>
-                        </div>
-                        <div class="flex flex-wrap gap-2 w-full lg:w-auto shrink-0">
-                            <button type="button" onclick="openCameraScanModal()" class="flex-1 sm:flex-initial justify-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-4 py-3 rounded-2xl text-xs transition shadow-lg cursor-pointer flex items-center space-x-2">
-                                <i class="fa-solid fa-camera text-base"></i>
-                                <span>Buka Kamera & Scan</span>
-                            </button>
-                            <label class="flex-1 sm:flex-initial justify-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-4 py-3 rounded-2xl text-xs transition shadow-lg cursor-pointer flex items-center space-x-2">
-                                <i class="fa-solid fa-file-pdf text-rose-700 text-base"></i>
-                                <span>Upload PDF / Foto Rapor</span>
-                                <input type="file" accept=".pdf,image/*" onchange="handlePdfOrImageUploadForScan(event)" class="hidden">
-                            </label>
-                            <button type="button" onclick="openPrintScanGuideModal()" class="bg-white/15 hover:bg-white/25 text-white font-bold px-3.5 py-3 rounded-2xl text-xs transition cursor-pointer flex items-center space-x-1.5">
-                                <i class="fa-solid fa-circle-question"></i>
-                                <span>Panduan</span>
-                            </button>
+                    <!-- KARTU 2: KAMERA SCANNER, UPLOAD PDF & ANALISIS AI DARI PRINT OUT KERTAS -->
+                    <div class="w-full bg-gradient-to-br from-indigo-900 via-indigo-800 to-blue-900 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-7 text-white shadow-lg border border-indigo-700/50">
+                        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+                            <div class="space-y-1.5 flex-1 min-w-0">
+                                <span class="inline-block bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"><i class="fa-solid fa-camera mr-1"></i>PEMINDAI KAMERA, UPLOAD PDF & AI ANALYZER</span>
+                                <h3 class="text-base sm:text-lg md:text-xl font-extrabold tracking-tight leading-snug">Hanya Punya Hasil Print Out Kertas Fisik atau File PDF?</h3>
+                                <p class="text-xs text-indigo-100 leading-relaxed">Potret lembar rapor/leger cetak langsung dari kamera HP/laptop atau unggah file <b>PDF / Foto</b>. Sistem otomatis mendeteksi Nama, Kelas (I–VI), Semester, dan mengekstrak seluruh nilai tabel rapor!</p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row flex-wrap gap-2.5 w-full md:w-auto shrink-0">
+                                <button type="button" onclick="openCameraScanModal()" class="w-full sm:w-auto justify-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-4 py-3 rounded-xl text-xs transition shadow-md cursor-pointer flex items-center space-x-2">
+                                    <i class="fa-solid fa-camera text-base shrink-0"></i>
+                                    <span>Buka Kamera & Scan</span>
+                                </button>
+                                <label class="w-full sm:w-auto justify-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-4 py-3 rounded-xl text-xs transition shadow-md cursor-pointer flex items-center space-x-2">
+                                    <i class="fa-solid fa-file-pdf text-rose-700 text-base shrink-0"></i>
+                                    <span>Upload PDF / Foto Rapor</span>
+                                    <input type="file" accept=".pdf,image/*" onchange="handlePdfOrImageUploadForScan(event)" class="hidden">
+                                </label>
+                                <button type="button" onclick="openPrintScanGuideModal()" class="w-full sm:w-auto justify-center bg-white/15 hover:bg-white/25 text-white font-bold px-3.5 py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-circle-question"></i>
+                                    <span>Panduan</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
-                            <div class="space-y-3">
-                                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-user-plus"></i></div>
+                    <!-- KARTU 3, 4, 5: IMPOR TEMPLATE STANDAR -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 w-full">
+                        <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
+                            <div class="space-y-2.5">
+                                <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-user-plus"></i></div>
                                 <h3 class="font-bold text-sm text-slate-900">Impor Data Peserta Didik</h3>
-                                <p class="text-xs text-slate-500">Gunakan template Excel standar untuk mengimpor identitas siswa baru.</p>
+                                <p class="text-xs text-slate-500 leading-relaxed">Gunakan template Excel standar untuk mengimpor identitas siswa baru.</p>
                             </div>
                             <div class="space-y-2 pt-2">
-                                <button type="button" onclick="downloadTemplateSiswa()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Unduh Template Siswa (.xlsx)</button>
+                                <button type="button" onclick="downloadTemplateSiswa()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">Unduh Template Siswa (.xlsx)</button>
                                 <label class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
                                     <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Siswa
                                     <input type="file" accept=".xlsx, .xls" onchange="handleImportSiswa(event)" class="hidden">
@@ -907,14 +912,14 @@
                             </div>
                         </div>
 
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
-                            <div class="space-y-3">
-                                <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
+                            <div class="space-y-2.5">
+                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-graduation-cap"></i></div>
                                 <h3 class="font-bold text-sm text-slate-900">Impor Nilai Rapor Standar</h3>
-                                <p class="text-xs text-slate-500">Impor nilai rapor format reguler.</p>
+                                <p class="text-xs text-slate-500 leading-relaxed">Impor nilai rapor format reguler menggunakan file template Excel.</p>
                             </div>
                             <div class="space-y-2 pt-2">
-                                <button type="button" onclick="downloadTemplateNilai()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Unduh Template Nilai (.xlsx)</button>
+                                <button type="button" onclick="downloadTemplateNilai()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">Unduh Template Nilai (.xlsx)</button>
                                 <label class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
                                     <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Nilai
                                     <input type="file" accept=".xlsx, .xls" onchange="handleImportNilai(event)" class="hidden">
@@ -922,14 +927,14 @@
                             </div>
                         </div>
 
-                        <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
-                            <div class="space-y-3">
-                                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-xs border border-slate-200 space-y-4 flex flex-col justify-between">
+                            <div class="space-y-2.5">
+                                <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-chalkboard-user"></i></div>
                                 <h3 class="font-bold text-sm text-slate-900">Impor Data Guru & Pegawai</h3>
-                                <p class="text-xs text-slate-500">Impor data guru dan penugasan wali kelas.</p>
+                                <p class="text-xs text-slate-500 leading-relaxed">Impor data guru dan penugasan wali kelas untuk Buku Induk.</p>
                             </div>
                             <div class="space-y-2 pt-2">
-                                <button type="button" onclick="downloadTemplateGuru()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Unduh Template Guru (.xlsx)</button>
+                                <button type="button" onclick="downloadTemplateGuru()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">Unduh Template Guru (.xlsx)</button>
                                 <label class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer flex items-center justify-center">
                                     <i class="fa-solid fa-upload mr-1.5"></i>Pilih File Guru
                                     <input type="file" accept=".xlsx, .xls" onchange="handleImportGuru(event)" class="hidden">
@@ -1080,22 +1085,22 @@
                 <div class="bg-slate-100 border border-slate-200 p-3 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                     <div>
                         <label class="block font-bold text-slate-700 text-[10px] uppercase mb-1">1. Siswa Target Buku Induk:</label>
-                        <select id="scanTargetStudentSelect" class="w-full bg-white border border-slate-300 px-2.5 py-2 rounded-xl font-bold text-indigo-950 text-xs"></select>
+                        <select id="scanTargetStudentSelect" onchange="refreshScanInteractiveTableKeepScanned()" class="w-full bg-white border border-slate-300 px-2.5 py-2 rounded-xl font-bold text-indigo-950 text-xs"></select>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-700 text-[10px] uppercase mb-1">2. Tingkat Kelas:</label>
-                        <select id="scanTargetKelasSelect" class="w-full bg-white border border-slate-300 px-2.5 py-2 rounded-xl font-bold text-slate-800 text-xs">
-                            <option value="Kelas I">Kelas I</option>
-                            <option value="Kelas II">Kelas II</option>
-                            <option value="Kelas III">Kelas III</option>
-                            <option value="Kelas IV">Kelas IV</option>
-                            <option value="Kelas V" selected>Kelas V</option>
-                            <option value="Kelas VI">Kelas VI</option>
+                        <label class="block font-bold text-slate-700 text-[10px] uppercase mb-1">2. Tingkat Kelas Rapor yg Di-scan:</label>
+                        <select id="scanTargetKelasSelect" onchange="refreshScanInteractiveTableKeepScanned()" class="w-full bg-white border border-slate-300 px-2.5 py-2 rounded-xl font-bold text-slate-800 text-xs">
+                            <option value="Kelas I">Kelas I (Kelas 1)</option>
+                            <option value="Kelas II">Kelas II (Kelas 2)</option>
+                            <option value="Kelas III">Kelas III (Kelas 3)</option>
+                            <option value="Kelas IV">Kelas IV (Kelas 4)</option>
+                            <option value="Kelas V" selected>Kelas V (Kelas 5)</option>
+                            <option value="Kelas VI">Kelas VI (Kelas 6)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-700 text-[10px] uppercase mb-1">3. Semester:</label>
-                        <select id="scanTargetSemesterSelect" class="w-full bg-white border border-slate-300 px-2.5 py-2 rounded-xl font-bold text-slate-800 text-xs">
+                        <label class="block font-bold text-slate-700 text-[10px] uppercase mb-1">3. Semester Rapor yg Di-scan:</label>
+                        <select id="scanTargetSemesterSelect" onchange="refreshScanInteractiveTableKeepScanned()" class="w-full bg-white border border-slate-300 px-2.5 py-2 rounded-xl font-bold text-slate-800 text-xs">
                             <option value="1">Semester 1 (Ganjil)</option>
                             <option value="2" selected>Semester 2 (Genap)</option>
                         </select>
@@ -3517,6 +3522,8 @@
         }
 
         let currentCameraFacingMode = 'environment';
+        let lastScannedGradesBuffer = {};
+        let lastScannedSourceLabel = 'Kamera / Dokumen';
 
         function populateScanModalStudents() {
             const sel = document.getElementById('scanTargetStudentSelect');
@@ -3524,14 +3531,17 @@
             sel.innerHTML = studentsData.map(s =>
                 `<option value="${s.id}" ${String(s.id) === String(activeStudentId) ? 'selected' : ''}>${s.nis} - ${s.nama} (${s.kelas})</option>`
             ).join('');
-            const activeSt = studentsData.find(s => String(s.id) === String(activeStudentId));
-            const klsSel = document.getElementById('scanTargetKelasSelect');
-            if (activeSt && klsSel && activeSt.kelas) {
-                klsSel.value = activeSt.kelas;
+        }
+
+        function refreshScanInteractiveTableKeepScanned() {
+            const resultBox = document.getElementById('aiScanResultBox');
+            if (resultBox && !resultBox.classList.contains('hidden')) {
+                renderScannedGradesInteractiveTable(lastScannedGradesBuffer, lastScannedSourceLabel);
             }
         }
 
         function openCameraScanModal() {
+            lastScannedGradesBuffer = {};
             populateScanModalStudents();
             document.getElementById('cameraScanModal')?.classList.remove('hidden');
             document.getElementById('aiScanResultBox')?.classList.add('hidden');
@@ -3605,37 +3615,156 @@
             }
         }
 
+        // Pra-pemrosesan gambar canvas agar huruf & angka tabel rapor cetak lebih tajam saat dibaca OCR
+        function createEnhancedOcrCanvas(sourceCanvas) {
+            const ocrCanvas = document.createElement('canvas');
+            const maxDim = 1800;
+            let w = sourceCanvas.width || 1280;
+            let h = sourceCanvas.height || 720;
+            if (w < 1000) {
+                const scale = 1400 / w;
+                w = Math.round(w * scale);
+                h = Math.round(h * scale);
+            } else if (w > maxDim) {
+                const scale = maxDim / w;
+                w = Math.round(w * scale);
+                h = Math.round(h * scale);
+            }
+            ocrCanvas.width = w;
+            ocrCanvas.height = h;
+            const ctx = ocrCanvas.getContext('2d');
+            ctx.drawImage(sourceCanvas, 0, 0, w, h);
+
+            try {
+                const imgData = ctx.getImageData(0, 0, w, h);
+                const d = imgData.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    const gray = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+                    // Peningkatan kontras lembut agar teks hitam di atas kertas putih semakin jelas
+                    const contrasted = gray < 165 ? Math.max(0, (gray - 165) * 1.45 + 120) : Math.min(255, gray * 1.12);
+                    d[i] = d[i + 1] = d[i + 2] = contrasted;
+                }
+                ctx.putImageData(imgData, 0, 0);
+            } catch (e) {
+                console.warn('Skip image contrast enhancement:', e);
+            }
+            return ocrCanvas;
+        }
+
+        function detectKelasAndSemesterFromText(rawText) {
+            const text = String(rawText || '');
+            let detectedKelas = null;
+            let detectedSem = null;
+
+            // Deteksi Kelas dari dokumen (contoh: "Kelas : I (Satu)", "Kelas : 1", "Kelas I", "Fase A Kelas 1")
+            const kelasPatterns = [
+                /kelas\s*[:=\-]?\s*(VI|IV|V|III|II|I|[1-6])\s*(?:\(\s*(satu|dua|tiga|empat|lima|enam)\s*\))?/i,
+                /\b(?:kelas|kls)\s+(satu|dua|tiga|empat|lima|enam)\b/i
+            ];
+            const wordToRoman = {
+                '1': 'Kelas I', 'i': 'Kelas I', 'satu': 'Kelas I',
+                '2': 'Kelas II', 'ii': 'Kelas II', 'dua': 'Kelas II',
+                '3': 'Kelas III', 'iii': 'Kelas III', 'tiga': 'Kelas III',
+                '4': 'Kelas IV', 'iv': 'Kelas IV', 'empat': 'Kelas IV',
+                '5': 'Kelas V', 'v': 'Kelas V', 'lima': 'Kelas V',
+                '6': 'Kelas VI', 'vi': 'Kelas VI', 'enam': 'Kelas VI'
+            };
+
+            for (const pat of kelasPatterns) {
+                const m = text.match(pat);
+                if (m) {
+                    const token = String(m[2] || m[1] || '').trim().toLowerCase();
+                    if (wordToRoman[token]) {
+                        detectedKelas = wordToRoman[token];
+                        break;
+                    }
+                }
+            }
+
+            // Deteksi Semester dari dokumen (contoh: "Semester : 1 (Ganjil)", "Semester : I / Ganjil", "Semester 2 (Genap)")
+            const semMatch = text.match(/semester\s*[:=\-]?\s*(1|2|I|II|ganjil|genap|satu|dua)/i);
+            if (semMatch) {
+                const sToken = semMatch[1].trim().toLowerCase();
+                if (['1', 'i', 'ganjil', 'satu'].includes(sToken)) detectedSem = '1';
+                else if (['2', 'ii', 'genap', 'dua'].includes(sToken)) detectedSem = '2';
+            } else if (/\b(ganjil|gasal)\b/i.test(text)) {
+                detectedSem = '1';
+            } else if (/\b(genap)\b/i.test(text)) {
+                detectedSem = '2';
+            }
+
+            return { detectedKelas, detectedSem };
+        }
+
+        function extractValidScoreFromLine(str) {
+            if (!str) return undefined;
+            // Bersihkan nomor urut di awal baris seperti "1.", "2.", "10." agar tidak dikira nilai
+            const cleaned = String(str)
+                .replace(/^\s*\d{1,2}\s*[\.\)\-:]\s*/, ' ')
+                .replace(/\b20\d{2}\/\d{4}\b/g, ' ')
+                .replace(/\b\d{6,}\b/g, ' '); // Abaikan NISN panjang
+
+            // Cari angka 2-3 digit (termasuk format desimal koma/titik seperti 85,00 atau 88)
+            const matches = cleaned.match(/\b(100(?:[,\.]0+)?|[5-9]\d(?:[,\.]\d+)?|[4]\d(?:[,\.]\d+)?)\b/g);
+            if (!matches || matches.length === 0) return undefined;
+
+            for (let i = 0; i < matches.length; i++) {
+                const val = Math.round(Number(matches[i].replace(',', '.')));
+                if (!isNaN(val) && val >= 45 && val <= 100) {
+                    return val;
+                }
+            }
+            return undefined;
+        }
+
         function parseExtractedTextToGrades(rawText) {
             const text = String(rawText || '');
             const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
             const extractedGrades = {};
 
-            // Coba deteksi nama siswa atau NISN dari teks dokumen untuk mencocokkan otomatis siswa target
+            // 1. Deteksi Nama Siswa atau NISN dari teks dokumen (TANPA menimpa kelas rapor yang sedang di-scan!)
+            const textLower = text.toLowerCase();
             const matchedSt = studentsData.find(s => {
                 const sNisn = String(s.nisn || '').trim();
+                const sNis = String(s.nis || '').trim();
                 const sNama = String(s.nama || '').trim().toLowerCase();
-                return (sNisn.length >= 5 && text.includes(sNisn)) || (sNama.length >= 4 && text.toLowerCase().includes(sNama));
+                if (sNisn.length >= 5 && text.includes(sNisn)) return true;
+                if (sNama.length >= 4 && textLower.includes(sNama)) return true;
+                // Cocokkan minimal 2 kata pertama nama siswa jika OCR sedikit meleset pada huruf akhir
+                const nameParts = sNama.split(/\s+/).filter(w => w.length >= 3);
+                if (nameParts.length >= 2 && textLower.includes(nameParts[0]) && textLower.includes(nameParts[1])) return true;
+                return false;
             });
+
             if (matchedSt) {
                 const sel = document.getElementById('scanTargetStudentSelect');
                 if (sel) sel.value = matchedSt.id;
-                const klsSel = document.getElementById('scanTargetKelasSelect');
-                if (klsSel && matchedSt.kelas) klsSel.value = matchedSt.kelas;
             }
 
-            // Kata kunci fleksibel untuk tiap mata pelajaran
+            // 2. Deteksi Tingkat Kelas (misal Kelas I / Kelas 1) dan Semester langsung dari lembar rapor yang di-scan
+            const { detectedKelas, detectedSem } = detectKelasAndSemesterFromText(text);
+            if (detectedKelas) {
+                const klsSel = document.getElementById('scanTargetKelasSelect');
+                if (klsSel) klsSel.value = detectedKelas;
+            }
+            if (detectedSem) {
+                const semSel = document.getElementById('scanTargetSemesterSelect');
+                if (semSel) semSel.value = detectedSem;
+            }
+
+            // 3. Kata kunci fleksibel untuk tiap mata pelajaran (mendukung typo umum OCR pada cetakan rapor SD)
             const keywordAliases = {
-                'agama': ['pendidikan agama', 'agama islam', 'paidbp', 'pai', 'budi pekerti'],
-                'pancasila': ['pendidikan pancasila', 'ppkn', 'ppdk', 'pancasila'],
-                'indonesia': ['bahasa indonesia', 'b. indonesia', 'bind'],
-                'matematika': ['matematika', 'mtk'],
-                'ipas': ['ilmu pengetahuan alam', 'ipas', 'ipadsi', 'sains'],
-                'seni': ['seni rupa', 'seni budaya', 'seni musik', 'seni'],
-                'pjok': ['pendidikan jasmani', 'pjok', 'pjodk', 'olahraga'],
-                'inggris': ['bahasa inggris', 'b. inggris', 'bing', 'english'],
-                'jawa': ['bahasa jawa', 'b. jawa', 'muatan lokal', 'mulok', 'mlbd'],
-                'arab': ['bahasa arab', 'b. arab'],
-                'koding': ['koding', 'kecerdasan artifisial', 'kdka', 'informatika']
+                'agama': ['pendidikan agama', 'agama islam', 'budi pekerti', 'paidbp', 'pai', 'agama'],
+                'pancasila': ['pendidikan pancasila', 'pancasila', 'ppkn', 'ppdk', 'kewarganegaraan'],
+                'indonesia': ['bahasa indonesia', 'b. indonesia', 'bind', 'indonesia'],
+                'matematika': ['matematika', 'mtk', 'matematlka', 'matemallka'],
+                'ipas': ['ilmu pengetahuan alam', 'ipas', 'ipadsi', 'pengetahuan alam', 'sosial'],
+                'seni': ['seni rupa', 'seni budaya', 'seni musik', 'seni tari', 'seni'],
+                'pjok': ['pendidikan jasmani', 'jasmani', 'olahraga', 'kesehatan', 'pjok', 'pjodk'],
+                'inggris': ['bahasa inggris', 'b. inggris', 'inggris', 'bing', 'english'],
+                'jawa': ['bahasa jawa', 'b. jawa', 'bahasa daerah', 'muatan lokal', 'mulok', 'mlbd', 'jawa'],
+                'arab': ['bahasa arab', 'b. arab', 'arab'],
+                'koding': ['koding', 'kecerdasan artifisial', 'kdka', 'informatika', 'tik']
             };
 
             mapelData.forEach(m => {
@@ -3648,23 +3777,48 @@
                 for (let i = 0; i < lines.length; i++) {
                     const lineLower = lines[i].toLowerCase();
                     if (aliases.some(al => lineLower.includes(al))) {
-                        // Cari angka 2-3 digit (rentang 50 - 100 atau 0 - 100) pada baris ini atau baris berikutnya
-                        const combined = lines[i] + ' ' + (lines[i + 1] || '');
-                        const numMatches = combined.match(/\b(100|[5-9]\d|\d{2})\b/g);
-                        if (numMatches && numMatches.length > 0) {
-                            const validNum = numMatches.map(Number).find(n => n >= 40 && n <= 100);
-                            if (validNum !== undefined) {
-                                extractedGrades[m.nama] = validNum;
-                                break;
-                            }
+                        // Coba ekstrak angka nilai pada baris yang sama terlebih dahulu
+                        let score = extractValidScoreFromLine(lines[i]);
+                        // Jika nilai berada di baris bawahnya (karena kolom tabel terpotong baris OCR)
+                        if (score === undefined && lines[i + 1]) {
+                            score = extractValidScoreFromLine(lines[i + 1]);
+                        }
+                        if (score === undefined && lines[i + 2]) {
+                            score = extractValidScoreFromLine(lines[i + 2]);
+                        }
+                        if (score !== undefined) {
+                            extractedGrades[m.nama] = score;
+                            break;
                         }
                     }
                 }
             });
 
-            // Jika dokumen foto buram atau urutan angka saja yang terbaca, ekstrak daftar angka nilai 65-100 secara berurutan
+            // 4. Fallback cerdas: Jika nama mapel banyak terpotong tapi urutan baris bernomor ("1 ... 85", "2 ... 88") atau kumpulan angka nilai 60-100 terbaca
+            if (Object.keys(extractedGrades).length < 3) {
+                const numberedScores = [];
+                lines.forEach(line => {
+                    const rowMatch = line.match(/^\s*(\d{1,2})\s*[\.\)\s]\s*[A-Za-z].*?\b(100|[5-9]\d)\b/);
+                    if (rowMatch) {
+                        const idx = parseInt(rowMatch[1], 10) - 1;
+                        const val = parseInt(rowMatch[2], 10);
+                        if (idx >= 0 && idx < mapelData.length && val >= 50 && val <= 100) {
+                            numberedScores.push({ idx, val });
+                        }
+                    }
+                });
+                numberedScores.forEach(item => {
+                    const mapelName = mapelData[item.idx]?.nama;
+                    if (mapelName && extractedGrades[mapelName] === undefined) {
+                        extractedGrades[mapelName] = item.val;
+                    }
+                });
+            }
+
             if (Object.keys(extractedGrades).length === 0) {
-                const allValidScores = (text.match(/\b(100|[6-9]\d)\b/g) || []).map(Number).filter(n => n >= 60 && n <= 100);
+                const allValidScores = (text.match(/\b(100|[6-9]\d)\b/g) || [])
+                    .map(Number)
+                    .filter(n => n >= 60 && n <= 100);
                 if (allValidScores.length > 0) {
                     mapelData.forEach((m, idx) => {
                         if (allValidScores[idx] !== undefined) {
@@ -3674,42 +3828,57 @@
                 }
             }
 
-            return { extractedGrades, matchedSt };
+            return { extractedGrades, matchedSt, detectedKelas, detectedSem };
         }
 
         function renderScannedGradesInteractiveTable(extractedGrades = {}, sourceLabel = 'Kamera / Dokumen') {
+            lastScannedGradesBuffer = extractedGrades || {};
+            lastScannedSourceLabel = sourceLabel;
+
             const resultBox = document.getElementById('aiScanResultBox');
             const resultText = document.getElementById('aiScanResultText');
             const tbody = document.getElementById('scannedGradesInteractiveBody');
             if (!resultBox || !tbody) return;
 
             const studentId = document.getElementById('scanTargetStudentSelect')?.value || activeStudentId;
-            const kelas = document.getElementById('scanTargetKelasSelect')?.value || 'Kelas V';
-            const sem = document.getElementById('scanTargetSemesterSelect')?.value || '2';
+            const kelas = document.getElementById('scanTargetKelasSelect')?.value || 'Kelas I';
+            const sem = document.getElementById('scanTargetSemesterSelect')?.value || '1';
             const st = studentsData.find(s => String(s.id) === String(studentId));
 
             let detectedCount = 0;
             let rowsHtml = '';
             mapelData.forEach((m, idx) => {
-                const existing = findStudentGradeRecord(studentId, kelas, sem, m.nama);
+                // Hanya cek data pada Kelas & Semester yang sedang dipilih di dropdown scan (bukan kelas lain!)
+                const existingInTargetClass = findStudentGradeRecord(studentId, kelas, sem, m.nama);
                 const scannedVal = extractedGrades[m.nama];
-                if (scannedVal !== undefined) detectedCount++;
-                const finalVal = scannedVal !== undefined ? scannedVal : (existing ? existing.nilai : 85);
+                const isFromScan = scannedVal !== undefined && scannedVal !== null && String(scannedVal).trim() !== '';
+                if (isFromScan) detectedCount++;
+
+                const finalVal = isFromScan
+                    ? scannedVal
+                    : (existingInTargetClass && existingInTargetClass.nilai !== undefined ? existingInTargetClass.nilai : '');
+
                 const safeMapel = String(m.nama).replace(/"/g, '&quot;');
+                const badgeInfo = isFromScan
+                    ? `<span class="inline-block ml-1.5 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">Terbaca dari Scan</span>`
+                    : (finalVal !== '' ? `<span class="inline-block ml-1.5 px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 text-[9px] font-bold">Data Tersimpan (${kelas})</span>` : `<span class="inline-block ml-1.5 px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Ketik Manual</span>`);
 
                 rowsHtml += `
                     <tr class="hover:bg-emerald-50/50">
                         <td class="p-2 text-center font-bold text-slate-600">${idx + 1}</td>
-                        <td class="p-2 font-semibold text-slate-900">${m.nama}</td>
+                        <td class="p-2 font-semibold text-slate-900">
+                            ${m.nama}
+                            ${badgeInfo}
+                        </td>
                         <td class="p-2 text-center">
-                            <input type="number" min="0" max="100" data-scan-mapel="${safeMapel}" value="${finalVal}" class="scan-grade-input w-20 text-center bg-white border-2 border-emerald-400 focus:border-indigo-600 rounded-xl py-1 font-extrabold text-indigo-950">
+                            <input type="number" min="0" max="100" placeholder="0-100" data-scan-mapel="${safeMapel}" value="${finalVal}" class="scan-grade-input w-20 text-center bg-white border-2 ${isFromScan ? 'border-emerald-500 bg-emerald-50/30' : 'border-slate-300'} focus:border-indigo-600 rounded-xl py-1.5 font-extrabold text-indigo-950">
                         </td>
                     </tr>
                 `;
             });
 
             tbody.innerHTML = rowsHtml;
-            resultText.innerHTML = `Sumber: <b>${sourceLabel}</b> • Siswa: <b>${st ? st.nama : '-'}</b> (${kelas} - Sem ${sem}) • Silakan periksa/sesuaikan nilai di bawah lalu klik <b>Simpan Nilai Ini ke Buku Induk</b>.`;
+            resultText.innerHTML = `Sumber: <b>${sourceLabel}</b> • Terbaca: <b>${detectedCount} nilai baru</b> • Target Simpan: <b>${st ? st.nama : '-'}</b> (<b class="underline">${kelas} - Semester ${sem}</b>). Silakan lengkapi/periksa nilai di bawah lalu klik <b>Simpan Nilai Ini ke Buku Induk</b>.`;
             resultBox.classList.remove('hidden');
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -3767,23 +3936,25 @@
         }
 
         async function analyzeCanvasWithOcrAndAi(canvasEl, sourceLabel = 'Potret Kamera') {
-            setScanProcessingState(true, 'Menganalisis Dokumen Rapor...', 'Membaca teks dan mengekstrak angka nilai mata pelajaran...', 35);
+            setScanProcessingState(true, 'Menganalisis Dokumen Rapor...', 'Meningkatkan ketajaman gambar & membaca tabel nilai...', 30);
             try {
                 let extractedText = '';
                 if (typeof window.Tesseract !== 'undefined') {
-                    setScanProcessingState(true, 'Memindai Angka & Teks (OCR AI)...', 'Harap tunggu beberapa detik...', 65);
-                    const ocrResult = await window.Tesseract.recognize(canvasEl, 'ind+eng');
+                    setScanProcessingState(true, 'Memindai Nama, Kelas, Semester & Nilai (OCR AI)...', 'Harap tunggu beberapa detik...', 65);
+                    const enhancedCanvas = createEnhancedOcrCanvas(canvasEl);
+                    const ocrResult = await window.Tesseract.recognize(enhancedCanvas, 'ind+eng');
                     extractedText = ocrResult?.data?.text || '';
                 }
 
                 setScanProcessingState(true, 'Menyusun Tabel Nilai...', 'Mencocokkan mata pelajaran dengan Buku Induk...', 90);
-                const { extractedGrades } = parseExtractedTextToGrades(extractedText);
+                const { extractedGrades, detectedKelas, detectedSem } = parseExtractedTextToGrades(extractedText);
                 renderScannedGradesInteractiveTable(extractedGrades, sourceLabel);
-                showNotification('Dokumen berhasil dianalisis! Silakan periksa tabel nilai di bawah.', 'success');
+                const infoKls = detectedKelas ? ` (${detectedKelas}${detectedSem ? ' Sem ' + detectedSem : ''})` : '';
+                showNotification(`Dokumen berhasil dianalisis${infoKls}! Silakan periksa tabel nilai di bawah.`, 'success');
             } catch (err) {
                 console.warn('OCR fallback:', err);
                 renderScannedGradesInteractiveTable({}, sourceLabel);
-                showNotification('Gambar berhasil ditangkap! Silakan verifikasi nilai pada tabel di bawah.', 'success');
+                showNotification('Gambar berhasil ditangkap! Silakan isi/verifikasi nilai pada tabel di bawah.', 'success');
             } finally {
                 setScanProcessingState(false);
             }
@@ -3987,7 +4158,7 @@
             cancelImportPreview, confirmCommitImport, exportFullBukuIndukExcel, saveGlobalSchoolSettings, handleGlobalSearch,
             handleChangeAcademicYear, openAuditLogModal, closeAuditLogModal, openPrintScanGuideModal, closePrintScanGuideModal,
             openCameraScanModal, closeCameraScanModal, startCameraStream, switchCameraFacingMode, captureAndAnalyzeCameraImage,
-            handlePdfOrImageUploadForScan, commitScannedGradesToBukuInduk,
+            handlePdfOrImageUploadForScan, commitScannedGradesToBukuInduk, refreshScanInteractiveTableKeepScanned,
             openConfirmDeleteModal, closeConfirmDeleteModal, executeConfirmedDelete, openLoginModal, closeLoginModal,
             executeFirebaseLogin, executeGateLogin, retryLoadFirebaseData, useOfflineBackupAndCloseLoading,
             handleSmartImportERapor, closeERaporModal, confirmCommitERaporImport
