@@ -282,9 +282,19 @@
                 <!-- SUBVIEW 2: EDITOR BUKU INDUK (BAGIAN A-H) -->
                 <div id="biSubViewEditor" class="hidden bg-white rounded-2xl border border-slate-200 shadow-xs p-4 space-y-4">
                     <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold text-slate-700">Pilih Siswa:</span>
-                            <select id="editorSelectStudent" onchange="selectStudentForBukuInduk(this.value)" class="border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold text-indigo-950"></select>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-xs font-bold text-slate-700"><i class="fa-solid fa-filter text-indigo-600 mr-1"></i>Filter Kelas:</span>
+                            <select id="editorFilterKelas" onchange="handleEditorFilterKelasChange()" class="border border-slate-300 bg-slate-50 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 cursor-pointer">
+                                <option value="ALL">Semua Kelas</option>
+                                <option value="Kelas I">Kelas I</option>
+                                <option value="Kelas II">Kelas II</option>
+                                <option value="Kelas III">Kelas III</option>
+                                <option value="Kelas IV">Kelas IV</option>
+                                <option value="Kelas V">Kelas V</option>
+                                <option value="Kelas VI">Kelas VI</option>
+                            </select>
+                            <span class="text-xs font-bold text-slate-700 ml-1"><i class="fa-solid fa-user-graduate text-indigo-600 mr-1"></i>Pilih Siswa:</span>
+                            <select id="editorSelectStudent" onchange="selectStudentForBukuInduk(this.value)" class="border-2 border-indigo-600 rounded-xl px-3 py-1.5 text-xs font-extrabold text-indigo-950 min-w-[220px] cursor-pointer"></select>
                         </div>
                         <div class="flex flex-wrap gap-1 text-xs font-bold">
                             <button type="button" data-sec="A" onclick="switchBiSection('A')" class="bi-sec-btn bg-indigo-600 text-white px-3 py-2 rounded-xl transition cursor-pointer">A. Sekolah</button>
@@ -343,50 +353,70 @@
 
                     <!-- BAGIAN C -->
                     <div id="biSec-C" class="bi-section-pane hidden space-y-3 text-xs">
-                        <div class="flex items-center justify-between">
-                            <h4 class="font-extrabold text-sm text-indigo-950">Bagian C — Matriks Nilai Kelas I s.d. Kelas VI</h4>
-                            <button type="button" onclick="saveMatrixGradesFromBI()" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl cursor-pointer">Simpan Matriks Nilai</button>
+                        <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <div>
+                                <h4 class="font-extrabold text-sm text-indigo-950">Bagian C — Matriks Nilai Kelas I s.d. Kelas VI</h4>
+                                <p class="text-[11px] text-slate-500">Gunakan Filter Tampilan Kelas di samping untuk fokus mengisi nilai kelas tertentu atau melihat semua kelas.</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <div class="flex items-center bg-white border border-slate-300 rounded-xl px-2.5 py-1.5 shadow-2xs">
+                                    <i class="fa-solid fa-table-columns text-indigo-600 mr-1.5"></i>
+                                    <span class="font-bold text-slate-600 mr-1.5 text-[11px]">Fokus Kolom Kelas:</span>
+                                    <select id="biSecCFilterKelasCol" onchange="applyBiSecCKelasColumnFilter()" class="font-extrabold text-indigo-950 bg-transparent focus:outline-none cursor-pointer text-xs">
+                                        <option value="ALL" selected>Tampilkan Semua (Kelas I - VI)</option>
+                                        <option value="0">Hanya Kelas I (Sem 1 & 2)</option>
+                                        <option value="1">Hanya Kelas II (Sem 1 & 2)</option>
+                                        <option value="2">Hanya Kelas III (Sem 1 & 2)</option>
+                                        <option value="3">Hanya Kelas IV (Sem 1 & 2)</option>
+                                        <option value="4">Hanya Kelas V (Sem 1 & 2)</option>
+                                        <option value="5">Hanya Kelas VI (Sem 1 & 2)</option>
+                                    </select>
+                                </div>
+                                <button type="button" onclick="saveMatrixGradesFromBI()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl cursor-pointer shadow-xs flex items-center gap-1.5">
+                                    <i class="fa-solid fa-floppy-disk"></i><span>Simpan Matriks Nilai</span>
+                                </button>
+                            </div>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full border-collapse border border-slate-300 text-[11px]">
                                 <thead>
                                     <tr class="bg-slate-100 font-bold text-center">
-                                        <th rowspan="2" class="border p-2 text-left">Mata Pelajaran & TP</th>
-                                        <th colspan="2" class="border p-1">Kelas I</th>
-                                        <th colspan="2" class="border p-1">Kelas II</th>
-                                        <th colspan="2" class="border p-1">Kelas III</th>
-                                        <th colspan="2" class="border p-1">Kelas IV</th>
-                                        <th colspan="2" class="border p-1">Kelas V</th>
-                                        <th colspan="2" class="border p-1">Kelas VI</th>
+                                        <th rowspan="2" class="border p-2 text-left min-w-[220px]">Mata Pelajaran & TP</th>
+                                        <th colspan="2" data-bi-col-kidx="0" class="bi-matrix-col border p-1.5">Kelas I</th>
+                                        <th colspan="2" data-bi-col-kidx="1" class="bi-matrix-col border p-1.5">Kelas II</th>
+                                        <th colspan="2" data-bi-col-kidx="2" class="bi-matrix-col border p-1.5">Kelas III</th>
+                                        <th colspan="2" data-bi-col-kidx="3" class="bi-matrix-col border p-1.5">Kelas IV</th>
+                                        <th colspan="2" data-bi-col-kidx="4" class="bi-matrix-col border p-1.5">Kelas V</th>
+                                        <th colspan="2" data-bi-col-kidx="5" class="bi-matrix-col border p-1.5">Kelas VI</th>
                                     </tr>
                                     <tr class="bg-slate-50 font-bold text-center">
-                                        <th class="border p-1">1</th><th class="border p-1">2</th>
-                                        <th class="border p-1">1</th><th class="border p-1">2</th>
-                                        <th class="border p-1">1</th><th class="border p-1">2</th>
-                                        <th class="border p-1">1</th><th class="border p-1">2</th>
-                                        <th class="border p-1">1</th><th class="border p-1">2</th>
-                                        <th class="border p-1">1</th><th class="border p-1">2</th>
+                                        <th data-bi-col-kidx="0" class="bi-matrix-col border p-1">Sem 1</th><th data-bi-col-kidx="0" class="bi-matrix-col border p-1">Sem 2</th>
+                                        <th data-bi-col-kidx="1" class="bi-matrix-col border p-1">Sem 1</th><th data-bi-col-kidx="1" class="bi-matrix-col border p-1">Sem 2</th>
+                                        <th data-bi-col-kidx="2" class="bi-matrix-col border p-1">Sem 1</th><th data-bi-col-kidx="2" class="bi-matrix-col border p-1">Sem 2</th>
+                                        <th data-bi-col-kidx="3" class="bi-matrix-col border p-1">Sem 1</th><th data-bi-col-kidx="3" class="bi-matrix-col border p-1">Sem 2</th>
+                                        <th data-bi-col-kidx="4" class="bi-matrix-col border p-1">Sem 1</th><th data-bi-col-kidx="4" class="bi-matrix-col border p-1">Sem 2</th>
+                                        <th data-bi-col-kidx="5" class="bi-matrix-col border p-1">Sem 1</th><th data-bi-col-kidx="5" class="bi-matrix-col border p-1">Sem 2</th>
                                     </tr>
                                 </thead>
                                 <tbody id="biEditorGradesMatrixBody"></tbody>
                                 <tfoot>
                                     <tr class="bg-indigo-50 font-extrabold text-center">
                                         <td class="border p-2 text-left">JUMLAH NILAI</td>
-                                        <td id="biMatrixSum_0_1" class="border p-1">-</td><td id="biMatrixSum_0_2" class="border p-1">-</td>
-                                        <td id="biMatrixSum_1_1" class="border p-1">-</td><td id="biMatrixSum_1_2" class="border p-1">-</td>
-                                        <td id="biMatrixSum_2_1" class="border p-1">-</td><td id="biMatrixSum_2_2" class="border p-1">-</td>
-                                        <td id="biMatrixSum_3_1" class="border p-1">-</td><td id="biMatrixSum_3_2" class="border p-1">-</td>
-                                        <td id="biMatrixSum_4_1" class="border p-1">-</td><td id="biMatrixSum_4_2" class="border p-1">-</td>
-                                        <td id="biMatrixSum_5_1" class="border p-1">-</td><td id="biMatrixSum_5_2" class="border p-1">-</td>
+                                        <td id="biMatrixSum_0_1" data-bi-col-kidx="0" class="bi-matrix-col border p-1">-</td><td id="biMatrixSum_0_2" data-bi-col-kidx="0" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixSum_1_1" data-bi-col-kidx="1" class="bi-matrix-col border p-1">-</td><td id="biMatrixSum_1_2" data-bi-col-kidx="1" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixSum_2_1" data-bi-col-kidx="2" class="bi-matrix-col border p-1">-</td><td id="biMatrixSum_2_2" data-bi-col-kidx="2" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixSum_3_1" data-bi-col-kidx="3" class="bi-matrix-col border p-1">-</td><td id="biMatrixSum_3_2" data-bi-col-kidx="3" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixSum_4_1" data-bi-col-kidx="4" class="bi-matrix-col border p-1">-</td><td id="biMatrixSum_4_2" data-bi-col-kidx="4" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixSum_5_1" data-bi-col-kidx="5" class="bi-matrix-col border p-1">-</td><td id="biMatrixSum_5_2" data-bi-col-kidx="5" class="bi-matrix-col border p-1">-</td>
                                     </tr>
                                     <tr class="bg-emerald-50 font-extrabold text-center">
                                         <td class="border p-2 text-left">RATA-RATA NILAI</td>
-                                        <td id="biMatrixAvg_0_1" class="border p-1">-</td><td id="biMatrixAvg_0_2" class="border p-1">-</td>
-                                        <td id="biMatrixAvg_1_1" class="border p-1">-</td><td id="biMatrixAvg_1_2" class="border p-1">-</td>
-                                        <td id="biMatrixAvg_2_1" class="border p-1">-</td><td id="biMatrixAvg_2_2" class="border p-1">-</td>
-                                        <td id="biMatrixAvg_3_1" class="border p-1">-</td><td id="biMatrixAvg_3_2" class="border p-1">-</td>
-                                        <td id="biMatrixAvg_4_1" class="border p-1">-</td><td id="biMatrixAvg_4_2" class="border p-1">-</td>
-                                        <td id="biMatrixAvg_5_1" class="border p-1">-</td><td id="biMatrixAvg_5_2" class="border p-1">-</td>
+                                        <td id="biMatrixAvg_0_1" data-bi-col-kidx="0" class="bi-matrix-col border p-1">-</td><td id="biMatrixAvg_0_2" data-bi-col-kidx="0" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixAvg_1_1" data-bi-col-kidx="1" class="bi-matrix-col border p-1">-</td><td id="biMatrixAvg_1_2" data-bi-col-kidx="1" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixAvg_2_1" data-bi-col-kidx="2" class="bi-matrix-col border p-1">-</td><td id="biMatrixAvg_2_2" data-bi-col-kidx="2" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixAvg_3_1" data-bi-col-kidx="3" class="bi-matrix-col border p-1">-</td><td id="biMatrixAvg_3_2" data-bi-col-kidx="3" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixAvg_4_1" data-bi-col-kidx="4" class="bi-matrix-col border p-1">-</td><td id="biMatrixAvg_4_2" data-bi-col-kidx="4" class="bi-matrix-col border p-1">-</td>
+                                        <td id="biMatrixAvg_5_1" data-bi-col-kidx="5" class="bi-matrix-col border p-1">-</td><td id="biMatrixAvg_5_2" data-bi-col-kidx="5" class="bi-matrix-col border p-1">-</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -2921,6 +2951,41 @@
             }
         }
 
+        function handleEditorFilterKelasChange() {
+            const filterKelas = document.getElementById('editorFilterKelas')?.value || 'ALL';
+            populateAllDropdowns();
+            const filtered = filterKelas === 'ALL'
+                ? studentsData
+                : studentsData.filter(s => normalizeKelasToRoman(s.kelas) === filterKelas);
+            if (filtered.length > 0 && !filtered.some(s => String(s.id) === String(activeStudentId))) {
+                activeStudentId = String(filtered[0].id);
+            }
+            if (filtered.length > 0) {
+                loadStudentIntoBiEditorOnly(activeStudentId);
+            }
+        }
+
+        function applyBiSecCKelasColumnFilter() {
+            const selectedKIdx = document.getElementById('biSecCFilterKelasCol')?.value || 'ALL';
+            document.querySelectorAll('.bi-matrix-col').forEach(el => {
+                const colKIdx = el.getAttribute('data-bi-col-kidx');
+                if (selectedKIdx === 'ALL' || String(colKIdx) === String(selectedKIdx)) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+            document.querySelectorAll('.bi-matrix-input').forEach(inp => {
+                if (selectedKIdx === 'ALL') {
+                    inp.classList.remove('w-20');
+                    inp.classList.add('w-11');
+                } else {
+                    inp.classList.remove('w-11');
+                    inp.classList.add('w-20');
+                }
+            });
+        }
+
         function updatePreviewPaperLayout() {
             const wrapper = document.getElementById('previewSheetWrapper');
             if (!wrapper) return;
@@ -3065,6 +3130,12 @@
             if (!s) return;
             const rec = ensureBiRecord(s.id);
 
+            const editorFilterEl = document.getElementById('editorFilterKelas');
+            if (editorFilterEl && editorFilterEl.value !== 'ALL' && normalizeKelasToRoman(s.kelas) !== editorFilterEl.value) {
+                editorFilterEl.value = normalizeKelasToRoman(s.kelas) || 'ALL';
+                populateAllDropdowns();
+            }
+
             if (document.getElementById('editorSelectStudent')) document.getElementById('editorSelectStudent').value = s.id;
             if (document.getElementById('previewSelectStudent')) document.getElementById('previewSelectStudent').value = s.id;
 
@@ -3208,7 +3279,7 @@
                     ['1', '2'].forEach(sem => {
                         const found = findStudentGradeRecord(studentId, kls, sem, m.nama);
                         const val = (found && found.nilai !== undefined && found.nilai !== null && String(found.nilai).trim() !== '') ? found.nilai : '';
-                        cellsHtml += `<td class="p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel-id="${m.id}" data-mapel="${safeMapelAttr}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" onchange="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 border border-slate-300 rounded py-1 font-bold"></td>`;
+                        cellsHtml += `<td data-bi-col-kidx="${kIdx}" class="bi-matrix-col p-1 border border-slate-300 text-center"><input type="number" min="0" max="100" step="any" data-mapel-id="${m.id}" data-mapel="${safeMapelAttr}" data-kelas="${kls}" data-kidx="${kIdx}" data-sem="${sem}" value="${val}" oninput="recalculateBiMatrixSummary()" onchange="recalculateBiMatrixSummary()" class="bi-matrix-input w-11 text-center bg-slate-50 border border-slate-300 rounded py-1 font-bold"></td>`;
                     });
                 });
                 rowsHtml += `
@@ -3225,6 +3296,7 @@
             });
             tbody.innerHTML = rowsHtml;
             recalculateBiMatrixSummary();
+            applyBiSecCKelasColumnFilter();
         }
 
         function recalculateBiMatrixSummary() {
@@ -4379,18 +4451,25 @@
             const previewSel = document.getElementById('previewSelectStudent');
             const nilaiSiswaSel = document.getElementById('inputNilaiSiswa');
             const previewFilterKelas = document.getElementById('previewFilterKelas')?.value || 'ALL';
+            const editorFilterKelas = document.getElementById('editorFilterKelas')?.value || 'ALL';
 
             let allOpts = '';
+            let editorOpts = '';
             let previewOpts = '';
             studentsData.forEach(s => {
                 const opt = `<option value="${s.id}" ${String(s.id) === String(activeStudentId) ? 'selected' : ''}>${s.nis} - ${s.nama} (${s.kelas})</option>`;
                 allOpts += opt;
-                if (previewFilterKelas === 'ALL' || String(s.kelas).trim() === previewFilterKelas) {
+                if (editorFilterKelas === 'ALL' || normalizeKelasToRoman(s.kelas) === editorFilterKelas) {
+                    editorOpts += opt;
+                }
+                if (previewFilterKelas === 'ALL' || normalizeKelasToRoman(s.kelas) === previewFilterKelas) {
                     previewOpts += opt;
                 }
             });
 
-            if (editorSel) editorSel.innerHTML = allOpts;
+            if (editorSel) {
+                editorSel.innerHTML = editorOpts || `<option value="">-- Tidak ada siswa di kelas ini --</option>`;
+            }
             if (nilaiSiswaSel) nilaiSiswaSel.innerHTML = allOpts;
             if (previewSel) {
                 previewSel.innerHTML = previewOpts || `<option value="">-- Tidak ada siswa di kelas ini --</option>`;
@@ -5310,7 +5389,7 @@
         }
 
         Object.assign(window, {
-            switchTab, openMenuPratinjau, handlePreviewFilterKelasChange, updatePreviewPaperLayout, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
+            switchTab, openMenuPratinjau, handlePreviewFilterKelasChange, handleEditorFilterKelasChange, applyBiSecCKelasColumnFilter, updatePreviewPaperLayout, showBukuIndukSubView, switchBiSection, renderBukuIndukMasterTable,
             openBiPreviewForStudent, openBiEditorForStudent, selectStudentForBukuInduk, recalculateBiMatrixSummary, updateMapelTp,
             saveMatrixGradesFromBI, saveSchoolIdentityFromBI, saveSectionBStudentIdentity, saveSectionDHabits, saveSectionEProfiles,
             addEkskulRow, removeEkskulRow, addPrestasiRow, removePrestasiRow, addAbsensiRow, removeAbsensiRow, saveSectionFAll,
